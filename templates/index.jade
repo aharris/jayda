@@ -1,4 +1,4 @@
-include ../mixins/primary_button
+include ../mixins/*
 doctype html
 html(lang="en")
   head
@@ -11,8 +11,8 @@ html(lang="en")
   body
     h1 Quickstart
 
-    +primaryBtn("#", "My link")
-    +primaryBtn("foo", "My link 2")
+    +primaryLink("#", "My link")
+    +primaryBtn("My Button")
 
     script(type="text/javascript" src="bower_components/jQuery/dist/jquery.min.js")
     script(type="text/javascript" src="js/app.js")

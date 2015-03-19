@@ -8,6 +8,7 @@ var gulp = require('gulp'),
   runSequence = require('run-sequence'),
   rupture = require('rupture'),
   jade = require('gulp-jade'),
+  jadeGlobbing  = require('gulp-jade-globbing'),
   shell = require('gulp-shell');
 
 gulp.task('stylus', function () {
@@ -25,6 +26,7 @@ gulp.task('jade', function() {
   var YOUR_LOCALS = {};
 
   gulp.src(['./templates/**/*.jade', '!./templates/**/_*.jade'])
+    .pipe(jadeGlobbing())
     .pipe(jade())
     .pipe(gulp.dest('./'));
 });

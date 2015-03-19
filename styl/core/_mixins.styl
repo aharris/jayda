@@ -1,0 +1,16 @@
+// Fix for transition vendor prefixes not currently working
+transition(val)
+  -webkit-transition val
+  transition val
+
+fontSize(value)
+  // @stylint off
+  font-size value
+  font-size (value/16) rem
+  // @stylint on
+
+fontFamily($var)
+  if $var == light
+    font-family "insert light font", $fontStack
+  else if $var == regular
+    font-family "insert regular font", $fontStack

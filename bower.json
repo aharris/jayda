@@ -1,0 +1,21 @@
+{
+  "name": "epam-animation",
+  "version": "0.0.0",
+  "authors": [
+    "Ashton Harris <ashton_harris@epam.com>"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "devDependencies": {
+    "jQuery": "~2.1.3"
+  },
+  "dependencies": {
+  }
+}

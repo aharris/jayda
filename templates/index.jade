@@ -1,4 +1,4 @@
-include ../mixins/*
+include ../patterns/**/*
 doctype html
 html(lang="en")
   head
@@ -9,10 +9,34 @@ html(lang="en")
     link(rel="stylesheet" type="text/css" href="css/main.css")
 
   body
-    h1 Quickstart
+    .container
+      h1 Jayda
 
-    +primaryLink("#", "My link")
-    +primaryBtn("My Button")
+      h2 Navbar
+
+      h3 Right Aligned
+      +right-nav([
+        {href: "sass.html", text: "Sass"},
+        {href: "components.html", text: "Components"},
+        {href: "javascript.html", text: "Javascript"}
+      ])
+
+      h3 Left Aligned
+      +left-nav([
+        {href: "sass.html", text: "Sass"},
+        {href: "components.html", text: "Components"},
+        {href: "javascript.html", text: "Javascript"}
+      ])
+
+      h3 Centered Logo
+      +center-nav([
+        {href: "sass.html", text: "Sass"},
+        {href: "components.html", text: "Components"},
+        {href: "javascript.html", text: "Javascript"}
+      ])
+
+      //- h3 Fixed
+      //- +fixed-nav()
 
     script(type="text/javascript" src="bower_components/jQuery/dist/jquery.min.js")
     script(type="text/javascript" src="js/app.js")

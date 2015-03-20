@@ -1,0 +1,43 @@
+
+mixin right-nav(items)
+  .row
+    nav
+      .nav-wrapper
+        .col.s12
+          a.brand-logo(href='#') Logo
+          ul#nav-mobile.right.hide-on-med-and-down
+            each item in items
+              li
+                a(href="#{item.href}")= item.text
+
+mixin left-nav(items)
+  .row
+    nav
+      .nav-wrapper
+        .col.s12
+          a.brand-logo.right(href='#') Logo
+          ul#nav-mobile.left.hide-on-med-and-down
+            li
+              a(href="#{item.href}")= item.text
+
+mixin center-nav(items)
+  .row
+    nav
+      .nav-wrapper
+        .col.s12
+          a.brand-logo.center(href='#') Logo
+          ul#nav-mobile.left.hide-on-med-and-down
+            li
+              a(href="#{item.href}")= item.text
+
+//- TODO: figure out why this doesn't work
+mixin fixed-nav(items)
+  .navbar-fixed
+    .row
+      nav
+        .nav-wrapper
+          .col.s12
+            a.brand-logo(href='#') Logo
+            ul#nav-mobile.left.hide-on-med-and-down
+              li
+                a(href="#{item.href}")= item.text

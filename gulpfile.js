@@ -9,7 +9,8 @@ var gulp = require('gulp'),
   rupture = require('rupture'),
   jade = require('gulp-jade'),
   jadeGlobbing  = require('gulp-jade-globbing'),
-  shell = require('gulp-shell');
+  shell = require('gulp-shell'),
+  gutil = require('gulp-util');
 
 gulp.task('stylus', function () {
   gulp.src(['./styl/**/*.styl', '!styl/**/_*'])
@@ -28,6 +29,7 @@ gulp.task('jade', function() {
   gulp.src(['./templates/**/*.jade', '!./templates/**/_*.jade'])
     .pipe(jadeGlobbing())
     .pipe(jade())
+    .on('error', gutil.log)
     .pipe(gulp.dest('./'));
 });
 
@@ -43,8 +45,8 @@ gulp.task('js', function () {
 
 gulp.task('watch', function () {
   gulp.watch(['styl/**/*.styl'], ['stylus', 'stylint']);
-  gulp.watch(['templates/**/*.jade'], ['jade']);
-  gulp.watch(['./**/*.html'], ['html']);
+  gulp.watch(['**/*.jade'], ['jade']);
+  // gulp.watch(['./**/*.html'], ['html']);
   gulp.watch(['./js/*.js'], ['js']);
 });
 

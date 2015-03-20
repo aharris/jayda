@@ -20,7 +20,7 @@
   "mixed": true,
   "namingConvention": false,
   "parenSpace": false,
-  "placeholders": true,
+  "placeholders": false,
   "semicolons": true,
   "trailingWhitespace": true,
   "Whitespace": true,

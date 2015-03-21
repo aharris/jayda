@@ -1,8 +1,13 @@
-mixin side-nav(links)
+mixin side-nav(groups, patterns)
   ul.side-nav
-    each link in links
-      li= link
+    each group, index in groups
+      h2= group
+      each pattern in patterns[index]
+        ul
+          li
+            a(href="#")= pattern.name
 
-if show
-  +side-nav(links)
+
+if jayda
+  +side-nav(groups, patterns)
 

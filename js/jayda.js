@@ -22,21 +22,37 @@ J = {
   },
 
   parseTree: function (res) {
-    var sections = _.toArray(res.patterns);
-    var patterns = [];
-    var files = [];
+    var sections = _.toArray(res.patterns),
+      groups = _.keys(res.patterns),
+      patterns = [],
+      files = [];
 
     for(var i = 0; i < sections.length; i++) {
       files = _.toArray(sections[i]);
-      patterns.push(files);
+      patterns[i] = [];
+
+      for(var j = 0; j < files.length; j++) {
+        var splitExtension = files[j].split('.'),
+          splitRoute = splitExtension[0].split('/'),
+          name = splitRoute[splitRoute.length -1];
+
+        var patternObj = {
+          group: groups[i],
+          route: files[j],
+          name: name
+        };
+
+        patterns[i].push(patternObj);
+      }
     }
-    console.log('res: ', res);
-    console.log('sections: ', sections);
     console.log('patterns: ', patterns);
-    // console.log('files: ', files);
 
-    $('.side-nav-wrap').append(J.templatizer["side-nav"]({show : true, links: patterns}));
+    this.appendSideNav(groups, patterns);
 
+  },
+
+  appendSideNav: function (groups, patterns){
+    $('.side-nav-wrap').append(J.templatizer["side-nav"]({jayda : true, groups: groups, patterns: patterns}));
   },
 
   // generateNav: function () {

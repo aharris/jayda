@@ -14,8 +14,8 @@
     "tests"
   ],
   "devDependencies": {
-    "jQuery": "~2.1.3"
+    "jQuery": "~2.1.3",
+    "underscore": "~1.8.2"
   },
-  "dependencies": {
-  }
+  "dependencies": {}
 }

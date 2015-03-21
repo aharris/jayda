@@ -12,7 +12,8 @@ var gulp = require('gulp'),
   shell = require('gulp-shell'),
   gutil = require('gulp-util'),
   directoryMap = require("gulp-directory-map"),
-  data = require('gulp-data');
+  data = require('gulp-data'),
+  templatizer = require('templatizer');
 
 gulp.task('stylus', function () {
   gulp.src(['./styl/**/*.styl', '!styl/**/_*'])
@@ -43,6 +44,14 @@ gulp.task('jade', function() {
     .pipe(jade())
     .on('error', gutil.log)
     .pipe(gulp.dest('./'));
+
+});
+
+gulp.task('templatizer', function() {
+    templatizer('./patterns/**/*.jade', './dist/compiled_patterns.js', {
+      namespace: 'J',
+      dontremoveMixins: true
+    });
 });
 
 gulp.task('html', function () {
@@ -58,7 +67,7 @@ gulp.task('js', function () {
 gulp.task('watch', function () {
   gulp.watch(['styl/**/*.styl'], ['stylus', 'stylint']);
   gulp.watch(['**/*.jade'], ['jade']);
-  gulp.watch(['patterns/**/*.jade'], ['tree']);
+  gulp.watch(['patterns/**/*.jade'], ['tree', 'templatizer']);
   // gulp.watch(['./**/*.html'], ['html']);
   gulp.watch(['./js/*.js'], ['js']);
 });
@@ -66,7 +75,8 @@ gulp.task('watch', function () {
 gulp.task('tree', function () {
     gulp.src('patterns/**/*.jade')
       .pipe(directoryMap({
-        filename: 'tree.json'
+        filename: 'tree.json',
+        prefix: 'patterns'
       }))
       .pipe(gulp.dest('data/'));
 });
@@ -115,6 +125,7 @@ gulp.task('default', [
   'stylus',
   'jade',
   'tree',
+  'templatizer',
   'connect',
   'watch'
 ]);

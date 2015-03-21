@@ -1,5 +1,6 @@
 var J = {};
 
+
 J = {
   init: function () {
     // Persistant elements
@@ -15,14 +16,33 @@ J = {
     $.ajax({
       url: "../data/tree.json"
     }).done(function(res) {
-      self.generateNav(res);
+      // console.log(res);
+      self.parseTree(res);
     });
   },
 
-  generateNav: function (res) {
-    debugger;
-    console.log(res);
+  parseTree: function (res) {
+    var sections = _.toArray(res.patterns);
+    var patterns = [];
+    var files = [];
+
+    for(var i = 0; i < sections.length; i++) {
+      files = _.toArray(sections[i]);
+      patterns.push(files);
+    }
+    console.log('res: ', res);
+    console.log('sections: ', sections);
+    console.log('patterns: ', patterns);
+    // console.log('files: ', files);
+
+    $('.side-nav-wrap').append(J.templatizer["side-nav"]({show : true, links: patterns}));
+
   },
+
+  // generateNav: function () {
+  //   var input = 'myfile.png';
+  //   var output = input.substr(0, input.lastIndexOf('.')) || input;
+  // },
 
   getPattern: function () {
     var self = this;

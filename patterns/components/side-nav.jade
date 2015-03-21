@@ -1,4 +1,8 @@
-mixin side-nav
+mixin side-nav(links)
   ul.side-nav
-  //-   each item in components
-  //-     li= item
+    each link in links
+      li= link
+
+if show
+  +side-nav(links)
+

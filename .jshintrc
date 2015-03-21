@@ -81,9 +81,10 @@
 
     // Custom Globals
     "globals"       : {
-      "$"       : false,
-      "require" : false,
+      "$"         : false,
+      "require"   : false,
       "__dirname" : false,
-      "jade" : false
+      "jade"      : false,
+      "_"         : false
     }
 }

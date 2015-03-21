@@ -1,1 +1,1 @@
-{"atoms":{"colors.jade":"atoms/colors.jade"},"components":{"navbar.jade":"components/navbar.jade","side-nav.jade":"components/side-nav.jade"}}
+{"patterns":{"atoms":{"colors.jade":"patterns/atoms/colors.jade"},"components":{"navbar.jade":"patterns/components/navbar.jade","side-nav.jade":"patterns/components/side-nav.jade"}}}

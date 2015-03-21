@@ -14,12 +14,16 @@ html(lang="en")
       h1 Jayda
 
       .side-nav-wrap
+        //- +side-nav()
+      //- Side Nav loaded dynamically
 
       .patterns-wrap
       //- Patterns loaded dynamically
 
-
     script(type="text/javascript" src="../../node_modules/jade/jade.js")
     script(type="text/javascript" src="../bower_components/jQuery/dist/jquery.min.js")
+    script(type="text/javascript" src="../bower_components/underscore/underscore-min.js")
     script(type="text/javascript" src="../js/jayda.js")
+    script(type="text/javascript" src="../dist/compiled_patterns.js")
+
     script(type="text/javascript" src="../js/app.js")

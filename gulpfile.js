@@ -2,7 +2,7 @@ var gulp = require('gulp'),
   stylus = require('gulp-stylus'),
   nib = require('nib'),
   jeet = require('jeet'),
-  watch = require('gulp-watch'),
+  // watch = require('gulp-watch'),
   connect = require('gulp-connect'),
   clean = require('gulp-clean'),
   runSequence = require('run-sequence'),
@@ -10,7 +10,9 @@ var gulp = require('gulp'),
   jade = require('gulp-jade'),
   jadeGlobbing  = require('gulp-jade-globbing'),
   shell = require('gulp-shell'),
-  gutil = require('gulp-util');
+  gutil = require('gulp-util'),
+  directoryMap = require("gulp-directory-map"),
+  data = require('gulp-data');
 
 gulp.task('stylus', function () {
   gulp.src(['./styl/**/*.styl', '!styl/**/_*'])
@@ -23,11 +25,21 @@ gulp.task('stylint', shell.task([
   'stylint ./styl/ -c .stylintrc'
 ]));
 
-gulp.task('jade', function() {
-  var YOUR_LOCALS = {};
+// gulp.task('jade-js', function() {
+//   gulp.src('./patterns/**/*.jade')
+//     .pipe(jadeGlobbing())
+//     .pipe(jade({
+//       client: true
+//     }))
+//     .pipe(gulp.dest('./dist/patterns'));
+// });
 
+gulp.task('jade', function() {
   gulp.src(['./templates/**/*.jade', '!./templates/**/_*.jade'])
     .pipe(jadeGlobbing())
+    .pipe(data(function() {
+      return require('./data/' + 'tree' + '.json');
+    }))
     .pipe(jade())
     .on('error', gutil.log)
     .pipe(gulp.dest('./'));
@@ -46,8 +58,17 @@ gulp.task('js', function () {
 gulp.task('watch', function () {
   gulp.watch(['styl/**/*.styl'], ['stylus', 'stylint']);
   gulp.watch(['**/*.jade'], ['jade']);
+  gulp.watch(['patterns/**/*.jade'], ['tree']);
   // gulp.watch(['./**/*.html'], ['html']);
   gulp.watch(['./js/*.js'], ['js']);
+});
+
+gulp.task('tree', function () {
+    gulp.src('patterns/**/*.jade')
+      .pipe(directoryMap({
+        filename: 'tree.json'
+      }))
+      .pipe(gulp.dest('data/'));
 });
 
 gulp.task('connect', function() {
@@ -85,6 +106,7 @@ gulp.task('copy', function() {
 gulp.task('build', function(callback){
   runSequence(
     'clean',
+    'tree',
     'copy',
     callback);
 });
@@ -92,6 +114,7 @@ gulp.task('build', function(callback){
 gulp.task('default', [
   'stylus',
   'jade',
+  'tree',
   'connect',
   'watch'
 ]);

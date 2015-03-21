@@ -27,6 +27,115 @@
         var buf = [];
         var jade_mixins = {};
         var jade_interp;
+        var locals_for_with = locals || {};
+        (function(patternLibrary) {
+            if (patternLibrary) {
+                buf.push(templatizer["navbar"]["right-nav"]([ {
+                    href: "sass.html",
+                    text: "Sass"
+                }, {
+                    href: "components.html",
+                    text: "Components"
+                }, {
+                    href: "javascript.html",
+                    text: "Javascript"
+                } ]));
+                buf.push(templatizer["navbar"]["left-nav"]([ {
+                    href: "sass.html",
+                    text: "Sass"
+                }, {
+                    href: "components.html",
+                    text: "Components"
+                }, {
+                    href: "javascript.html",
+                    text: "Javascript"
+                } ]));
+                buf.push(templatizer["navbar"]["center-nav"]([ {
+                    href: "sass.html",
+                    text: "Sass"
+                }, {
+                    href: "components.html",
+                    text: "Components"
+                }, {
+                    href: "javascript.html",
+                    text: "Javascript"
+                } ]));
+            }
+        }).call(this, "patternLibrary" in locals_for_with ? locals_for_with.patternLibrary : typeof patternLibrary !== "undefined" ? patternLibrary : undefined);
+        return buf.join("");
+    };
+
+    // navbar.jade:right-nav compiled template
+    templatizer["navbar"]["right-nav"] = function tmpl_navbar_right_nav(items) {
+        var block = this && this.block, attributes = this && this.attributes || {}, buf = [];
+        buf.push('<div class="row"><nav><div class="nav-wrapper"><div class="col s12"><a href="#" class="brand-logo">Logo</a><ul id="nav-mobile" class="right hide-on-med-and-down">');
+        (function() {
+            var $obj = items;
+            if ("number" == typeof $obj.length) {
+                for (var $index = 0, $l = $obj.length; $index < $l; $index++) {
+                    var item = $obj[$index];
+                    buf.push("<li><a" + jade.attr("href", "" + item.href + "", true, false) + ">" + jade.escape(null == (jade_interp = item.text) ? "" : jade_interp) + "</a></li>");
+                }
+            } else {
+                var $l = 0;
+                for (var $index in $obj) {
+                    $l++;
+                    var item = $obj[$index];
+                    buf.push("<li><a" + jade.attr("href", "" + item.href + "", true, false) + ">" + jade.escape(null == (jade_interp = item.text) ? "" : jade_interp) + "</a></li>");
+                }
+            }
+        }).call(this);
+        buf.push("</ul></div></div></nav></div>");
+        return buf.join("");
+    };
+
+
+    // navbar.jade:left-nav compiled template
+    templatizer["navbar"]["left-nav"] = function tmpl_navbar_left_nav(items) {
+        var block = this && this.block, attributes = this && this.attributes || {}, buf = [];
+        buf.push('<div class="row"><nav><div class="nav-wrapper"><div class="col s12"><a href="#" class="brand-logo right">Logo</a><ul id="nav-mobile" class="left hide-on-med-and-down">');
+        (function() {
+            var $obj = items;
+            if ("number" == typeof $obj.length) {
+                for (var $index = 0, $l = $obj.length; $index < $l; $index++) {
+                    var item = $obj[$index];
+                    buf.push("<li><a" + jade.attr("href", "" + item.href + "", true, false) + ">" + jade.escape(null == (jade_interp = item.text) ? "" : jade_interp) + "</a></li>");
+                }
+            } else {
+                var $l = 0;
+                for (var $index in $obj) {
+                    $l++;
+                    var item = $obj[$index];
+                    buf.push("<li><a" + jade.attr("href", "" + item.href + "", true, false) + ">" + jade.escape(null == (jade_interp = item.text) ? "" : jade_interp) + "</a></li>");
+                }
+            }
+        }).call(this);
+        buf.push("</ul></div></div></nav></div>");
+        return buf.join("");
+    };
+
+
+    // navbar.jade:center-nav compiled template
+    templatizer["navbar"]["center-nav"] = function tmpl_navbar_center_nav(items) {
+        var block = this && this.block, attributes = this && this.attributes || {}, buf = [];
+        buf.push('<div class="row"><nav><div class="nav-wrapper"><div class="col s12"><a href="#" class="brand-logo center">Logo</a><ul id="nav-mobile" class="left hide-on-med-and-down">');
+        (function() {
+            var $obj = items;
+            if ("number" == typeof $obj.length) {
+                for (var $index = 0, $l = $obj.length; $index < $l; $index++) {
+                    var item = $obj[$index];
+                    buf.push("<li><a" + jade.attr("href", "" + item.href + "", true, false) + ">" + jade.escape(null == (jade_interp = item.text) ? "" : jade_interp) + "</a></li>");
+                }
+            } else {
+                var $l = 0;
+                for (var $index in $obj) {
+                    $l++;
+                    var item = $obj[$index];
+                    buf.push("<li><a" + jade.attr("href", "" + item.href + "", true, false) + ">" + jade.escape(null == (jade_interp = item.text) ? "" : jade_interp) + "</a></li>");
+                }
+            }
+        }).call(this);
+        buf.push("</ul></div></div></nav></div>");
         return buf.join("");
     };
 
@@ -36,11 +145,16 @@
         var jade_mixins = {};
         var jade_interp;
         var locals_for_with = locals || {};
-        (function(groups, jayda, patterns) {
+        (function(groups, jayda, patternLibrary, patterns) {
             if (jayda) {
                 buf.push(templatizer["side-nav"]["side-nav"](groups, patterns));
             }
-        }).call(this, "groups" in locals_for_with ? locals_for_with.groups : typeof groups !== "undefined" ? groups : undefined, "jayda" in locals_for_with ? locals_for_with.jayda : typeof jayda !== "undefined" ? jayda : undefined, "patterns" in locals_for_with ? locals_for_with.patterns : typeof patterns !== "undefined" ? patterns : undefined);
+            if (patternLibrary) {
+                buf.push(templatizer["side-nav"]["side-nav"]([ "atoms" ], [ [ {
+                    name: "colors"
+                } ] ]));
+            }
+        }).call(this, "groups" in locals_for_with ? locals_for_with.groups : typeof groups !== "undefined" ? groups : undefined, "jayda" in locals_for_with ? locals_for_with.jayda : typeof jayda !== "undefined" ? jayda : undefined, "patternLibrary" in locals_for_with ? locals_for_with.patternLibrary : typeof patternLibrary !== "undefined" ? patternLibrary : undefined, "patterns" in locals_for_with ? locals_for_with.patterns : typeof patterns !== "undefined" ? patterns : undefined);
         return buf.join("");
     };
 

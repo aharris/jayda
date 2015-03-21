@@ -1,14 +1,13 @@
 var J = {};
 
-
 J = {
   init: function () {
-    // Persistant elements
+    // Persistant vars
     this.$parent = $('.patterns-wrap');
+    this.currentPattern = '';
 
     // Intiial function calls
     this.getTree();
-    this.getPattern();
   },
 
   getTree: function () {
@@ -16,7 +15,6 @@ J = {
     $.ajax({
       url: "../data/tree.json"
     }).done(function(res) {
-      // console.log(res);
       self.parseTree(res);
     });
   },
@@ -45,7 +43,7 @@ J = {
         patterns[i].push(patternObj);
       }
     }
-    console.log('patterns: ', patterns);
+    // console.log('patterns: ', patterns);
 
     this.appendSideNav(groups, patterns);
 
@@ -53,42 +51,27 @@ J = {
 
   appendSideNav: function (groups, patterns){
     $('.side-nav-wrap').append(J.templatizer["side-nav"]({jayda : true, groups: groups, patterns: patterns}));
+
+    this.bindNav();
   },
 
-  // generateNav: function () {
-  //   var input = 'myfile.png';
-  //   var output = input.substr(0, input.lastIndexOf('.')) || input;
-  // },
-
-  getPattern: function () {
+  bindNav: function () {
     var self = this;
-    $.ajax({
-      url: "../patterns/atoms/colors.jade"
-    }).done(function(res) {
-      self.compilePattern(res);
+    $('.side-nav-wrap a').click(function (e) {
+      e.preventDefault();
+
+      self.appendPattern(e.target.text);
     });
   },
 
-  compilePattern: function (res) {
-    var fn = jade.compile(res);
-    var htmlOutput = fn({
-      foo: 'filler text'
-    });
+  appendPattern: function (file) {
+    // Prevent pattern duplication
+    if (this.currentPattern === file) {return false;}
+    this.currentPattern = file;
 
-    this.appendPattern(htmlOutput);
-  },
-
-  appendPattern: function (htmlOutput) {
-    this.$parent.append(htmlOutput);
-  },
-
-  createMixin: function() {
-    var $parent = $('.patterns-wrap'),
-      mixin = '+right-nav()';
-
-    $parent.append(mixin);
-
+    $('.patterns-wrap').html(J.templatizer[file]({patternLibrary : true}));
   }
+
 };
 
 $().ready(function () {

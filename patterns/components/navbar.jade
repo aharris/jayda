@@ -43,3 +43,20 @@ mixin fixed-nav(items)
               each item in items
                 li
                   a(href="#{item.href}")= item.text
+
+if patternLibrary
+  +right-nav([
+    {href: "sass.html", text: "Sass"},
+    {href: "components.html", text: "Components"},
+    {href: "javascript.html", text: "Javascript"}
+  ])
+  +left-nav([
+    {href: "sass.html", text: "Sass"},
+    {href: "components.html", text: "Components"},
+    {href: "javascript.html", text: "Javascript"}
+  ])
+  +center-nav([
+    {href: "sass.html", text: "Sass"},
+    {href: "components.html", text: "Components"},
+    {href: "javascript.html", text: "Javascript"}
+  ])

@@ -8,6 +8,10 @@ mixin side-nav(groups, patterns)
             a(href="#")= pattern.name
 
 
+//- Jayda Pattern Library Only
 if jayda
   +side-nav(groups, patterns)
+
+if patternLibrary
+  +side-nav(["atoms"], [[{name: "colors"}]])
 

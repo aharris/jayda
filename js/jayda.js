@@ -74,23 +74,28 @@ J = {
   },
 
   parseTemplate: function(file) {
-    var string,
+    var tmpl,
       mixinstring,
-      mixinArray,
-      mixinName;
+      mixinArray;
 
-    string = $.trim(J.templatizer[file].toString());
-    mixinstring = string.match(/(buf.push)([\s\S]*)(\)\)\;)/g);
+    tmpl = $.trim(J.templatizer[file].toString());
+    mixinstring = tmpl.match(/(buf.push)([\s\S]*)(\)\)\;)/g);
     mixinArray = mixinstring[0].split('buf.push(templatizer');
     mixinArray.splice(0,1);
 
-    for(var i = 0; i < mixinArray.length; i++) {
-      mixinName = mixinArray[i].split('["' + file + '"]["');
-      mixinName = mixinName[1].split('"]');
-      mixinName = mixinName[0];
-      console.log(mixinName);
-    }
+    this.getMixinNames(mixinArray, file);
 
+  },
+
+  getMixinNames : function (mixinArray, file) {
+    var name;
+
+    for(var i = 0; i < mixinArray.length; i++) {
+      name = mixinArray[i].split('["' + file + '"]["');
+      name = name[1].split('"]');
+      name = name[0];
+      console.log(name);
+    }
   },
 
   generateUsage: function () {

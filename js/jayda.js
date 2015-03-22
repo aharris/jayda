@@ -85,7 +85,7 @@ J = {
     mixinArray.splice(0,1);
 
     for(var i = 0; i < mixinArray.length; i++) {
-      mixinName = mixinArray[i].split('["navbar"]["');
+      mixinName = mixinArray[i].split('["' + file + '"]["');
       mixinName = mixinName[1].split('"]');
       mixinName = mixinName[0];
       console.log(mixinName);

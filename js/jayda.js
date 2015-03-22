@@ -61,6 +61,7 @@ J = {
       e.preventDefault();
 
       self.appendPattern(e.target.text);
+      self.parseTemplate(e.target.text);
     });
   },
 
@@ -70,6 +71,30 @@ J = {
     this.currentPattern = file;
 
     $('.patterns-wrap').html(J.templatizer[file]({patternLibrary : true}));
+  },
+
+  parseTemplate: function(file) {
+    var string,
+      mixinstring,
+      mixinArray,
+      mixinName;
+
+    string = $.trim(J.templatizer[file].toString());
+    mixinstring = string.match(/(buf.push)([\s\S]*)(\)\)\;)/g);
+    mixinArray = mixinstring[0].split('buf.push(templatizer');
+    mixinArray.splice(0,1);
+
+    for(var i = 0; i < mixinArray.length; i++) {
+      mixinName = mixinArray[i].split('["navbar"]["');
+      mixinName = mixinName[1].split('"]');
+      mixinName = mixinName[0];
+      console.log(mixinName);
+    }
+
+  },
+
+  generateUsage: function () {
+
   }
 
 };

@@ -60,17 +60,19 @@ J = {
     $('.side-nav-wrap a').click(function (e) {
       e.preventDefault();
 
-      self.appendPattern(e.target.text);
-      self.parseTemplate(e.target.text);
+      self.appendPatterns(e.target.text);
     });
   },
 
-  appendPattern: function (file) {
+  appendPatterns: function (file) {
     // Prevent pattern duplication
     if (this.currentPattern === file) {return false;}
     this.currentPattern = file;
 
     $('.patterns-wrap').html(J.templatizer[file]({patternLibrary : true}));
+
+    this.parseTemplate(file);
+
   },
 
   parseTemplate: function(file) {
@@ -79,6 +81,7 @@ J = {
       mixinArray;
 
     tmpl = $.trim(J.templatizer[file].toString());
+    tmpl = tmpl.split('if (patternLibrary) {')[1] || '';
     mixinstring = tmpl.match(/(buf.push)([\s\S]*)(\)\)\;)/g);
     mixinArray = mixinstring[0].split('buf.push(templatizer');
     mixinArray.splice(0,1);
@@ -88,18 +91,29 @@ J = {
   },
 
   getMixinNames : function (mixinArray, file) {
-    var name;
+    var self = this,
+      patternArray,
+      name,
+      params,
+      examples = $('.patterns-wrap').children();
 
     for(var i = 0; i < mixinArray.length; i++) {
-      name = mixinArray[i].split('["' + file + '"]["');
-      name = name[1].split('"]');
-      name = name[0];
-      console.log(name);
+      patternArray = mixinArray[i].split('["' + file + '"]["');
+      patternArray = patternArray[1].split('"]');
+      name = patternArray[0];
+      params = patternArray[1];
+
+      (function (j) {
+        self.generateUsage(examples[j], name, params);
+      })(i);
     }
   },
 
-  generateUsage: function () {
+  generateUsage: function (example, name, params) {
+    var mixin;
 
+    mixin = '+' + name + params;
+    $(example).after(mixin);
   }
 
 };

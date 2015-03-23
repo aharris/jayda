@@ -101,7 +101,12 @@ J = {
       patternArray = mixinArray[i].split('["' + file + '"]["');
       patternArray = patternArray[1].split('"]');
       name = patternArray[0];
-      params = patternArray[1];
+
+      // Format Parameters
+      // params = patternArray[1];
+
+      var pseudoJson = patternArray[1].substring(patternArray[1].indexOf('(') + 1, patternArray[1].lastIndexOf('));'));
+      var params = JSON.stringify(eval(pseudoJson), null, 2);
 
       (function (j) {
         self.generateUsage(examples[j], name, params);
@@ -112,7 +117,7 @@ J = {
   generateUsage: function (example, name, params) {
     var mixin;
 
-    mixin = '+' + name + params;
+    mixin = '<pre>+' + name + '(' + params + ')' + '</pre>';
     $(example).after(mixin);
   }
 

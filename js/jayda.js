@@ -5,6 +5,7 @@ J = {
     // Persistant vars
     this.$parent = $('.patterns-wrap');
     this.currentPattern = '';
+    this.mixinCount = 0;
 
     // Intiial function calls
     this.getTree();
@@ -86,15 +87,54 @@ J = {
     mixinArray = mixinstring[0].split('buf.push(templatizer');
     mixinArray.splice(0,1);
 
-    this.getMixinNames(mixinArray, file);
+    this.mixinCount = mixinArray.length;
+
+    this.getMixinComments(mixinstring[0]);
 
   },
 
-  getMixinNames : function (mixinArray, file) {
+  getMixinComments: function(mixinstring) {
+    var self = this,
+      titleStrings,
+      descStrings,
+      title,
+      titleID,
+      desc,
+      descID,
+      examples = $('.patterns-wrap').children();
+
+    titleStrings = mixinstring.match(/<!-- Title: (.*?)(?=-->")/g);
+    descStrings = mixinstring.match(/<!-- Description: (.*?)(-->")/g);
+
+    // TODO: make this smarter so you don't need descriptions for every mixin.
+    // It would also be nice to have a fallback title in case you don't add one
+    if(!titleStrings || titleStrings.length !== this.mixinCount) {
+      console.log('WARNING: No title givin for mixin.');
+      return false;
+    } else if (!descStrings || descStrings.length !== this.mixinCount){
+      console.log('WARNING: No description givin for mixin.');
+      return false;
+    }
+
+    for (var i = 0; i < titleStrings.length; i++) {
+      titleID = '<!-- Title: ';
+      title = titleStrings[i].substring(titleStrings[i].indexOf(titleID) + titleID.length, titleStrings[i].lastIndexOf('-->'));
+
+      descID = '<!-- Description: ';
+      desc = descStrings[i].substring(descStrings[i].indexOf(descID) + descID.length, descStrings[i].lastIndexOf('-->'));
+
+      (function (j) {
+        self.generateComments(examples[j], title, desc);
+      })(i);
+    }
+  },
+
+  getMixin: function (mixinArray, file) {
     var self = this,
       patternArray,
       name,
       params,
+      pseudoJson,
       examples = $('.patterns-wrap').children();
 
     for(var i = 0; i < mixinArray.length; i++) {
@@ -103,15 +143,23 @@ J = {
       name = patternArray[0];
 
       // Format Parameters
-      // params = patternArray[1];
-
-      var pseudoJson = patternArray[1].substring(patternArray[1].indexOf('(') + 1, patternArray[1].lastIndexOf('));'));
-      var params = JSON.stringify(eval(pseudoJson), null, 2);
+      pseudoJson = patternArray[1].substring(patternArray[1].indexOf('(') + 1, patternArray[1].lastIndexOf('));'));
+      params = JSON.stringify(eval(pseudoJson), null, 2);
 
       (function (j) {
         self.generateUsage(examples[j], name, params);
       })(i);
     }
+  },
+
+  generateComments: function (example, title, desc) {
+    var header;
+
+    header = '<h3>' + title + '</h3>';
+    desc = '<p>' + desc + '</p>';
+
+    $(example).before(header);
+    $(example).before(desc);
   },
 
   generateUsage: function (example, name, params) {

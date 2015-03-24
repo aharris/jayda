@@ -45,16 +45,21 @@ mixin fixed-nav(items)
                   a(href="#{item.href}")= item.text
 
 if patternLibrary
+  // Title: Right Aligned Links
+  // Description: I am right aligned links
   +right-nav([
     {href: "sass.html", text: "Sass"},
     {href: "components.html", text: "Components"},
     {href: "javascript.html", text: "Javascript"}
   ])
+  // Title: Left Aligned Links
   +left-nav([
     {href: "sass.html", text: "Sass"},
     {href: "components.html", text: "Components"},
     {href: "javascript.html", text: "Javascript"}
   ])
+  // Title: Centered Logo
+  // Description: I am a Centered brand-logo
   +center-nav([
     {href: "sass.html", text: "Sass"},
     {href: "components.html", text: "Components"},

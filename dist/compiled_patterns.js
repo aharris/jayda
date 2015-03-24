@@ -30,6 +30,7 @@
         var locals_for_with = locals || {};
         (function(patternLibrary) {
             if (patternLibrary) {
+                buf.push("<!-- Title: Right Aligned Links--><!-- Description: I am right aligned links-->");
                 buf.push(templatizer["navbar"]["right-nav"]([ {
                     href: "sass.html",
                     text: "Sass"
@@ -40,6 +41,7 @@
                     href: "javascript.html",
                     text: "Javascript"
                 } ]));
+                buf.push("<!-- Title: Left Aligned Links-->");
                 buf.push(templatizer["navbar"]["left-nav"]([ {
                     href: "sass.html",
                     text: "Sass"
@@ -50,6 +52,7 @@
                     href: "javascript.html",
                     text: "Javascript"
                 } ]));
+                buf.push("<!-- Title: Centered Logo--><!-- Description: I am a Centered brand-logo-->");
                 buf.push(templatizer["navbar"]["center-nav"]([ {
                     href: "sass.html",
                     text: "Sass"
@@ -150,6 +153,7 @@
                 buf.push(templatizer["side-nav"]["side-nav"](groups, patterns));
             }
             if (patternLibrary) {
+                buf.push("<!-- Title: Side Nav--><!-- Description: I am a Side navigation-->");
                 buf.push(templatizer["side-nav"]["side-nav"]([ "atoms" ], [ [ {
                     name: "colors"
                 } ] ]));

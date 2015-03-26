@@ -1,19 +1,39 @@
-mixin side-nav(groups, patterns)
+mixin side-nav(patterns)
   ul.side-nav
-    each group, index in groups
-      h2= group
-      each pattern in patterns[index]
+    each pattern, index in patterns
+      h2= pattern[0].group
+      each item in pattern
         ul
           li
-            a(href="#")= pattern.name
+            a(href="#")= item.name
 
 
 //- Jayda Pattern Library Only
 if jayda
-  +side-nav(groups, patterns)
+  +side-nav(patterns)
 
 if patternLibrary
   // Title: Side Nav
   // Description: I am a Side navigation
-  +side-nav(["atoms"], [[{name: "colors"}]])
+  +side-nav([
+    [
+      {
+        "group": "CSS",
+        "route": "patterns/CSS/colors.jade",
+        "name": "colors"
+      }
+    ],
+    [
+      {
+        "group": "components",
+        "route": "patterns/components/navbar.jade",
+        "name": "navbar"
+      },
+      {
+        "group": "components",
+        "route": "patterns/components/side-nav.jade",
+        "name": "side-nav"
+      }
+    ]
+  ])
 

@@ -140,43 +140,53 @@
         var jade_mixins = {};
         var jade_interp;
         var locals_for_with = locals || {};
-        (function(groups, jayda, patternLibrary, patterns) {
+        (function(jayda, patternLibrary, patterns) {
             if (jayda) {
-                buf.push(templatizer["side-nav"]["side-nav"](groups, patterns));
+                buf.push(templatizer["side-nav"]["side-nav"](patterns));
             }
             if (patternLibrary) {
                 buf.push("<!-- Title: Side Nav--><!-- Description: I am a Side navigation-->");
-                buf.push(templatizer["side-nav"]["side-nav"]([ "atoms" ], [ [ {
+                buf.push(templatizer["side-nav"]["side-nav"]([ [ {
+                    group: "CSS",
+                    route: "patterns/CSS/colors.jade",
                     name: "colors"
+                } ], [ {
+                    group: "components",
+                    route: "patterns/components/navbar.jade",
+                    name: "navbar"
+                }, {
+                    group: "components",
+                    route: "patterns/components/side-nav.jade",
+                    name: "side-nav"
                 } ] ]));
             }
-        }).call(this, "groups" in locals_for_with ? locals_for_with.groups : typeof groups !== "undefined" ? groups : undefined, "jayda" in locals_for_with ? locals_for_with.jayda : typeof jayda !== "undefined" ? jayda : undefined, "patternLibrary" in locals_for_with ? locals_for_with.patternLibrary : typeof patternLibrary !== "undefined" ? patternLibrary : undefined, "patterns" in locals_for_with ? locals_for_with.patterns : typeof patterns !== "undefined" ? patterns : undefined);
+        }).call(this, "jayda" in locals_for_with ? locals_for_with.jayda : typeof jayda !== "undefined" ? jayda : undefined, "patternLibrary" in locals_for_with ? locals_for_with.patternLibrary : typeof patternLibrary !== "undefined" ? patternLibrary : undefined, "patterns" in locals_for_with ? locals_for_with.patterns : typeof patterns !== "undefined" ? patterns : undefined);
         return buf.join("");
     };
 
     // side-nav.jade:side-nav compiled template
-    templatizer["side-nav"]["side-nav"] = function tmpl_side_nav_side_nav(groups, patterns) {
+    templatizer["side-nav"]["side-nav"] = function tmpl_side_nav_side_nav(patterns) {
         var block = this && this.block, attributes = this && this.attributes || {}, buf = [];
         buf.push('<ul class="side-nav">');
         (function() {
-            var $obj = groups;
+            var $obj = patterns;
             if ("number" == typeof $obj.length) {
                 for (var index = 0, $l = $obj.length; index < $l; index++) {
-                    var group = $obj[index];
-                    buf.push("<h2>" + jade.escape(null == (jade_interp = group) ? "" : jade_interp) + "</h2>");
+                    var pattern = $obj[index];
+                    buf.push("<h2>" + jade.escape(null == (jade_interp = pattern[0].group) ? "" : jade_interp) + "</h2>");
                     (function() {
-                        var $obj = patterns[index];
+                        var $obj = pattern;
                         if ("number" == typeof $obj.length) {
                             for (var $index = 0, $l = $obj.length; $index < $l; $index++) {
-                                var pattern = $obj[$index];
-                                buf.push('<ul><li><a href="#">' + jade.escape(null == (jade_interp = pattern.name) ? "" : jade_interp) + "</a></li></ul>");
+                                var item = $obj[$index];
+                                buf.push('<ul><li><a href="#">' + jade.escape(null == (jade_interp = item.name) ? "" : jade_interp) + "</a></li></ul>");
                             }
                         } else {
                             var $l = 0;
                             for (var $index in $obj) {
                                 $l++;
-                                var pattern = $obj[$index];
-                                buf.push('<ul><li><a href="#">' + jade.escape(null == (jade_interp = pattern.name) ? "" : jade_interp) + "</a></li></ul>");
+                                var item = $obj[$index];
+                                buf.push('<ul><li><a href="#">' + jade.escape(null == (jade_interp = item.name) ? "" : jade_interp) + "</a></li></ul>");
                             }
                         }
                     }).call(this);
@@ -185,21 +195,21 @@
                 var $l = 0;
                 for (var index in $obj) {
                     $l++;
-                    var group = $obj[index];
-                    buf.push("<h2>" + jade.escape(null == (jade_interp = group) ? "" : jade_interp) + "</h2>");
+                    var pattern = $obj[index];
+                    buf.push("<h2>" + jade.escape(null == (jade_interp = pattern[0].group) ? "" : jade_interp) + "</h2>");
                     (function() {
-                        var $obj = patterns[index];
+                        var $obj = pattern;
                         if ("number" == typeof $obj.length) {
                             for (var $index = 0, $l = $obj.length; $index < $l; $index++) {
-                                var pattern = $obj[$index];
-                                buf.push('<ul><li><a href="#">' + jade.escape(null == (jade_interp = pattern.name) ? "" : jade_interp) + "</a></li></ul>");
+                                var item = $obj[$index];
+                                buf.push('<ul><li><a href="#">' + jade.escape(null == (jade_interp = item.name) ? "" : jade_interp) + "</a></li></ul>");
                             }
                         } else {
                             var $l = 0;
                             for (var $index in $obj) {
                                 $l++;
-                                var pattern = $obj[$index];
-                                buf.push('<ul><li><a href="#">' + jade.escape(null == (jade_interp = pattern.name) ? "" : jade_interp) + "</a></li></ul>");
+                                var item = $obj[$index];
+                                buf.push('<ul><li><a href="#">' + jade.escape(null == (jade_interp = item.name) ? "" : jade_interp) + "</a></li></ul>");
                             }
                         }
                     }).call(this);

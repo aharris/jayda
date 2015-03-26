@@ -43,10 +43,6 @@ gulp.task('templatizer', function() {
       namespace: 'J',
       dontremoveMixins: true
     });
-    // templatizer('./templates/jayda/**/*.jade', './dist/compiled_jayda_templates.js', {
-    //   namespace: 'J.templates',
-    //   dontremoveMixins: true
-    // });
 });
 
 gulp.task('html', function () {

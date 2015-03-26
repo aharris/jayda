@@ -1,8 +1,6 @@
 var J = {};
 
 J = {
-  patterns : {},
-  templates : {},
 
   init: function () {
     // Persistant vars

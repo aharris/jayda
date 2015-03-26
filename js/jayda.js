@@ -1,11 +1,16 @@
 var J = {};
 
 J = {
+  patterns : {},
+  templates : {},
+
   init: function () {
     // Persistant vars
     this.$parent = $('.patterns-wrap');
     this.currentPattern = '';
     this.mixinCount = 0;
+    this.patterns = window.patterns || {};
+    this.templates = {};
 
     // Intiial function calls
     this.getTree();
@@ -61,16 +66,18 @@ J = {
     $('.side-nav-wrap a').click(function (e) {
       e.preventDefault();
 
-      self.appendPatterns(e.target.text);
+      self.getPatterns(e.target.text);
     });
   },
 
-  appendPatterns: function (file) {
+  getPatterns: function (file) {
     // Prevent pattern duplication
     if (this.currentPattern === file) {return false;}
     this.currentPattern = file;
 
-    $('.patterns-wrap').html(J.templatizer[file]({patternLibrary : true}));
+
+    // $('.patterns-wrap').html(J.templatizer[file]({patternLibrary : true}));
+    // var markup = J.templatizer[file]({patternLibrary : true});
 
     this.parseTemplate(file);
 
@@ -84,13 +91,81 @@ J = {
     tmpl = $.trim(J.templatizer[file].toString());
     tmpl = tmpl.split('if (patternLibrary) {')[1] || '';
     mixinstring = tmpl.match(/(buf.push)([\s\S]*)(\)\)\;)/g);
-    mixinArray = mixinstring[0].split('buf.push(templatizer');
+    mixinArray = mixinstring[0].split('<!-- Title:');
+    // mixinArray = mixinstring[0].split('buf.push(templatizer');
     mixinArray.splice(0,1);
 
     this.mixinCount = mixinArray.length;
 
-    this.getMixinComments(mixinstring[0]);
+    // this.getMixinComments(mixinstring[0]);
+    // this.getMixin(mixinArray, file);
 
+    this.createObj(mixinArray, file);
+
+  },
+
+  createObj: function (mixinArray, file) {
+    var patternsArr = [];
+
+    for (var i = 0; i < mixinArray.length; i++) {
+      var descID = '<!-- Description: ';
+        codeArr = [];
+
+      var patternObj = {};
+
+      patternObj.title = '';
+      patternObj.mixinName = '';
+      patternObj.description = '';
+      patternObj.example = '';
+      patternObj.code = '';
+
+      patternObj.title = mixinArray[i].split('-->')[0].trim();
+
+      patternObj.description = mixinArray[i].substring(mixinArray[i].indexOf(descID) + descID.length, mixinArray[i].lastIndexOf('-->'));
+
+      var codeArr = mixinArray[i].split('["' + file + '"]["');
+      codeArr = codeArr[1].split('"]');
+      patternObj.mixinName = codeArr[0];
+
+      // Format Parameters
+      var pseudoJson = codeArr[1].substring(codeArr[1].indexOf('(') + 1, codeArr[1].lastIndexOf('));'));
+      patternObj.code = JSON.stringify(eval(pseudoJson), null, 2);
+
+      patternObj.example = J.templatizer[file][patternObj.mixinName](eval(pseudoJson));
+
+
+      patternsArr.push(patternObj);
+    }
+
+    console.log('patternsArr: ', patternsArr);
+
+    this.renderPatternsTmpl(patternsArr);
+
+  },
+
+  renderPatternsTmpl: function (patternsArr) {
+    var markup = '';
+    for (var i = 0; i < patternsArr.length; i++) {
+      // TODO: Make into a jade template
+      var title,
+        desc,
+        example,
+        code,
+        mixinName,
+        tmpl,
+        markup;
+
+      title = '<h3>' + patternsArr[i].title + '</h3>';
+      desc = '<p>' + patternsArr[i].description + '</p>';
+      example = '<div class="example">' + patternsArr[i].example + '</div>';
+      code = '<pre>' + patternsArr[i].code + '</pre>';
+
+      tmpl = title + desc + example + code;
+
+      markup += tmpl;
+
+    }
+    $('.patterns-wrap').html(markup);
   },
 
   getMixinComments: function(mixinstring) {

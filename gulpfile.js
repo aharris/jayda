@@ -26,15 +26,6 @@ gulp.task('stylint', shell.task([
   'stylint ./styl/ -c .stylintrc'
 ]));
 
-// gulp.task('jade-js', function() {
-//   gulp.src('./patterns/**/*.jade')
-//     .pipe(jadeGlobbing())
-//     .pipe(jade({
-//       client: true
-//     }))
-//     .pipe(gulp.dest('./dist/patterns'));
-// });
-
 gulp.task('jade', function() {
   gulp.src(['./templates/**/*.jade', '!./templates/**/_*.jade'])
     .pipe(jadeGlobbing())
@@ -52,6 +43,10 @@ gulp.task('templatizer', function() {
       namespace: 'J',
       dontremoveMixins: true
     });
+    // templatizer('./templates/jayda/**/*.jade', './dist/compiled_jayda_templates.js', {
+    //   namespace: 'J.templates',
+    //   dontremoveMixins: true
+    // });
 });
 
 gulp.task('html', function () {

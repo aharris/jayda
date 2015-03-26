@@ -14,14 +14,6 @@
     var templatizer = {};
 
 
-    // colors.jade compiled template
-    templatizer["colors"] = function tmpl_colors(locals) {
-        var buf = [];
-        var jade_mixins = {};
-        var jade_interp;
-        return buf.join("");
-    };
-
     // navbar.jade compiled template
     templatizer["navbar"] = function tmpl_navbar(locals) {
         var buf = [];
@@ -41,7 +33,7 @@
                     href: "javascript.html",
                     text: "Javascript"
                 } ]));
-                buf.push("<!-- Title: Left Aligned Links-->");
+                buf.push("<!-- Title: Left Aligned Links--><!-- Description: I am Left aligned links-->");
                 buf.push(templatizer["navbar"]["left-nav"]([ {
                     href: "sass.html",
                     text: "Sass"
@@ -215,6 +207,14 @@
             }
         }).call(this);
         buf.push("</ul>");
+        return buf.join("");
+    };
+
+    // colors.jade compiled template
+    templatizer["colors"] = function tmpl_colors(locals) {
+        var buf = [];
+        var jade_mixins = {};
+        var jade_interp;
         return buf.join("");
     };
 

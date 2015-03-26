@@ -127,8 +127,6 @@ J = {
       patternsArr.push(patternObj);
     }
 
-    console.log('patternsArr: ', patternsArr);
-
     this.renderPatternsTmpl(patternsArr);
 
   },

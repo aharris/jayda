@@ -13,7 +13,16 @@ var gulp = require('gulp'),
   gutil = require('gulp-util'),
   directoryMap = require("gulp-directory-map"),
   data = require('gulp-data'),
-  templatizer = require('templatizer');
+  templatizer = require('templatizer'),
+  karma = require('karma').server;
+
+gulp.task('test', function (done) {
+  karma.start({
+    configFile: __dirname + '/karma.conf.js',
+    singleRun: false
+  }, done);
+});
+
 
 gulp.task('stylus', function () {
   gulp.src(['./styl/**/*.styl', '!styl/**/_*'])
@@ -117,6 +126,7 @@ gulp.task('default', [
   'jade',
   'tree',
   'templatizer',
+  'test',
   'connect',
   'watch'
 ]);

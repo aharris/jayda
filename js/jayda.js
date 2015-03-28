@@ -6,7 +6,6 @@ J = {
     // Persistant vars
     this.$parent = $('.patterns-wrap');
     this.currentPattern = '';
-    this.mixinCount = 0;
     this.patterns = window.patterns || {};
     this.templates = {};
 
@@ -19,7 +18,7 @@ J = {
     $.ajax({
       url: "../data/tree.json"
     }).done(function(res) {
-      self.parseTree(res);
+      self.appendSideNav(res);
     });
   },
 
@@ -48,10 +47,12 @@ J = {
       }
     }
 
-    this.appendSideNav(patterns);
+    return patterns;
+
   },
 
-  appendSideNav: function (patterns){
+  appendSideNav: function (res){
+    var patterns = this.parseTree(res);
     $('.side-nav-wrap').append(J.templatizer["side-nav"]({jayda : true, patterns: patterns}));
 
     this.bindNav();
@@ -85,8 +86,6 @@ J = {
     mixinstring = tmpl.match(/(buf.push)([\s\S]*)(\)\)\;)/g);
     mixinArray = mixinstring[0].split('<!-- Title:');
     mixinArray.splice(0,1);
-
-    this.mixinCount = mixinArray.length;
 
     this.createObj(mixinArray, file);
 

@@ -85,6 +85,7 @@
       "require"   : false,
       "__dirname" : false,
       "jade"      : false,
-      "_"         : false
+      "_"         : false,
+      "expect"         : false
     }
 }

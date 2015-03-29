@@ -48,7 +48,6 @@ J = {
     }
 
     return patterns;
-
   },
 
   appendSideNav: function (res){
@@ -72,27 +71,33 @@ J = {
     if (this.currentPattern === file) {return false;}
     this.currentPattern = file;
 
-    this.parseTemplate(file);
+    var tmpl = $.trim(J.templatizer[file].toString());
 
+    this.createObj(tmpl, file);
   },
 
-  parseTemplate: function(file) {
-    var tmpl,
-      mixinstring,
+  toSingleLine: function (string) {
+    return string.replace(/\s+/g, ' ');
+  },
+
+  parseTemplate: function(tmpl) {
+    var mixinstring,
       mixinArray;
 
-    tmpl = $.trim(J.templatizer[file].toString());
+    tmpl = this.toSingleLine(tmpl);
+
     tmpl = tmpl.split('if (patternLibrary) {')[1] || '';
     mixinstring = tmpl.match(/(buf.push)([\s\S]*)(\)\)\;)/g);
     mixinArray = mixinstring[0].split('<!-- Title:');
     mixinArray.splice(0,1);
 
-    this.createObj(mixinArray, file);
-
+    return mixinArray;
   },
 
-  createObj: function (mixinArray, file) {
+  createObj: function (tmpl, file) {
     var patternsArr = [];
+
+    var mixinArray = this.parseTemplate(tmpl);
 
     for (var i = 0; i < mixinArray.length; i++) {
       var descID = '<!-- Description: ';
@@ -125,7 +130,6 @@ J = {
     }
 
     this.renderPatternsTmpl(patternsArr);
-
   },
 
   renderPatternsTmpl: function (patternsArr) {

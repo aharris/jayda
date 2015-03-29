@@ -109,7 +109,8 @@ J = {
       patternObj.mixinName = '';
       patternObj.description = '';
       patternObj.example = '';
-      patternObj.code = '';
+      patternObj.params = [];
+      patternObj.customArgs = '';
 
       patternObj.title = mixinArray[i].split('-->')[0].trim();
 
@@ -119,12 +120,22 @@ J = {
       codeArr = codeArr[1].split('"]');
       patternObj.mixinName = codeArr[0];
 
+
       // Format Parameters
       var pseudoJson = codeArr[1].substring(codeArr[1].indexOf('(') + 1, codeArr[1].lastIndexOf('));'));
-      patternObj.code = JSON.stringify(eval(pseudoJson), null, 2);
 
-      patternObj.example = J.templatizer[file][patternObj.mixinName](eval(pseudoJson));
-
+      // TODO: Make this more flexible
+      // Needs to take multiple parameters that could be arrays or objects
+      if(pseudoJson[0] === "[") {
+        // This works with arrays
+        patternObj.example = J.templatizer[file][patternObj.mixinName](eval(pseudoJson));
+        patternObj.customArgs = JSON.stringify(eval(pseudoJson), null, 2);
+      } else {
+        // This works with multiple params
+        patternObj.params = $.splitAttrString(pseudoJson);
+        patternObj.example = J.templatizer[file][patternObj.mixinName].apply(this, patternObj.params);
+        patternObj.customArgs = pseudoJson;
+      }
 
       patternsArr.push(patternObj);
     }
@@ -147,7 +158,7 @@ J = {
       desc = '<p>' + patternsArr[i].description + '</p>';
       example = '<div class="example">' + patternsArr[i].example + '</div>';
       mixinName = patternsArr[i].mixinName;
-      code = '<pre>' + '+' + mixinName + '(' + patternsArr[i].code + ')' + '</pre>';
+      code = '<pre>' + '+' + mixinName + '(' + patternsArr[i].customArgs + ')' + '</pre>';
 
       tmpl = title + desc + example + code;
 
@@ -158,6 +169,52 @@ J = {
   }
 
 };
+
+(function($) {
+    $.extend({
+        splitAttrString: function(theStr) {
+            var attrs = [];
+
+            var RefString = function(s) {
+                this.value = s;
+            };
+            RefString.prototype.toString = function() {
+                return this.value;
+            };
+            RefString.prototype.charAt = String.prototype.charAt;
+            var data = new RefString(theStr);
+
+            var getBlock = function(endChr, restString) {
+                var block = '';
+                var currChr = '';
+                while ((currChr != endChr) && (restString.value !== '')) {
+                    if (/'|"/.test(currChr)) {
+                        block = $.trim(block) + getBlock(currChr, restString);
+                    }
+                    else if (/\{/.test(currChr)) {
+                        block = $.trim(block) + getBlock('}', restString);
+                    }
+                    else if (/\[/.test(currChr)) {
+                        block = $.trim(block) + getBlock(']', restString);
+                    }
+                    else {
+                        block += currChr;
+                    }
+                    currChr = restString.charAt(0);
+                    restString.value = restString.value.slice(1);
+                }
+                return $.trim(block);
+            };
+
+            do {
+                var attr = getBlock(',', data);
+                attrs.push(attr);
+            }
+            while (data.value !== '');
+            return attrs;
+        }
+    });
+})(jQuery);
 
 $().ready(function () {
   J.init();

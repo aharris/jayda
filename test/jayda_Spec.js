@@ -45,3 +45,22 @@ describe("parseTemplate", function () {
     expect(J.parseTemplate(tmpl)).toEqual(array);
   });
 });
+
+
+describe("Split Attribute String", function () {
+  it("should return an array of parameters from a string that has multiple parameters (single string only)",function () {
+    var multiParam = '"Item string, 1", "Item string, 2"';
+    var multiParamResult = ["Item string, 1", "Item string, 2"];
+
+    expect($.splitAttrString(multiParam)).toEqual(multiParamResult);
+  });
+});
+
+
+
+
+
+
+
+
+

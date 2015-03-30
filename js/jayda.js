@@ -105,16 +105,16 @@ J = {
 
       var patternObj = {};
 
-      patternObj.title = '';
-      patternObj.mixinName = '';
-      patternObj.description = '';
-      patternObj.example = '';
-      patternObj.params = [];
-      patternObj.customArgs = '';
+      // patternObj.title = '';
+      // patternObj.mixinName = '';
+      // patternObj.description = '';
+      // patternObj.example = '';
+      // patternObj.params = [];
+      // patternObj.customArgs = '';
 
-      patternObj.title = mixinArray[i].split('-->')[0].trim();
+      patternObj.title = this.getTitle(mixinArray[i]);
 
-      patternObj.description = mixinArray[i].substring(mixinArray[i].indexOf(descID) + descID.length, mixinArray[i].lastIndexOf('-->'));
+      patternObj.description = this.getDescription(mixinArray[i]);
 
       var codeArr = mixinArray[i].split('["' + file + '"]["');
       codeArr = codeArr[1].split('"]');
@@ -141,6 +141,15 @@ J = {
     }
 
     this.renderPatternsTmpl(patternsArr);
+  },
+
+  getTitle: function (str) {
+    return str.split('-->')[0].trim() || '';
+  },
+
+  getDescription: function (str) {
+    var descID = '<!-- Description: ';
+    return str.substring(str.indexOf(descID) + descID.length, str.lastIndexOf('-->'));
   },
 
   renderPatternsTmpl: function (patternsArr) {

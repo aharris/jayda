@@ -56,10 +56,21 @@ describe("Split Attribute String", function () {
   });
 });
 
+describe("Get Title", function () {
+  it("Should return the title", function() {
+    var str = " Right Aligned Links-->";
+    var title = "Right Aligned Links";
+    expect(J.getTitle(str)).toEqual(title);
+  });
+});
 
-
-
-
+describe("Get Description", function () {
+  it("Should return the Description", function() {
+    var str = ' Two Param test--><!-- Description: I am a Two Param test-->"); buf.push(templatizer["colors"]["test"]("Item string, 1", "Item string, 2"));';
+    var description = "I am a Two Param test";
+    expect(J.getDescription(str)).toEqual(description);
+  });
+});
 
 
 

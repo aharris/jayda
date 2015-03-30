@@ -81,5 +81,17 @@ describe("Get Mixin Name", function () {
   });
 });
 
+// TODO: Fix require js error
+// describe("Get Example", function () {
+//   it("Should return the example mixin", function() {
+//     var str = ' Right Aligned Links--><!-- Description: I am right aligned links-->"); buf.push(templatizer["navbar"]["right-nav"]([ { href: "sass.html", text: "Sass" }, { href: "components.html", text: "Components" }, { href: "javascript.html", text: "Javascript" } ])); buf.push("';
+//     var file = "navbar";
+//     var mixinName = 'right-nav';
+//     var example = '<div class="row"><nav><div class="nav-wrapper"><div class="col s12"><a href="#" class="brand-logo">Logo</a><ul id="nav-mobile" class="right hide-on-med-and-down"><li><a href="sass.html">Sass</a></li><li><a href="components.html">Components</a></li><li><a href="javascript.html">Javascript</a></li></ul></div></div></nav></div>';
+
+//     expect(J.getExample(str, file, mixinName)).toEqual(example);
+//   });
+// });
+
 
 

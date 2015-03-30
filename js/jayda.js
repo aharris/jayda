@@ -100,44 +100,14 @@ J = {
     var mixinArray = this.parseTemplate(tmpl);
 
     for (var i = 0; i < mixinArray.length; i++) {
-      var descID = '<!-- Description: ';
-        codeArr = [];
-
       var patternObj = {};
 
-      // patternObj.title = '';
-      // patternObj.mixinName = '';
-      // patternObj.description = '';
-      // patternObj.example = '';
-      // patternObj.params = [];
-      // patternObj.customArgs = '';
-
       patternObj.title = this.getTitle(mixinArray[i]);
-
       patternObj.description = this.getDescription(mixinArray[i]);
-
       patternObj.mixinName = this.getMixinName(mixinArray[i], file);
+      patternObj.example = this.getExample(mixinArray[i], file, patternObj.mixinName);
+      patternObj.customArgs = this.getCustomArgs(mixinArray[i], file);
 
-      var codeArr = mixinArray[i].split('["' + file + '"]["');
-      codeArr = codeArr[1].split('"]');
-      // patternObj.mixinName = codeArr[0];
-
-
-      // Format Parameters
-      var pseudoJson = codeArr[1].substring(codeArr[1].indexOf('(') + 1, codeArr[1].lastIndexOf('));'));
-
-      // TODO: Make this more flexible
-      // Needs to take multiple parameters that could be arrays or objects
-      if(pseudoJson[0] === "[") {
-        // This works with arrays
-        patternObj.example = J.templatizer[file][patternObj.mixinName](eval(pseudoJson));
-        patternObj.customArgs = JSON.stringify(eval(pseudoJson), null, 2);
-      } else {
-        // This works with multiple params
-        patternObj.params = $.splitAttrString(pseudoJson);
-        patternObj.example = J.templatizer[file][patternObj.mixinName].apply(this, patternObj.params);
-        patternObj.customArgs = pseudoJson;
-      }
 
       patternsArr.push(patternObj);
     }
@@ -151,13 +121,39 @@ J = {
 
   getDescription: function (str) {
     var descID = '<!-- Description: ';
-    return str.substring(str.indexOf(descID) + descID.length, str.lastIndexOf('-->'));
+    return str.substring(str.indexOf(descID) + descID.length, str.lastIndexOf('-->')) || '';
   },
 
   getMixinName: function (str, file) {
       var codeArr = str.split('["' + file + '"]["');
       codeArr = codeArr[1].split('"]');
-      return codeArr[0];
+      return codeArr[0] || '';
+  },
+
+  getExample: function(str, file, mixinName) {
+    var codeArr = str.split('["' + file + '"]["');
+    codeArr = codeArr[1].split('"]');
+
+    var pseudoJson = codeArr[1].substring(codeArr[1].indexOf('(') + 1, codeArr[1].lastIndexOf('));'));
+
+    if(pseudoJson[0] === "[") {
+      return J.templatizer[file][mixinName](eval(pseudoJson));
+    }
+
+    return J.templatizer[file][mixinName].apply(this, $.splitAttrString(pseudoJson));
+  },
+
+  getCustomArgs: function(str, file) {
+    var codeArr = str.split('["' + file + '"]["');
+    codeArr = codeArr[1].split('"]');
+
+    var pseudoJson = codeArr[1].substring(codeArr[1].indexOf('(') + 1, codeArr[1].lastIndexOf('));'));
+
+    if(pseudoJson[0] === "[") {
+      return JSON.stringify(eval(pseudoJson), null, 2);
+    }
+
+    return pseudoJson;
   },
 
   renderPatternsTmpl: function (patternsArr) {
@@ -166,9 +162,9 @@ J = {
       // TODO: Make into a jade template
       var title,
         desc,
+        mixinName,
         example,
         code,
-        mixinName,
         tmpl;
 
       title = '<h3>' + patternsArr[i].title + '</h3>';

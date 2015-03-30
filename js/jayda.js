@@ -19,7 +19,18 @@ J = {
       url: "../data/tree.json"
     }).done(function(res) {
       self.appendSideNav(res);
+      if (window.location.hash) {
+        self.getCurrentRoute();
+      }
     });
+  },
+
+  getCurrentRoute: function () {
+    this.getPatterns(window.location.hash.split('#')[1]);
+  },
+
+  updateRoute: function (route) {
+    window.location.hash = route;
   },
 
   parseTree: function (res) {
@@ -62,6 +73,7 @@ J = {
     $('.side-nav-wrap a').click(function (e) {
       e.preventDefault();
 
+      self.updateRoute(e.target.text);
       self.getPatterns(e.target.text);
     });
   },

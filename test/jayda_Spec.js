@@ -72,6 +72,14 @@ describe("Get Description", function () {
   });
 });
 
+describe("Get Mixin Name", function () {
+  it("Should return the mixin name", function() {
+    var str = ' Right Aligned Links--><!-- Description: I am right aligned links-->"); buf.push(templatizer["navbar"]["right-nav"]([ { href: "sass.html", text: "Sass" }, { href: "components.html", text: "Components" }, { href: "javascript.html", text: "Javascript" } ])); buf.push("';
+    var file = 'navbar';
+    var mixinName = 'right-nav';
+    expect(J.getMixinName(str, file)).toEqual(mixinName);
+  });
+});
 
 
 

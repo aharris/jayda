@@ -116,9 +116,11 @@ J = {
 
       patternObj.description = this.getDescription(mixinArray[i]);
 
+      patternObj.mixinName = this.getMixinName(mixinArray[i], file);
+
       var codeArr = mixinArray[i].split('["' + file + '"]["');
       codeArr = codeArr[1].split('"]');
-      patternObj.mixinName = codeArr[0];
+      // patternObj.mixinName = codeArr[0];
 
 
       // Format Parameters
@@ -150,6 +152,12 @@ J = {
   getDescription: function (str) {
     var descID = '<!-- Description: ';
     return str.substring(str.indexOf(descID) + descID.length, str.lastIndexOf('-->'));
+  },
+
+  getMixinName: function (str, file) {
+      var codeArr = str.split('["' + file + '"]["');
+      codeArr = codeArr[1].split('"]');
+      return codeArr[0];
   },
 
   renderPatternsTmpl: function (patternsArr) {

@@ -10,54 +10,14 @@ html(lang="en")
 
   body
     .container
-      h1 Jayda
+      h1 Your Jayda App
 
-      h2 test
+      h2 Start Adding Patterns!!!
 
-      +string('Item 1')
+      h3 View the Pattern Library:
 
-      +multiString('Item string, 1', 'Item string, 2', 'Item string, 3')
-
-      +object({
-        item1: "foo",
-        item2: "bar",
-      })
-
-      +multiObject({
-        item1: "foo 1",
-        item2: "bar 1"
-      },
-      {
-        item1: "foo 2",
-        item2: "bar 2"
-      })
-
-
-      //- h2 Navbar
-
-      //- h3 Right Aligned
-      //- +right-nav([
-      //-   {href: "sass.html", text: "foo"},
-      //-   {href: "components.html", text: "Components"},
-      //-   {href: "javascript.html", text: "Javascript"}
-      //- ])
-
-      //- h3 Left Aligned
-      //- +left-nav([
-      //-   {href: "sass.html", text: "Sass"},
-      //-   {href: "components.html", text: "Components"},
-      //-   {href: "javascript.html", text: "Javascript"}
-      //- ])
-
-      //- h3 Centered Logo
-      //- +center-nav([
-      //-   {href: "sass.html", text: "Sass"},
-      //-   {href: "components.html", text: "Components"},
-      //-   {href: "javascript.html", text: "Javascript"}
-      //- ])
-
-      //- h3 Fixed
-      //- +fixed-nav()
+      p
+        a(href="/jayda/") Jayda Pattern Library
 
     script(type="text/javascript" src="bower_components/jQuery/dist/jquery.min.js")
     script(type="text/javascript" src="js/app.js")

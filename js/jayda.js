@@ -181,22 +181,28 @@ J = {
     var string;
 
     string = str.replace((/([\w]+)(:)/g), "\"$1\"$2");
+
     string = '[' + string + ']';
-    string = JSON.parse(string);
+    string = JSON.parse(string) || string;
 
     return string;
   },
 
   getCustomArgs: function(str, file) {
     var codeArr,
-      pseudoJson;
+      pseudoJson,
+      snippet;
 
     codeArr = str.split('["' + file + '"]["');
     codeArr = codeArr[1].split('"]');
 
     pseudoJson = codeArr[1].substring(codeArr[1].indexOf('(') + 1, codeArr[1].lastIndexOf('));'));
 
-    return JSON.stringify(this.getValidJSON(pseudoJson), null, 2);
+    snippet = JSON.stringify(this.getValidJSON(pseudoJson), null, 2);
+
+    snippet = snippet.substring(snippet.indexOf('[') + 1, snippet.lastIndexOf(']'));
+
+    return snippet;
   },
 
   renderPatternsTmpl: function (patternsArr) {

@@ -1,68 +1,115 @@
-mixin right-nav(items)
+mixin navbar(options, items)
+  if options.fixed == true
+    | <div class="navbar-fixed #{options.fixedPos}">
+  if options.dropdown == true
+    ul#dropdown1.dropdown-content
+      li
+          a(href='#!') one
+        li
+          a(href='#!') two
+        li.divider
+        li
+          a(href='#!') three
   .row
     nav
       .nav-wrapper
         .col.s12
-          a.brand-logo(href='#') Logo
-          ul#nav-mobile.right.hide-on-med-and-down
-            each item in items
-              li
-                a(href="#{item.href}")= item.text
-
-mixin left-nav(items)
-  .row
-    nav
-      .nav-wrapper
-        .col.s12
-          a.brand-logo.right(href='#') Logo
-          ul#nav-mobile.left.hide-on-med-and-down
-            each item in items
-              li
-                a(href="#{item.href}")= item.text
-
-mixin center-nav(items)
-  .row
-    nav
-      .nav-wrapper
-        .col.s12
-          a.brand-logo.center(href='#') Logo
-          ul#nav-mobile.left.hide-on-med-and-down
-            each item in items
-              li
-                a(href="#{item.href}")= item.text
-
-//- TODO: figure out why this doesn't work
-mixin fixed-nav(items)
-  .navbar-fixed
-    .row
-      nav
-        .nav-wrapper
-          .col.s12
+          if options.logoPosition == "center"
+            a.brand-logo.center(href='#') Logo
+          else if options.position == "left"
+            a.brand-logo.right(href='#') Logo
+          else
             a.brand-logo(href='#') Logo
-            ul#nav-mobile.left.hide-on-med-and-down
-              each item in items
-                li
-                  a(href="#{item.href}")= item.text
+          - options.position = options.position || 'right'
+          ul#nav-mobile(class="#{options.position} hide-on-med-and-down")
+            each item in items
+              li
+                a(href="#{item.href}")= item.text
+  if options.fixed == true
+    | </div>
+
+
+//- mixin dropdown-nav(items)
+//-   ul#dropdown1.dropdown-content
+//-     li
+//-         a(href='#!') one
+//-       li
+//-         a(href='#!') two
+//-       li.divider
+//-       li
+//-         a(href='#!') three
+//-   nav
+//-     .nav-wrapper
+//-       a.brand-logo(href='#!') Logo
+//-       ul.right.hide-on-med-and-down
+//-         li
+//-           a(href='sass.html') Sass
+//-         li
+//-           a(href='components.html') Components
+//-         // Dropdown Trigger
+//-         li
+//-           a.dropdown-button(href='#!', data-activates='dropdown1')
+//-             | Dropdown
+//-             i.mdi-navigation-arrow-drop-down.right
+
 
 if patternLibrary
   // Title: Right Aligned Links
-  // Description: I am right aligned links
-  +right-nav([
-    {href: "sass.html", text: "Sass"},
-    {href: "components.html", text: "Components"},
-    {href: "javascript.html", text: "Javascript"}
-  ])
+  // Description: To right align your navbar links, just add <strong>{ position: "right" }</strong> as your first argument.
+  +navbar({
+      position: "right"
+    },
+    [
+      {href: "sass.html", text: "Sass"},
+      {href: "components.html", text: "Components"},
+      {href: "javascript.html", text: "Javascript"}
+    ]
+  )
+
   // Title: Left Aligned Links
-  // Description: I am Left aligned links
-  +left-nav([
-    {href: "sass.html", text: "Sass"},
-    {href: "components.html", text: "Components"},
-    {href: "javascript.html", text: "Javascript"}
-  ])
-  // Title: Centered Logo
-  // Description: I am a Centered brand-logo
-  +center-nav([
-    {href: "sass.html", text: "Sass"},
-    {href: "components.html", text: "Components"},
-    {href: "javascript.html", text: "Javascript"}
-  ])
+  // Description: To left align your navbar links, just add <strong>{ position: "left" }</strong> as your first argument.
+  +navbar({
+      position: "left"
+    },
+    [
+      {href: "sass.html", text: "Sass"},
+      {href: "components.html", text: "Components"},
+      {href: "javascript.html", text: "Javascript"}
+    ]
+  )
+
+  // Title: Centering the Logo
+  // Description: To left align your navbar links, just add <strong>{ logoPosition: "center" }</strong> as your first argument.
+  +navbar({
+      logoPosition: "center"
+    },
+    [
+      {href: "sass.html", text: "Sass"},
+      {href: "components.html", text: "Components"}
+    ]
+  )
+
+  // Title: Fixed Navbar
+  // Description: To make the navbar fixed, just add <strong>{ fixed: true, fixedPos : "top" }</strong> or <strong>{ fixed: true, fixedPos : "bottom" }</strong> as your first argument. (Only set to true for styleguide puposes).
+  +navbar({
+      fixed : true
+    },
+    [
+      {href: "sass.html", text: "Sass"},
+      {href: "components.html", text: "Components"},
+      {href: "javascript.html", text: "Javascript"}
+    ]
+  )
+
+  // Title: Navbar Dropdown Menu
+  // Description: Need to implement dropdown first!
+  +navbar({
+      dropdown : true
+    },
+    [
+      {href: "sass.html", text: "Sass"},
+      {href: "components.html", text: "Components"},
+      {href: "javascript.html", text: "Javascript"}
+    ]
+  )
+

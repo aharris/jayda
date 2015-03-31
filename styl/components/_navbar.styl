@@ -43,6 +43,7 @@ nav
     display inline-block
     font-size 2.1rem
     padding 0
+    text-align center
 
     &.center
       top 50%
@@ -115,8 +116,15 @@ nav
   height $navbar-height-mobile
   z-index 998
 
+  &.top nav
+    top: 0
+
+  &.bottom nav
+    bottom: 0
+
   nav
     position fixed
+
 
 +above($medium-screen)
   nav, nav .nav-wrapper i, nav a.button-collapse, nav a.button-collapse i

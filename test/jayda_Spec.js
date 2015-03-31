@@ -16,14 +16,16 @@ describe("parseTree", function () {
       {
         "group": "CSS",
         "route": "patterns/CSS/colors.jade",
-        "name": "colors"
+        "name": "Colors",
+        "file": "colors"
       }
     ],
     [
       {
         "group": "components",
         "route": "patterns/components/navbar.jade",
-        "name": "navbar"
+        "name": "Navbar",
+        "file": "navbar"
       }
     ]
   ];

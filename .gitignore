@@ -2,3 +2,6 @@ css/
 node_modules/
 build/
 index.html
+jayda/data/compiled_patterns.js
+jayda/data/tree.json
+

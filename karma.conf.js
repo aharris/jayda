@@ -18,6 +18,7 @@ module.exports = function(config) {
       'bower_components/jQuery/dist/jquery.min.js',
       'bower_components/underscore/underscore-min.js',
       'js/**/*',
+      'jayda/js/**/*',
       // 'dist/compiled_patterns.js', // Need to fix Karma
       'test/**/*Spec.js'
     ],

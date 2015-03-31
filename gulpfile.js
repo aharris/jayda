@@ -39,7 +39,7 @@ gulp.task('jade', function() {
   gulp.src(['./templates/**/*.jade', '!./templates/**/_*.jade'])
     .pipe(jadeGlobbing())
     .pipe(data(function() {
-      return require('./data/' + 'tree' + '.json');
+      return require('./jayda/data/' + 'tree' + '.json');
     }))
     .pipe(jade())
     .on('error', gutil.log)
@@ -48,7 +48,7 @@ gulp.task('jade', function() {
   gulp.src(['./jayda/templates/**/*.jade', '!./jayda/templates/**/_*.jade'])
     .pipe(jadeGlobbing())
     .pipe(data(function() {
-      return require('./data/' + 'tree' + '.json');
+      return require('./jayda/data/' + 'tree' + '.json');
     }))
     .pipe(jade())
     .on('error', gutil.log)
@@ -57,7 +57,7 @@ gulp.task('jade', function() {
 });
 
 gulp.task('templatizer', function() {
-    templatizer('./patterns/**/*.jade', './dist/compiled_patterns.js', {
+    templatizer('./patterns/**/*.jade', './jayda/data/compiled_patterns.js', {
       namespace: 'J',
       dontremoveMixins: true
     });
@@ -78,7 +78,7 @@ gulp.task('watch', function () {
   gulp.watch(['**/*.jade'], ['jade']);
   gulp.watch(['patterns/**/*.jade'], ['tree', 'templatizer']);
   // gulp.watch(['./**/*.html'], ['html']);
-  gulp.watch(['./js/*.js'], ['js']);
+  gulp.watch(['./js/*.js', './jayda/js/*.js'], ['js']);
 });
 
 gulp.task('tree', function () {
@@ -87,7 +87,7 @@ gulp.task('tree', function () {
         filename: 'tree.json',
         prefix: 'patterns'
       }))
-      .pipe(gulp.dest('data/'));
+      .pipe(gulp.dest('jayda/data/'));
 });
 
 gulp.task('connect', function() {

@@ -33,6 +33,25 @@ J = {
     window.location.hash = route;
   },
 
+  capitalizeFirstLetter: function (str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  },
+
+  toTitleCase: function (str) {
+    var words = str.split("-"),
+      wordsArr = [];
+
+    for (var i = 0; i < words.length; i++) {
+      var word = this.capitalizeFirstLetter(words[i]);
+
+      wordsArr.push(word);
+    }
+
+    var title = wordsArr.join(" ");
+
+    return title;
+  },
+
   parseTree: function (res) {
     var sections = _.toArray(res.patterns),
       groups = _.keys(res.patterns),
@@ -46,12 +65,16 @@ J = {
       for(var j = 0; j < files.length; j++) {
         var splitExtension = files[j].split('.'),
           splitRoute = splitExtension[0].split('/'),
+          file = splitRoute[splitRoute.length -1],
           name = splitRoute[splitRoute.length -1];
+
+        name = this.toTitleCase(name);
 
         var patternObj = {
           group: groups[i],
           route: files[j],
-          name: name
+          name: name,
+          file: file
         };
 
         patterns[i].push(patternObj);
@@ -73,8 +96,10 @@ J = {
     $('.side-nav-wrap a').click(function (e) {
       e.preventDefault();
 
-      self.updateRoute(e.target.text);
-      self.getPatterns(e.target.text);
+      var file = e.target.hash.split('#')[1];
+
+      self.updateRoute(file);
+      self.getPatterns(file);
     });
   },
 

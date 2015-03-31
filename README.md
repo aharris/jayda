@@ -1,18 +1,27 @@
 # Jayda
+## (Work in progress)
+## Style-guide driven development the way it should be.
 
-## Automatic pattern library generator
-(Work in progress)
+Jayda is an automatic pattern library generator with some built in start libraries if you choose to use them.
+
 Create pattern libraries automatically by just coding like you do everyday. No extra work or external files to keep up with.
-
-Style-guide driven development the way it should be.
 
 All templates are built using Jade.
 
-Current Pattern showcases how do use this to create a pattern library based off of [http://materializecss.com/](http://materializecss.com/).
+You can use this to create fully customized pattern libraries automatically just by creating jade mixins... THAT IS THE POINT.
 
-Do you need to use material design to use? Hell no. Just what I chose to use as filler.
+### If you want to start with no CSS and Markup and roll your own pattern library:
 
-You can use this to create fully customized pattern libraries... THAT IS THE POINT.
+Download the "barebones" branch. (coming soon)
+
+### If you want to start with material design:
+
+Download the "material" branch. (coming soon)
+
+### If you want to start with bootstrap:
+
+Download the "bootstrap" branch. (coming soon)
+
 
 ## Run
 Download repo.
@@ -21,3 +30,27 @@ $ npm install
 $ bower install
 $ gulp
 ```
+
+## Usage
+
+1. Inside the patterns directory create a folder for your components.
+2. Inside that folder create a jade file for your component.
+3. Create your mixin.
+
+  ```
+  mixin string(item1)
+    p= item1
+  ```
+
+4. Call your mixin (This is the most important step for getting your documentation to build)
+
+  ```
+  if patternLibrary
+    // Title: Paragraph
+    // Description: I am a paragraph
+    +string('I am your paragraph text')
+  ```
+
+5. Now you can call this mixin in any file you want and your documentation is generated!
+
+

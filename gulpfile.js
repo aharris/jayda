@@ -45,6 +45,15 @@ gulp.task('jade', function() {
     .on('error', gutil.log)
     .pipe(gulp.dest('./'));
 
+  gulp.src(['./jayda/templates/**/*.jade', '!./jayda/templates/**/_*.jade'])
+    .pipe(jadeGlobbing())
+    .pipe(data(function() {
+      return require('./data/' + 'tree' + '.json');
+    }))
+    .pipe(jade())
+    .on('error', gutil.log)
+    .pipe(gulp.dest('./jayda'));
+
 });
 
 gulp.task('templatizer', function() {

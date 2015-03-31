@@ -82,12 +82,12 @@ gulp.task('watch', function () {
 });
 
 gulp.task('tree', function () {
-    gulp.src('patterns/**/*.jade')
-      .pipe(directoryMap({
-        filename: 'tree.json',
-        prefix: 'patterns'
-      }))
-      .pipe(gulp.dest('jayda/data/'));
+  return gulp.src('patterns/**/*.jade')
+    .pipe(directoryMap({
+      filename: 'tree.json',
+      prefix: 'patterns'
+    }))
+    .pipe(gulp.dest('jayda/data/'));
 });
 
 gulp.task('connect', function() {
@@ -122,20 +122,27 @@ gulp.task('copy', function() {
     .pipe(gulp.dest('build/'));
 });
 
-gulp.task('build', function(callback){
+// Need to update build task
+// gulp.task('build', function(callback){
+//   runSequence(
+//     'clean',
+//     'tree',
+//     'copy',
+//     callback);
+// });
+
+gulp.task('default', function(callback){
   runSequence(
-    'clean',
     'tree',
-    'copy',
+    [
+      'stylus',
+      'jade',
+      'templatizer'
+    ],
+    [
+      'test',
+      'connect',
+      'watch'
+    ],
     callback);
 });
-
-gulp.task('default', [
-  'stylus',
-  'jade',
-  'tree',
-  'templatizer',
-  'test',
-  'connect',
-  'watch'
-]);

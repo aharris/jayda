@@ -16,7 +16,7 @@ J = {
   getTree: function () {
     var self = this;
     $.ajax({
-      url: "../data/tree.json"
+      url: "data/tree.json"
     }).done(function(res) {
       self.appendSideNav(res);
       if (window.location.hash) {

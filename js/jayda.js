@@ -148,17 +148,7 @@ J = {
 
     var pseudoJson = codeArr[1].substring(codeArr[1].indexOf('(') + 1, codeArr[1].lastIndexOf('));'));
 
-    if(pseudoJson[0] === "[") {
-
-      return J.templatizer[file][mixinName](eval(pseudoJson));
-
-    } else if (pseudoJson[0] === "{") {
-
-      return J.templatizer[file][mixinName].apply(this, this.getValidJSON(pseudoJson));
-    }
-
-
-    return J.templatizer[file][mixinName].apply(this, $.splitAttrString(pseudoJson));
+    return J.templatizer[file][mixinName].apply(this, this.getValidJSON(pseudoJson));
   },
 
   getValidJSON: function (str) {

@@ -1,1 +1,1 @@
-{"patterns":{"CSS":{"colors.jade":"patterns/CSS/colors.jade"},"components":{"navbar.jade":"patterns/components/navbar.jade","side-nav.jade":"patterns/components/side-nav.jade"}}}
+{"patterns":{"Test":{"test.jade":"patterns/Test/test.jade"},"components":{"navbar.jade":"patterns/components/navbar.jade","side-nav.jade":"patterns/components/side-nav.jade"}}}

@@ -149,10 +149,26 @@ J = {
     var pseudoJson = codeArr[1].substring(codeArr[1].indexOf('(') + 1, codeArr[1].lastIndexOf('));'));
 
     if(pseudoJson[0] === "[") {
+
       return J.templatizer[file][mixinName](eval(pseudoJson));
+
+    } else if (pseudoJson[0] === "{") {
+
+      return J.templatizer[file][mixinName].apply(this, this.getValidJSON(pseudoJson));
     }
 
+
     return J.templatizer[file][mixinName].apply(this, $.splitAttrString(pseudoJson));
+  },
+
+  getValidJSON: function (str) {
+    var string;
+
+    string = str.replace((/([\w]+)(:)/g), "\"$1\"$2");
+    string = '[' + string + ']';
+    string = JSON.parse(string);
+
+    return string;
   },
 
   getCustomArgs: function(str, file) {
@@ -161,7 +177,7 @@ J = {
 
     var pseudoJson = codeArr[1].substring(codeArr[1].indexOf('(') + 1, codeArr[1].lastIndexOf('));'));
 
-    if(pseudoJson[0] === "[") {
+    if (pseudoJson[0] === "[") {
       return JSON.stringify(eval(pseudoJson), null, 2);
     }
 

@@ -107,9 +107,8 @@ J = {
   },
 
   createObj: function (tmpl, file) {
-    var patternsArr = [];
-
-    var mixinArray = this.parseTemplate(tmpl);
+    var patternsArr = [],
+      mixinArray = this.parseTemplate(tmpl);
 
     for (var i = 0; i < mixinArray.length; i++) {
       var patternObj = {};
@@ -119,7 +118,6 @@ J = {
       patternObj.mixinName = this.getMixinName(mixinArray[i], file);
       patternObj.example = this.getExample(mixinArray[i], file, patternObj.mixinName);
       patternObj.customArgs = this.getCustomArgs(mixinArray[i], file);
-
 
       patternsArr.push(patternObj);
     }
@@ -143,10 +141,13 @@ J = {
   },
 
   getExample: function(str, file, mixinName) {
-    var codeArr = str.split('["' + file + '"]["');
+    var codeArr,
+      pseudoJson;
+
+    codeArr = str.split('["' + file + '"]["');
     codeArr = codeArr[1].split('"]');
 
-    var pseudoJson = codeArr[1].substring(codeArr[1].indexOf('(') + 1, codeArr[1].lastIndexOf('));'));
+    pseudoJson = codeArr[1].substring(codeArr[1].indexOf('(') + 1, codeArr[1].lastIndexOf('));'));
 
     return J.templatizer[file][mixinName].apply(this, this.getValidJSON(pseudoJson));
   },
@@ -162,16 +163,20 @@ J = {
   },
 
   getCustomArgs: function(str, file) {
-    var codeArr = str.split('["' + file + '"]["');
+    var codeArr,
+      pseudoJson;
+
+    codeArr = str.split('["' + file + '"]["');
     codeArr = codeArr[1].split('"]');
 
-    var pseudoJson = codeArr[1].substring(codeArr[1].indexOf('(') + 1, codeArr[1].lastIndexOf('));'));
+    pseudoJson = codeArr[1].substring(codeArr[1].indexOf('(') + 1, codeArr[1].lastIndexOf('));'));
 
     return JSON.stringify(this.getValidJSON(pseudoJson), null, 2);
   },
 
   renderPatternsTmpl: function (patternsArr) {
     var markup = '';
+
     for (var i = 0; i < patternsArr.length; i++) {
       // TODO: Make into a jade template
       var title,

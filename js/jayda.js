@@ -167,11 +167,7 @@ J = {
 
     var pseudoJson = codeArr[1].substring(codeArr[1].indexOf('(') + 1, codeArr[1].lastIndexOf('));'));
 
-    if (pseudoJson[0] === "[") {
-      return JSON.stringify(eval(pseudoJson), null, 2);
-    }
-
-    return pseudoJson;
+    return JSON.stringify(this.getValidJSON(pseudoJson), null, 2);
   },
 
   renderPatternsTmpl: function (patternsArr) {

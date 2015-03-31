@@ -16,6 +16,16 @@ mixin multiObject(items1, items2)
   p= items2.item1
   p= items2.item2
 
+mixin array(items)
+  each item in items
+    p= item.title
+
+mixin multiArray(items1, items2)
+  each item in items1
+    p= item.title
+  each item in items2
+    p= item.title
+
 
 
 if patternLibrary
@@ -44,3 +54,32 @@ if patternLibrary
     item1: "foo 2",
     item2: "bar 2"
   })
+
+  // Title: Single Array Test
+  // Description: I am a single array test
+  +array([
+    {
+      title: "Array Title 1"
+    },
+    {
+      title: "Array Title 2"
+    }
+  ])
+
+  // Title: Multi Array Test
+  // Description: I am a multiple array test
+  +multiArray([
+    {
+      title: "Array 1 Title 1"
+    },
+    {
+      title: "Array 1 Title 2"
+    }
+  ],[
+    {
+      title: "Array 2 Title 1"
+    },
+    {
+      title: "Array 2 Title 2"
+    }
+  ])

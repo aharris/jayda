@@ -31,6 +31,7 @@ gulp.task('stylus', function () {
     .pipe(connect.reload());
 });
 
+// TODO: Run this from local stylint not global
 gulp.task('stylint', shell.task([
   'stylint ./styl/ -c .stylintrc'
 ]));

@@ -156,6 +156,9 @@ J = {
 
   getDescription: function (str) {
     var descID = '<!-- Description: ';
+
+    if (str.match(descID) === null) { return ''; }
+
     return str.substring(str.indexOf(descID) + descID.length, str.lastIndexOf('-->')) || '';
   },
 
@@ -218,7 +221,7 @@ J = {
         tmpl;
 
       title = '<h3>' + patternsArr[i].title + '</h3>';
-      desc = '<p>' + patternsArr[i].description + '</p>';
+      desc = patternsArr[i].description.length === 0 ? '' : '<p>' + patternsArr[i].description + '</p>';
       example = '<div class="example">' + patternsArr[i].example + '</div>';
       mixinName = patternsArr[i].mixinName;
       code = '<pre>' + '+' + mixinName + '(' + patternsArr[i].customArgs + ')' + '</pre>';

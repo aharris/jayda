@@ -1,8 +1,4 @@
 var gulp = require('gulp'),
-  stylus = require('gulp-stylus'),
-  nib = require('nib'),
-  jeet = require('jeet'),
-  // watch = require('gulp-watch'),
   connect = require('gulp-connect'),
   clean = require('gulp-clean'),
   runSequence = require('run-sequence'),
@@ -14,7 +10,14 @@ var gulp = require('gulp'),
   directoryMap = require("gulp-directory-map"),
   data = require('gulp-data'),
   templatizer = require('templatizer'),
-  karma = require('karma').server;
+  karma = require('karma').server,
+  sass = require('gulp-sass');
+
+gulp.task('sass', function () {
+  gulp.src('./sass/*.scss')
+    .pipe(sass())
+    .pipe(gulp.dest('./css'));
+});
 
 gulp.task('test', function (done) {
   karma.start({
@@ -22,19 +25,6 @@ gulp.task('test', function (done) {
     singleRun: false
   }, done);
 });
-
-
-gulp.task('stylus', function () {
-  gulp.src(['./styl/**/*.styl', '!styl/**/_*'])
-    .pipe(stylus({use: [nib(), jeet(), rupture()]}))
-    .pipe(gulp.dest('./css'))
-    .pipe(connect.reload());
-});
-
-// TODO: Run this from local stylint not global
-gulp.task('stylint', shell.task([
-  'stylint ./styl/ -c .stylintrc'
-]));
 
 gulp.task('jade', function() {
   gulp.src(['./templates/**/*.jade', '!./templates/**/_*.jade'])
@@ -123,20 +113,11 @@ gulp.task('copy', function() {
     .pipe(gulp.dest('build/'));
 });
 
-// Need to update build task
-// gulp.task('build', function(callback){
-//   runSequence(
-//     'clean',
-//     'tree',
-//     'copy',
-//     callback);
-// });
-
 gulp.task('default', function(callback){
   runSequence(
     'tree',
     [
-      'stylus',
+      'sass',
       'jade',
       'templatizer'
     ],

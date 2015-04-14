@@ -1,11 +1,17 @@
 mixin side-nav(patterns)
-  ul.side-nav
-    each pattern, index in patterns
-      h2= pattern[0].group
-      each item in pattern
+  nav
+    ul#slide-out.side-nav
+      each pattern, index in patterns
+        h2.blue-text= pattern[0].group
         ul
-          li
-            a(href="##{item.file}")= item.name
+          each item in pattern
+            li
+              a(href="##{item.file}")= item.name
+    a.button-collapse.show-on-large(href='#', data-activates='slide-out')
+      i.mdi-navigation-menu
+
+
+
 
 
 //- Jayda Pattern Library Only

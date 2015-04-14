@@ -89,11 +89,18 @@ J = {
     $('.side-nav-wrap').append(J.templatizer["side-nav"]({jayda : true, patterns: patterns}));
 
     this.bindNav();
+    this.getAppScripts();
+  },
+
+  getAppScripts: function () {
+    $.getScript('../js/materialize.min.js');
+    $.getScript('../js/sideNav.js');
+    $.getScript('../js/app.js');
   },
 
   bindNav: function () {
     var self = this;
-    $('.side-nav-wrap a').click(function (e) {
+    $('.side-nav a').click(function (e) {
       e.preventDefault();
 
       var file = e.target.hash.split('#')[1];

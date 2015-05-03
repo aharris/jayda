@@ -35,7 +35,7 @@ gulp.task('jade', function() {
   gulp.src(['./app/templates/**/*.jade', '!./app/templates/**/_*.jade'])
     .pipe(jadeGlobbing())
     .pipe(data(function() {
-      return require('./jayda/data/' + 'tree' + '.json');
+      return require('./dest/jayda/data/' + 'tree' + '.json');
     }))
     .pipe(jade())
     .on('error', gutil.log)
@@ -75,7 +75,7 @@ gulp.task('jayda-jade', function () {
   gulp.src(['./jayda/templates/**/*.jade', '!./jayda/templates/**/_*.jade'])
     .pipe(jadeGlobbing())
     .pipe(data(function() {
-      return require('./jayda/data/' + 'tree' + '.json');
+      return require('./dest/jayda/data/' + 'tree' + '.json');
     }))
     .pipe(jade())
     .on('error', gutil.log)

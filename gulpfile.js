@@ -122,7 +122,7 @@ gulp.task('connect', function() {
 });
 
 gulp.task('watch', function () {
-  gulp.watch(['app/styl/**/*.styl'], ['stylus']);
+  gulp.watch(['app/styl/**/*.styl', 'app/components/**/*.styl'], ['stylus']);
   gulp.watch(['./app/**/*.jade'], ['jade']);
   gulp.watch(['app/components/**/*.jade'], ['tree', 'templatizer']);
   gulp.watch(['app/js/*.js'], ['js']);

@@ -49,10 +49,10 @@ gulp.task('js', function () {
 });
 
 gulp.task('tree', function () {
-  return gulp.src('app/patterns/**/*.jade')
+  return gulp.src('app/components/**/*.jade')
     .pipe(directoryMap({
       filename: 'tree.json',
-      prefix: 'patterns'
+      prefix: 'components'
     }))
     .pipe(gulp.dest('dest/jayda/data/'));
 });
@@ -107,7 +107,7 @@ gulp.task('mkdirs', shell.task([
 ]));
 
 gulp.task('templatizer', function() {
-    templatizer('./app/patterns/**/*.jade', './dest/jayda/data/compiled_patterns.js', {
+    templatizer('./app/components/**/*.jade', './dest/jayda/data/compiled_patterns.js', {
       namespace: 'J',
       dontremoveMixins: true
     });
@@ -123,7 +123,7 @@ gulp.task('connect', function() {
 gulp.task('watch', function () {
   gulp.watch(['app/styl/**/*.styl'], ['stylus']);
   gulp.watch(['./app/**/*.jade'], ['jade']);
-  gulp.watch(['app/patterns/**/*.jade'], ['tree', 'templatizer']);
+  gulp.watch(['app/components/**/*.jade'], ['tree', 'templatizer']);
   gulp.watch(['app/js/*.js'], ['js']);
 
   // Jayda

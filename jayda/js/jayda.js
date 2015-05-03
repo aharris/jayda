@@ -53,8 +53,8 @@ J = {
   },
 
   parseTree: function (res) {
-    var sections = _.toArray(res.patterns),
-      groups = _.keys(res.patterns),
+    var sections = _.toArray(res.components),
+      groups = _.keys(res.components),
       patterns = [],
       files = [];
 

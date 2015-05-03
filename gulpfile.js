@@ -2,7 +2,6 @@ var gulp = require('gulp'),
   stylus = require('gulp-stylus'),
   nib = require('nib'),
   jeet = require('jeet'),
-  // watch = require('gulp-watch'),
   connect = require('gulp-connect'),
   clean = require('gulp-clean'),
   runSequence = require('run-sequence'),
@@ -16,35 +15,63 @@ var gulp = require('gulp'),
   templatizer = require('templatizer'),
   karma = require('karma').server;
 
-gulp.task('test', function (done) {
-  karma.start({
-    configFile: __dirname + '/karma.conf.js',
-    singleRun: false
-  }, done);
-});
-
+// --------------------------------------
+// App ----------------------------------
+// --------------------------------------
 
 gulp.task('stylus', function () {
-  gulp.src(['./styl/**/*.styl', '!styl/**/_*'])
+  gulp.src(['./app/styl/**/*.styl', '!app/styl/**/_*'])
     .pipe(stylus({use: [nib(), jeet(), rupture()]}))
-    .pipe(gulp.dest('./css'))
+    .pipe(gulp.dest('./dest/css'))
     .pipe(connect.reload());
 });
 
-gulp.task('stylint', shell.task([
-  'stylint ./styl/ -c .stylintrc'
-]));
+// Use gulp-stylint
+// gulp.task('stylint', shell.task([
+//   'stylint ./styl/ -c .stylintrc'
+// ]));
 
 gulp.task('jade', function() {
-  gulp.src(['./templates/**/*.jade', '!./templates/**/_*.jade'])
+  gulp.src(['./app/templates/**/*.jade', '!./app/templates/**/_*.jade'])
     .pipe(jadeGlobbing())
     .pipe(data(function() {
       return require('./jayda/data/' + 'tree' + '.json');
     }))
     .pipe(jade())
     .on('error', gutil.log)
-    .pipe(gulp.dest('./'));
+    .pipe(gulp.dest('dest'))
+    .pipe(connect.reload());
+});
 
+gulp.task('js', function () {
+  gulp.src('app/js/**/*.js')
+    .pipe(gulp.dest('dest/js'));
+});
+
+gulp.task('tree', function () {
+  return gulp.src('app/patterns/**/*.jade')
+    .pipe(directoryMap({
+      filename: 'tree.json',
+      prefix: 'patterns'
+    }))
+    .pipe(gulp.dest('dest/jayda/data/'));
+});
+
+gulp.task('clean', function () {
+  return gulp.src('dest', {read: false})
+    .pipe(clean());
+});
+
+gulp.task('libs', function() {
+  gulp.src('bower_components/**/*')
+    .pipe(gulp.dest('dest/bower_components'));
+});
+
+// --------------------------------------
+// JAYDA --------------------------------
+// --------------------------------------
+
+gulp.task('jayda-jade', function () {
   gulp.src(['./jayda/templates/**/*.jade', '!./jayda/templates/**/_*.jade'])
     .pipe(jadeGlobbing())
     .pipe(data(function() {
@@ -52,95 +79,85 @@ gulp.task('jade', function() {
     }))
     .pipe(jade())
     .on('error', gutil.log)
-    .pipe(gulp.dest('./jayda'));
-
+    .pipe(gulp.dest('./dest/jayda'));
 });
 
+gulp.task('jayda-js', function () {
+  gulp.src('jayda/js/**/*.js')
+    .pipe(gulp.dest('dest/jayda/js'));
+});
+
+// --------------------------------------
+// Tests --------------------------------
+// --------------------------------------
+
+gulp.task('test', function (done) {
+  karma.start({
+    configFile: __dirname + '/karma.conf.js',
+    singleRun: false
+  }, done);
+});
+
+// --------------------------------------
+// Global -------------------------------
+// --------------------------------------
+
+gulp.task('mkdirs', shell.task([
+  'mkdir ./dest && mkdir ./dest/jayda && mkdir ./dest/jayda/data'
+]));
+
 gulp.task('templatizer', function() {
-    templatizer('./patterns/**/*.jade', './jayda/data/compiled_patterns.js', {
+    templatizer('./app/patterns/**/*.jade', './dest/jayda/data/compiled_patterns.js', {
       namespace: 'J',
       dontremoveMixins: true
     });
 });
 
-gulp.task('html', function () {
-  gulp.src('**/*.html')
-    .pipe(connect.reload());
-});
-
-gulp.task('js', function () {
-  gulp.src('./js/*.js')
-    .pipe(connect.reload());
-});
-
-gulp.task('watch', function () {
-  gulp.watch(['styl/**/*.styl'], ['stylus', 'stylint']);
-  gulp.watch(['**/*.jade'], ['jade']);
-  gulp.watch(['patterns/**/*.jade'], ['tree', 'templatizer']);
-  // gulp.watch(['./**/*.html'], ['html']);
-  gulp.watch(['./js/*.js', './jayda/js/*.js'], ['js']);
-});
-
-gulp.task('tree', function () {
-  return gulp.src('patterns/**/*.jade')
-    .pipe(directoryMap({
-      filename: 'tree.json',
-      prefix: 'patterns'
-    }))
-    .pipe(gulp.dest('jayda/data/'));
-});
-
 gulp.task('connect', function() {
   connect.server({
-    root: [__dirname],
+    root: ['dest'],
     livereload: true
   });
 });
 
-gulp.task('clean', function () {
-  return gulp.src('build', {read: false})
-    .pipe(clean());
+gulp.task('watch', function () {
+  gulp.watch(['app/styl/**/*.styl'], ['stylus']);
+  gulp.watch(['./app/**/*.jade'], ['jade']);
+  gulp.watch(['app/patterns/**/*.jade'], ['tree', 'templatizer']);
+  gulp.watch(['app/js/*.js'], ['js']);
+
+  // Jayda
+  gulp.watch(['jayda/**/*'], ['jayda-jade']);
+  gulp.watch(['jayda/js/**/*.js'], ['js']);
 });
 
-gulp.task('copy', function() {
-  gulp.src('css/**/*')
-    .pipe(gulp.dest('build/css'));
-
-  gulp.src('images/**/*')
-    .pipe(gulp.dest('build/images'));
-
-  gulp.src('js/**/*')
-    .pipe(gulp.dest('build/js'));
-
-  gulp.src('bower_components/**/*')
-    .pipe(gulp.dest('build/bower_components'));
-
-  gulp.src('fonts/**/*')
-    .pipe(gulp.dest('build/fonts'));
-
-  gulp.src('./*.html')
-    .pipe(gulp.dest('build/'));
-});
-
-// Need to update build task
-// gulp.task('build', function(callback){
-//   runSequence(
-//     'clean',
-//     'tree',
-//     'copy',
-//     callback);
-// });
+// --------------------------------------
+// Commands -----------------------------
+// --------------------------------------
 
 gulp.task('default', function(callback){
   runSequence(
-    'tree',
+    [
+    'clean'
+    ],
+    [
+      'mkdirs'
+    ],
+    'libs',
+    'js',
+    'jayda-js',
+    [
+    'tree'
+    ],
     [
       'stylus',
       'jade',
+      'jayda-jade'
+    ],
+    [
       'templatizer'
     ],
     [
-      'test',
       'connect',
       'watch'
     ],

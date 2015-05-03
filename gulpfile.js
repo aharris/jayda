@@ -79,7 +79,8 @@ gulp.task('jayda-jade', function () {
     }))
     .pipe(jade())
     .on('error', gutil.log)
-    .pipe(gulp.dest('./dest/jayda'));
+    .pipe(gulp.dest('./dest/jayda'))
+    .pipe(connect.reload());
 });
 
 gulp.task('jayda-js', function () {

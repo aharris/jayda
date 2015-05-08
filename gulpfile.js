@@ -136,6 +136,13 @@ gulp.task('jayda-jade', function () {
     .pipe(connect.reload());
 });
 
+gulp.task('jayda-stylus', function () {
+  gulp.src(['./jayda/styl/**/*.styl', '!app/styl/**/_*'])
+    .pipe(stylus({use: [nib(), jeet(), rupture()]}))
+    .pipe(gulp.dest('./dest/jayda/css'))
+    .pipe(connect.reload());
+});
+
 gulp.task('jayda-js', function () {
   gulp.src('jayda/js/**/*.js')
     .pipe(gulp.dest('dest/jayda/js'));
@@ -195,6 +202,7 @@ gulp.task('watch', function () {
   // Jayda
   gulp.watch(['jayda/**/*.jade'], ['jayda-jade', 'jayda-templatizer']);
   gulp.watch(['jayda/js/**/*.js'], ['jayda-js']);
+  gulp.watch(['jayda/styl/**/*.styl'], ['jayda-stylus']);
 });
 
 // --------------------------------------
@@ -220,6 +228,7 @@ gulp.task('default', function(callback){
     ],
     [
       'stylus',
+      'jayda-stylus',
       'jade',
       'jayda-jade',
       'templatizer',

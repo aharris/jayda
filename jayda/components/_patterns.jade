@@ -1,0 +1,17 @@
+mixin pattern(title, desc, example, mixinName, customArgs, script)
+  h3= title
+
+  if desc
+    p= desc
+
+  div.example !{example}
+
+  pre +#{mixinName}(#{customArgs})
+
+  if script
+    h4 Script
+    pre= script
+
+
+// Call Mixin
++pattern()

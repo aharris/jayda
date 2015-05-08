@@ -193,7 +193,7 @@ gulp.task('watch', function () {
   gulp.watch(['app/js/**/*.js', 'app/components/**/*.js'], ['js', 'jayda-get-js']);
 
   // Jayda
-  gulp.watch(['jayda/**/*.jade'], ['jayda-jade']);
+  gulp.watch(['jayda/**/*.jade'], ['jayda-jade', 'jayda-templatizer']);
   gulp.watch(['jayda/js/**/*.js'], ['jayda-js']);
 });
 

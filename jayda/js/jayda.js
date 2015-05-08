@@ -28,8 +28,8 @@ J = {
   },
 
   loadOverview: function () {
-    var overview = J.Jayda.templatizer._overview()
-    this.$parent.html(overview)
+    var overview = J.Jayda.templatizer._overview();
+    this.$parent.html(overview);
   },
 
   getCurrentRoute: function (res) {
@@ -318,31 +318,19 @@ J = {
 
 
     for (var i = 0; i < patternsArr.length; i++) {
-      // TODO: Make into a jade template
-      var title,
-        desc,
-        mixinName,
-        example,
-        code,
-        tmpl,
+
+      var title = patternsArr[i].title,
+        desc = patternsArr[i].description,
+        example = patternsArr[i].example,
+        mixinName = patternsArr[i].mixinName,
+        customArgs = patternsArr[i].customArgs,
         script;
 
-      title = '<h3>' + patternsArr[i].title + '</h3>';
-      desc = patternsArr[i].description.length === 0 ? '' : '<p>' + patternsArr[i].description + '</p>';
-      example = '<div class="example">' + patternsArr[i].example + '</div>';
-      mixinName = patternsArr[i].mixinName;
-      code = '<pre>' + '+' + mixinName + '(' + patternsArr[i].customArgs + ')' + '</pre>';
       if (patternsArr[i].script[0]) {
-        script = '<h4>Script</h4><div><pre>' + patternsArr[i].script[0].string + '</pre></div>';
+        script = patternsArr[i].script[0].string;
       }
 
-      if (!script) {
-        tmpl = title + desc + example + code;
-      } else {
-        tmpl = title + desc + example + code + script;
-      }
-
-      markup += tmpl;
+      markup += J.Jayda.templatizer["_patterns"]["pattern"](title, desc, example, mixinName, customArgs, script);
 
     }
     $('.patterns-wrap').html(markup);

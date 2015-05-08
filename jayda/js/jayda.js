@@ -9,7 +9,7 @@ J = {
     this.patterns = window.patterns || {};
     this.templates = {};
 
-    // Intiial function calls
+    // Initial function calls
     this.getTree();
   },
 
@@ -19,6 +19,7 @@ J = {
       url: "data/tree.json"
     }).done(function(res) {
       self.appendSideNav(res);
+      self.stringifyScripts(res);
       if (window.location.hash) {
         self.getCurrentRoute();
       }
@@ -52,14 +53,16 @@ J = {
     return title;
   },
 
-  parseTree: function (res) {
+  parseJade: function (res) {
     var sections = _.toArray(res.components),
       groups = _.keys(res.components),
       patterns = [],
       files = [];
 
     for(var i = 0; i < sections.length; i++) {
-      files = _.toArray(sections[i]);
+      files = _.toArray( _.filter(sections[i], function (it) {
+        return it.indexOf(".jade") >= 0;
+      }));
       patterns[i] = [];
 
       for(var j = 0; j < files.length; j++) {
@@ -84,8 +87,87 @@ J = {
     return patterns;
   },
 
+  parseScripts: function (res) {
+    var sections = _.toArray(res.components),
+      groups = _.keys(res.components),
+      scripts = [],
+      files = [];
+
+    for(var i = 0; i < sections.length; i++) {
+      files = _.toArray( _.filter(sections[i], function (it) {
+        return it.indexOf(".js") >= 0;
+      }));
+      scripts[i] = [];
+
+      for(var j = 0; j < files.length; j++) {
+        var splitExtension = files[j].split('.'),
+          splitRoute = splitExtension[0].split('/'),
+          file = splitRoute[splitRoute.length -1],
+          name = splitRoute[splitRoute.length -1];
+
+        name = this.toTitleCase(name);
+
+        var patternObj = {
+          group: groups[i],
+          route: files[j],
+          name: name,
+          file: file
+        };
+
+        scripts[i].push(patternObj);
+      }
+    }
+    // this.stringifyScripts(scripts);
+    return scripts;
+  },
+
+  stringifyScripts:  function (res) {
+    var scripts = this.parseScripts(res);
+    var scriptsArr = [];
+
+    function foo() {
+      var requests = [];
+
+      for (var i = 0; i < scripts.length; i++) {
+
+        var scriptRoute = '';
+        var promise;
+
+        if (scripts[i][0]) {
+          scriptRoute = scripts[i][0].route
+
+          promise = $.ajax({
+            url: '../' + scriptRoute,
+            async: false
+          }).done(function(res) {
+            // console.log("script:", res);
+
+            scriptsArr.push(res);
+            return res;
+          });
+        } else {
+          // console.log("script:", 'nope');
+
+          scriptsArr.push('');
+          promise = '';
+        }
+
+        requests.push(promise);
+      }
+
+      return $.when.apply($, requests);
+    }
+
+    foo().done(function (requests) {
+      // console.log( "requests: ", requests );
+      console.log( "scriptsArr: ", scriptsArr );
+      return requests;
+    });
+
+  },
+
   appendSideNav: function (res){
-    var patterns = this.parseTree(res);
+    var patterns = this.parseJade(res);
     $('.side-nav-wrap').append(J.templatizer["side-nav"]({jayda : true, patterns: patterns}));
 
     this.bindNav();
@@ -210,6 +292,7 @@ J = {
 
   renderPatternsTmpl: function (patternsArr) {
     var markup = '';
+    // var scripts =
 
     for (var i = 0; i < patternsArr.length; i++) {
       // TODO: Make into a jade template
@@ -219,12 +302,16 @@ J = {
         example,
         code,
         tmpl;
+        // script = this.stringifyScripts(this.patternScripts);
+
+      // console.log(this.patternScripts);
 
       title = '<h3>' + patternsArr[i].title + '</h3>';
       desc = patternsArr[i].description.length === 0 ? '' : '<p>' + patternsArr[i].description + '</p>';
       example = '<div class="example">' + patternsArr[i].example + '</div>';
       mixinName = patternsArr[i].mixinName;
       code = '<pre>' + '+' + mixinName + '(' + patternsArr[i].customArgs + ')' + '</pre>';
+      // script = '<div>' + script[i] + '</div>';
 
       tmpl = title + desc + example + code;
 

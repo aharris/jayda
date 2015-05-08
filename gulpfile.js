@@ -102,7 +102,7 @@ gulp.task('js', function () {
 });
 
 gulp.task('tree', function () {
-  return gulp.src('app/components/**/*.jade')
+  return gulp.src(['app/components/**/*.jade', 'app/components/**/*.js'])
     .pipe(directoryMap({
       filename: 'tree.json',
       prefix: 'components'
@@ -139,6 +139,11 @@ gulp.task('jayda-jade', function () {
 gulp.task('jayda-js', function () {
   gulp.src('jayda/js/**/*.js')
     .pipe(gulp.dest('dest/jayda/js'));
+});
+
+gulp.task('jayda-get-js', function () {
+  gulp.src('app/components/**/*.js')
+    .pipe(gulp.dest('dest/components'));
 });
 
 // --------------------------------------
@@ -178,11 +183,11 @@ gulp.task('watch', function () {
   gulp.watch(['app/styl/**/*.styl', 'app/components/**/*.styl'], ['stylus']);
   gulp.watch(['./app/**/*.jade'], ['jade']);
   gulp.watch(['app/components/**/*.jade'], ['tree', 'templatizer']);
-  gulp.watch(['app/js/**/*.js', 'app/components/**/*.js'], ['js']);
+  gulp.watch(['app/js/**/*.js', 'app/components/**/*.js'], ['js', 'jayda-get-js']);
 
   // Jayda
   gulp.watch(['jayda/**/*'], ['jayda-jade']);
-  gulp.watch(['jayda/js/**/*.js'], ['js']);
+  gulp.watch(['jayda/js/**/*.js'], ['jayda-js']);
 });
 
 // --------------------------------------
@@ -200,6 +205,7 @@ gulp.task('default', function(callback){
     'libs',
     'js',
     'jayda-js',
+    'jayda-get-js',
     [
     'tree'
     ],

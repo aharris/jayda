@@ -2,7 +2,7 @@ var APP = window.APP || {};
 
 APP = {
   init: function () {
-    console.log('foo');
+    // console.log('foo');
   }
 
 };

@@ -209,19 +209,19 @@ gulp.task('default', function(callback){
     [
       'mkdirs'
     ],
-    'libs',
-    'js',
-    'jayda-js',
-    'jayda-get-js',
+    [
+      'libs',
+      'js',
+      'jayda-js',
+      'jayda-get-js'
+    ],
     [
     'tree'
     ],
     [
       'stylus',
       'jade',
-      'jayda-jade'
-    ],
-    [
+      'jayda-jade',
       'templatizer',
       'jayda-templatizer'
     ],

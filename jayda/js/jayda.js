@@ -19,7 +19,7 @@ J = {
       url: "data/tree.json"
     }).done(function(res) {
       self.appendSideNav(res);
-      self.stringifyScripts(res);
+      self.data = res;
       if (window.location.hash) {
         self.getCurrentRoute();
       }
@@ -117,15 +117,16 @@ J = {
         scripts[i].push(patternObj);
       }
     }
-    // this.stringifyScripts(scripts);
     return scripts;
   },
 
   stringifyScripts:  function (res) {
+    var dfd = jQuery.Deferred();
+
     var scripts = this.parseScripts(res);
     var scriptsArr = [];
 
-    function foo() {
+    function getStrings() {
       var requests = [];
 
       for (var i = 0; i < scripts.length; i++) {
@@ -140,14 +141,10 @@ J = {
             url: '../' + scriptRoute,
             async: false
           }).done(function(res) {
-            // console.log("script:", res);
-
             scriptsArr.push(res);
             return res;
           });
         } else {
-          // console.log("script:", 'nope');
-
           scriptsArr.push('');
           promise = '';
         }
@@ -158,11 +155,13 @@ J = {
       return $.when.apply($, requests);
     }
 
-    foo().done(function (requests) {
-      // console.log( "requests: ", requests );
-      console.log( "scriptsArr: ", scriptsArr );
+    getStrings().done(function (requests) {
+      // console.log( "scriptsArr: ", scriptsArr );
+      dfd.resolve( scriptsArr );
       return requests;
     });
+
+    return dfd.promise();
 
   },
 
@@ -292,33 +291,43 @@ J = {
 
   renderPatternsTmpl: function (patternsArr) {
     var markup = '';
-    // var scripts =
+    console.log(this.data);
 
-    for (var i = 0; i < patternsArr.length; i++) {
-      // TODO: Make into a jade template
-      var title,
-        desc,
-        mixinName,
-        example,
-        code,
-        tmpl;
-        // script = this.stringifyScripts(this.patternScripts);
+    $.when( this.stringifyScripts(this.data) ).then(
+      function( scripts ) {
+        console.log("scripts", scripts );
 
-      // console.log(this.patternScripts);
+        for (var i = 0; i < patternsArr.length; i++) {
+          // TODO: Make into a jade template
+          var title,
+            desc,
+            mixinName,
+            example,
+            code,
+            tmpl;
 
-      title = '<h3>' + patternsArr[i].title + '</h3>';
-      desc = patternsArr[i].description.length === 0 ? '' : '<p>' + patternsArr[i].description + '</p>';
-      example = '<div class="example">' + patternsArr[i].example + '</div>';
-      mixinName = patternsArr[i].mixinName;
-      code = '<pre>' + '+' + mixinName + '(' + patternsArr[i].customArgs + ')' + '</pre>';
-      // script = '<div>' + script[i] + '</div>';
+          // console.log(this.data);
+          // console.log(script);
 
-      tmpl = title + desc + example + code;
+          title = '<h3>' + patternsArr[i].title + '</h3>';
+          desc = patternsArr[i].description.length === 0 ? '' : '<p>' + patternsArr[i].description + '</p>';
+          example = '<div class="example">' + patternsArr[i].example + '</div>';
+          mixinName = patternsArr[i].mixinName;
+          code = '<pre>' + '+' + mixinName + '(' + patternsArr[i].customArgs + ')' + '</pre>';
+          script = '<h3>Script</h3><div>' + scripts[i] + '</div>';
 
-      markup += tmpl;
+          if (scripts[i] === "") {
+            tmpl = title + desc + example + code;
+          } else {
+            tmpl = title + desc + example + code + script;
+          }
 
-    }
-    $('.patterns-wrap').html(markup);
+          markup += tmpl;
+
+        }
+        $('.patterns-wrap').html(markup);
+      });
+
   }
 
 };

@@ -2,12 +2,12 @@ var J = {};
 
 J = {
 
+  Jayda: {},
+
   init: function () {
     // Persistant vars
     this.$parent = $('.patterns-wrap');
     this.currentPattern = '';
-    this.patterns = window.patterns || {};
-    this.templates = {};
 
     // Initial function calls
     this.getTree();
@@ -21,8 +21,15 @@ J = {
       self.appendSideNav(res);
       if (window.location.hash) {
         self.getCurrentRoute(res);
+      } else {
+        self.loadOverview();
       }
     });
+  },
+
+  loadOverview: function () {
+    var overview = J.Jayda.templatizer._overview()
+    this.$parent.html(overview)
   },
 
   getCurrentRoute: function (res) {
@@ -326,7 +333,7 @@ J = {
       mixinName = patternsArr[i].mixinName;
       code = '<pre>' + '+' + mixinName + '(' + patternsArr[i].customArgs + ')' + '</pre>';
       if (patternsArr[i].script[0]) {
-        script = '<h3>Script</h3><div>' + patternsArr[i].script[0].string + '</div>';
+        script = '<h4>Script</h4><div>' + patternsArr[i].script[0].string + '</div>';
       }
 
       if (!script) {

@@ -146,6 +146,13 @@ gulp.task('jayda-get-js', function () {
     .pipe(gulp.dest('dest/components'));
 });
 
+gulp.task('jayda-templatizer', function() {
+    templatizer('./jayda/components/**/*.jade', './dest/jayda/js/compiled_patterns.js', {
+      namespace: 'J.Jayda',
+      dontremoveMixins: true
+    });
+});
+
 // --------------------------------------
 // Tests --------------------------------
 // --------------------------------------
@@ -166,7 +173,7 @@ gulp.task('mkdirs', shell.task([
 ]));
 
 gulp.task('templatizer', function() {
-    templatizer('./app/components/**/*.jade', './dest/jayda/data/compiled_patterns.js', {
+    templatizer('./app/components/**/*.jade', './dest/js/compiled_patterns.js', {
       namespace: 'J',
       dontremoveMixins: true
     });
@@ -186,7 +193,7 @@ gulp.task('watch', function () {
   gulp.watch(['app/js/**/*.js', 'app/components/**/*.js'], ['js', 'jayda-get-js']);
 
   // Jayda
-  gulp.watch(['jayda/**/*'], ['jayda-jade']);
+  gulp.watch(['jayda/**/*.jade'], ['jayda-jade']);
   gulp.watch(['jayda/js/**/*.js'], ['jayda-js']);
 });
 
@@ -215,7 +222,8 @@ gulp.task('default', function(callback){
       'jayda-jade'
     ],
     [
-      'templatizer'
+      'templatizer',
+      'jayda-templatizer'
     ],
     [
       'connect',

@@ -11,7 +11,8 @@ html(lang="en")
 
   body
     .container
-      h1 Jayda
+      h1
+        a(href="./") Jayda
 
       .side-nav-wrap
         //- +side-nav() loaded dynamically
@@ -24,5 +25,6 @@ html(lang="en")
     script(type="text/javascript" src="../bower_components/jQuery/dist/jquery.min.js")
     script(type="text/javascript" src="../bower_components/underscore/underscore-min.js")
     script(type="text/javascript" src="js/jayda.js")
-    script(type="text/javascript" src="data/compiled_patterns.js")
+    script(type="text/javascript" src="js/compiled_patterns.js")
+    script(type="text/javascript" src="../js/compiled_patterns.js")
     script(type="text/javascript" src="../js/app.js")

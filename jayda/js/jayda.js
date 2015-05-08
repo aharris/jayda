@@ -75,9 +75,7 @@ J = {
         var splitExtension = files[j].split('.'),
           splitRoute = splitExtension[0].split('/'),
           file = splitRoute[splitRoute.length -1],
-          name = splitRoute[splitRoute.length -1];
-
-        name = this.toTitleCase(name);
+          name = this.toTitleCase(file);
 
         var patternObj = {
           group: groups[i],

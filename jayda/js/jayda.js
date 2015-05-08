@@ -333,7 +333,7 @@ J = {
       mixinName = patternsArr[i].mixinName;
       code = '<pre>' + '+' + mixinName + '(' + patternsArr[i].customArgs + ')' + '</pre>';
       if (patternsArr[i].script[0]) {
-        script = '<h4>Script</h4><div>' + patternsArr[i].script[0].string + '</div>';
+        script = '<h4>Script</h4><div><pre>' + patternsArr[i].script[0].string + '</pre></div>';
       }
 
       if (!script) {

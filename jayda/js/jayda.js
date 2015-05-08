@@ -19,15 +19,14 @@ J = {
       url: "data/tree.json"
     }).done(function(res) {
       self.appendSideNav(res);
-      self.data = res;
       if (window.location.hash) {
-        self.getCurrentRoute();
+        self.getCurrentRoute(res);
       }
     });
   },
 
-  getCurrentRoute: function () {
-    this.getPatterns(window.location.hash.split('#')[1]);
+  getCurrentRoute: function (res) {
+    this.getPatterns(window.location.hash.split('#')[1], res);
   },
 
   updateRoute: function (route) {
@@ -133,19 +132,29 @@ J = {
 
         var scriptRoute = '';
         var promise;
+        var file = '';
 
         if (scripts[i][0]) {
           scriptRoute = scripts[i][0].route
+          file = scripts[i][0].file;
 
           promise = $.ajax({
             url: '../' + scriptRoute,
             async: false
           }).done(function(res) {
-            scriptsArr.push(res);
+            var scriptObj = {};
+            scriptObj.string = res;
+            scriptObj.file = file;
+            // console.log("file:", scriptObj.file);
+            scriptsArr.push(scriptObj);
             return res;
           });
         } else {
-          scriptsArr.push('');
+          var scriptObj = {};
+          scriptObj.string = '';
+          scriptObj.file = '';
+
+          scriptsArr.push(scriptObj);
           promise = '';
         }
 
@@ -169,10 +178,10 @@ J = {
     var patterns = this.parseJade(res);
     $('.side-nav-wrap').append(J.templatizer["side-nav"]({jayda : true, patterns: patterns}));
 
-    this.bindNav();
+    this.bindNav(res);
   },
 
-  bindNav: function () {
+  bindNav: function (res) {
     var self = this;
     $('.side-nav-wrap a').click(function (e) {
       e.preventDefault();
@@ -180,18 +189,18 @@ J = {
       var file = e.target.hash.split('#')[1];
 
       self.updateRoute(file);
-      self.getPatterns(file);
+      self.getPatterns(file, res);
     });
   },
 
-  getPatterns: function (file) {
+  getPatterns: function (file, res) {
     // Prevent pattern duplication
     if (this.currentPattern === file) {return false;}
     this.currentPattern = file;
 
     var tmpl = $.trim(J.templatizer[file].toString());
 
-    this.createObj(tmpl, file);
+    this.createObj(tmpl, file, res);
   },
 
   toSingleLine: function (string) {
@@ -212,23 +221,31 @@ J = {
     return mixinArray;
   },
 
-  createObj: function (tmpl, file) {
+  createObj: function (tmpl, file, res) {
+    var self = this;
     var patternsArr = [],
       mixinArray = this.parseTemplate(tmpl);
 
-    for (var i = 0; i < mixinArray.length; i++) {
-      var patternObj = {};
+    $.when( this.stringifyScripts(res) ).then(
+      function( scripts ) {
+        for (var i = 0; i < mixinArray.length; i++) {
+          var patternObj = {};
 
-      patternObj.title = this.getTitle(mixinArray[i]);
-      patternObj.description = this.getDescription(mixinArray[i]);
-      patternObj.mixinName = this.getMixinName(mixinArray[i], file);
-      patternObj.example = this.getExample(mixinArray[i], file, patternObj.mixinName);
-      patternObj.customArgs = this.getCustomArgs(mixinArray[i], file);
+          patternObj.title = self.getTitle(mixinArray[i]);
+          patternObj.description = self.getDescription(mixinArray[i]);
+          patternObj.mixinName = self.getMixinName(mixinArray[i], file);
+          patternObj.example = self.getExample(mixinArray[i], file, patternObj.mixinName);
+          patternObj.customArgs = self.getCustomArgs(mixinArray[i], file);
+          patternObj.script = _.filter(scripts, function (it) {
+            return it.file === file;
+          })
 
-      patternsArr.push(patternObj);
-    }
+          patternsArr.push(patternObj);
+        }
 
-    this.renderPatternsTmpl(patternsArr);
+        self.renderPatternsTmpl(patternsArr);
+      }
+    );
   },
 
   getTitle: function (str) {
@@ -291,42 +308,37 @@ J = {
 
   renderPatternsTmpl: function (patternsArr) {
     var markup = '';
-    console.log(this.data);
 
-    $.when( this.stringifyScripts(this.data) ).then(
-      function( scripts ) {
-        console.log("scripts", scripts );
 
-        for (var i = 0; i < patternsArr.length; i++) {
-          // TODO: Make into a jade template
-          var title,
-            desc,
-            mixinName,
-            example,
-            code,
-            tmpl;
+    for (var i = 0; i < patternsArr.length; i++) {
+      // TODO: Make into a jade template
+      var title,
+        desc,
+        mixinName,
+        example,
+        code,
+        tmpl,
+        script;
 
-          // console.log(this.data);
-          // console.log(script);
+      title = '<h3>' + patternsArr[i].title + '</h3>';
+      desc = patternsArr[i].description.length === 0 ? '' : '<p>' + patternsArr[i].description + '</p>';
+      example = '<div class="example">' + patternsArr[i].example + '</div>';
+      mixinName = patternsArr[i].mixinName;
+      code = '<pre>' + '+' + mixinName + '(' + patternsArr[i].customArgs + ')' + '</pre>';
+      if (patternsArr[i].script[0]) {
+        script = '<h3>Script</h3><div>' + patternsArr[i].script[0].string + '</div>';
+      }
 
-          title = '<h3>' + patternsArr[i].title + '</h3>';
-          desc = patternsArr[i].description.length === 0 ? '' : '<p>' + patternsArr[i].description + '</p>';
-          example = '<div class="example">' + patternsArr[i].example + '</div>';
-          mixinName = patternsArr[i].mixinName;
-          code = '<pre>' + '+' + mixinName + '(' + patternsArr[i].customArgs + ')' + '</pre>';
-          script = '<h3>Script</h3><div>' + scripts[i] + '</div>';
+      if (!script) {
+        tmpl = title + desc + example + code;
+      } else {
+        tmpl = title + desc + example + code + script;
+      }
 
-          if (scripts[i] === "") {
-            tmpl = title + desc + example + code;
-          } else {
-            tmpl = title + desc + example + code + script;
-          }
+      markup += tmpl;
 
-          markup += tmpl;
-
-        }
-        $('.patterns-wrap').html(markup);
-      });
+    }
+    $('.patterns-wrap').html(markup);
 
   }
 

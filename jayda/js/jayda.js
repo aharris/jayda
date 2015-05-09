@@ -13,6 +13,40 @@ J = {
     this.getTree();
   },
 
+  // --------------------------------
+  // Routing ------------------------
+  // --------------------------------
+
+  getCurrentRoute: function (res) {
+    this.getPatterns(window.location.hash.split('#')[1], res);
+  },
+
+  // --------------------------------
+  // JAYDA CORE ---------------------
+  // --------------------------------
+
+  bindCoreNav: function () {
+    var self = this;
+    $('.jayda-side-nav-core a').click(function (e) {
+      var file = e.target.hash.split('#')[1];
+
+      self.renderCoreTemplate(file);
+    });
+  },
+
+  loadOverview: function () {
+    var overview = J.Jayda.templatizer._overview();
+    this.$parent.html(overview);
+  },
+
+  renderCoreTemplate: function (file) {
+    var tmpl = J.Jayda.templatizer.core["_" + file]();
+    this.$parent.html(tmpl);
+  },
+
+  // --------------------------------
+  // MAIN APP -----------------------
+  // --------------------------------
   getTree: function () {
     var self = this;
     $.ajax({
@@ -25,15 +59,6 @@ J = {
         self.loadOverview();
       }
     });
-  },
-
-  loadOverview: function () {
-    var overview = J.Jayda.templatizer._overview();
-    this.$parent.html(overview);
-  },
-
-  getCurrentRoute: function (res) {
-    this.getPatterns(window.location.hash.split('#')[1], res);
   },
 
   capitalizeFirstLetter: function (str) {
@@ -192,20 +217,6 @@ J = {
 
       self.getPatterns(file, res);
     });
-  },
-
-  bindCoreNav: function () {
-    var self = this;
-    $('.jayda-side-nav-core a').click(function (e) {
-      var file = e.target.hash.split('#')[1];
-
-      self.renderCoreTemplate(file);
-    });
-  },
-
-  renderCoreTemplate: function (file) {
-      var tmpl = J.Jayda.templatizer.core["_" + file]();
-      this.$parent.html(tmpl);
   },
 
   bindNavButton: function () {

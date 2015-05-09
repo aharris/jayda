@@ -26,10 +26,11 @@ gulp.task('stylus', function () {
     .pipe(connect.reload());
 });
 
-// Use gulp-stylint
-// gulp.task('stylint', shell.task([
-//   'stylint ./styl/ -c .stylintrc'
-// ]));
+gulp.task('stylint', function() {
+  var stylint = require('gulp-stylint');
+  return gulp.src(['./app/**/*.styl', './jayda/**/*.styl'])
+    .pipe(stylint({config: '.stylintrc'}))
+});
 
 gulp.task('jade', function() {
   gulp.src(['./app/templates/**/*.jade', '!./app/templates/**/_*.jade'])
@@ -194,7 +195,7 @@ gulp.task('connect', function() {
 });
 
 gulp.task('watch', function () {
-  gulp.watch(['app/styl/**/*.styl', 'app/components/**/*.styl'], ['stylus']);
+  gulp.watch(['app/styl/**/*.styl', 'app/components/**/*.styl'], ['stylus', 'stylint']);
   gulp.watch(['app/fonts/**/*'], ['fonts']);
   gulp.watch(['app/**/*.jade'], ['jade']);
   gulp.watch(['app/components/**/*.jade'], ['tree', 'templatizer']);
@@ -203,7 +204,7 @@ gulp.task('watch', function () {
   // Jayda
   gulp.watch(['jayda/**/*.jade'], ['jayda-jade', 'jayda-templatizer']);
   gulp.watch(['jayda/js/**/*.js'], ['jayda-js']);
-  gulp.watch(['jayda/styl/**/*.styl'], ['jayda-stylus']);
+  gulp.watch(['jayda/styl/**/*.styl'], ['jayda-stylus', 'stylint']);
 });
 
 // --------------------------------------
@@ -231,6 +232,7 @@ gulp.task('default', function(callback){
     [
       'stylus',
       'jayda-stylus',
+      'stylint',
       'jade',
       'jayda-jade',
       'templatizer',

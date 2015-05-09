@@ -343,13 +343,15 @@ J = {
         script;
 
       if (patternsArr[i].script[0]) {
-        script = patternsArr[i].script[0].string;
+        script = patternsArr[i].script[0].string.trim();
       }
 
       markup += J.Jayda.templatizer["_patterns"]["pattern"](title, desc, example, mixinName, customArgs, script);
 
     }
     this.$parent.html(markup);
+
+    Prism.highlightAll();
 
   }
 

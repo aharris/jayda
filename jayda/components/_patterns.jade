@@ -6,11 +6,13 @@ mixin pattern(title, desc, example, mixinName, customArgs, script)
 
   div.example !{example}
 
-  pre +#{mixinName}(#{customArgs})
+  pre
+    code.language-javascript +#{mixinName}(#{customArgs})
 
   if script
     h4 Script
-    pre= script
+    pre
+      code.language-javascript= script
 
 
 // Call Mixin

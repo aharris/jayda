@@ -28,7 +28,7 @@ gulp.task('stylus', function () {
 
 gulp.task('stylint', function() {
   var stylint = require('gulp-stylint');
-  return gulp.src(['./app/**/*.styl', './jayda/**/*.styl'])
+  return gulp.src(['./app/**/*.styl', './jayda/**/*.styl', '!./jayda/styl/lib**/*.styl'])
     .pipe(stylint({config: '.stylintrc'}))
 });
 

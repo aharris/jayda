@@ -36,10 +36,6 @@ J = {
     this.getPatterns(window.location.hash.split('#')[1], res);
   },
 
-  updateRoute: function (route) {
-    window.location.hash = route;
-  },
-
   capitalizeFirstLetter: function (str) {
     return str.charAt(0).toUpperCase() + str.slice(1);
   },
@@ -184,20 +180,32 @@ J = {
     $('.jayda-side-nav-wrap').append(J.Jayda.templatizer["side-nav"]["side-nav"]({jayda : true, patterns: patterns}));
 
     this.bindNav(res);
+    this.bindCoreNav();
     this.bindNavButton();
     this.bindOverlay();
   },
 
   bindNav: function (res) {
     var self = this;
-    $('.jayda-side-nav-wrap a').click(function (e) {
-      e.preventDefault();
-
+    $('.jayda-side-nav-components a').click(function (e) {
       var file = e.target.hash.split('#')[1];
 
-      self.updateRoute(file);
       self.getPatterns(file, res);
     });
+  },
+
+  bindCoreNav: function () {
+    var self = this;
+    $('.jayda-side-nav-core a').click(function (e) {
+      var file = e.target.hash.split('#')[1];
+
+      self.renderCoreTemplate(file);
+    });
+  },
+
+  renderCoreTemplate: function (file) {
+      var tmpl = J.Jayda.templatizer.core["_" + file]();
+      this.$parent.html(tmpl);
   },
 
   bindNavButton: function () {
@@ -219,6 +227,11 @@ J = {
   getPatterns: function (file, res) {
     // Prevent pattern duplication
     if (this.currentPattern === file) {return false;}
+
+    if (!J.templatizer[file]) {
+      return this.renderCoreTemplate(file);
+    }
+
     this.currentPattern = file;
 
     var tmpl = $.trim(J.templatizer[file].toString());

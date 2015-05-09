@@ -43,11 +43,6 @@ gulp.task('jade', function() {
     .pipe(connect.reload());
 });
 
-// gulp.task('js', function () {
-//   gulp.src('app/js/**/*.js')
-//     .pipe(gulp.dest('dest/js'));
-// });
-
 gulp.task('js', function () {
   var browserify = require('browserify');
   var source = require('vinyl-source-stream');
@@ -99,6 +94,11 @@ gulp.task('js', function () {
 
   // finally, we return the stream, so gulp knows when this task is done.
   return bundledStream;
+});
+
+gulp.task('fonts', function () {
+  return gulp.src('app/fonts/**/*')
+    .pipe(gulp.dest('dest/fonts'));
 });
 
 gulp.task('tree', function () {
@@ -195,7 +195,8 @@ gulp.task('connect', function() {
 
 gulp.task('watch', function () {
   gulp.watch(['app/styl/**/*.styl', 'app/components/**/*.styl'], ['stylus']);
-  gulp.watch(['./app/**/*.jade'], ['jade']);
+  gulp.watch(['app/fonts/**/*'], ['fonts']);
+  gulp.watch(['app/**/*.jade'], ['jade']);
   gulp.watch(['app/components/**/*.jade'], ['tree', 'templatizer']);
   gulp.watch(['app/js/**/*.js', 'app/components/**/*.js'], ['js', 'jayda-get-js']);
 
@@ -221,7 +222,8 @@ gulp.task('default', function(callback){
       'libs',
       'js',
       'jayda-js',
-      'jayda-get-js'
+      'jayda-get-js',
+      'fonts'
     ],
     [
     'tree'

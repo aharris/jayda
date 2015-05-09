@@ -6,7 +6,7 @@ J = {
 
   init: function () {
     // Persistant vars
-    this.$parent = $('.patterns-wrap');
+    this.$parent = $('.jayda-patterns-wrap');
     this.currentPattern = '';
 
     // Initial function calls
@@ -181,20 +181,38 @@ J = {
 
   appendSideNav: function (res){
     var patterns = this.parseJade(res);
-    $('.side-nav-wrap').append(J.templatizer["side-nav"]({jayda : true, patterns: patterns}));
+    $('.jayda-side-nav-wrap').append(J.Jayda.templatizer["side-nav"]["side-nav"]({jayda : true, patterns: patterns}));
 
     this.bindNav(res);
+    this.bindNavButton();
+    this.bindOverlay();
   },
 
   bindNav: function (res) {
     var self = this;
-    $('.side-nav-wrap a').click(function (e) {
+    $('.jayda-side-nav-wrap a').click(function (e) {
       e.preventDefault();
 
       var file = e.target.hash.split('#')[1];
 
       self.updateRoute(file);
       self.getPatterns(file, res);
+    });
+  },
+
+  bindNavButton: function () {
+    $('.jayda-nav-button').click(function(){
+      $('.jayda-nav-button').toggleClass( 'jayda-expanded' );
+      $( '.jayda-side-nav-wrap' ).toggleClass( 'jayda-expanded' );
+      $( '.jayda-overlay' ).fadeToggle();
+    });
+  },
+
+  bindOverlay: function () {
+    $( '.jayda-overlay' ).click(function () {
+      $('.jayda-nav-button' ).toggleClass( 'jayda-expanded' );
+      $( '.jayda-side-nav-wrap' ).toggleClass( 'jayda-expanded' );
+      $( '.jayda-overlay' ).fadeToggle();
     });
   },
 
@@ -331,7 +349,7 @@ J = {
       markup += J.Jayda.templatizer["_patterns"]["pattern"](title, desc, example, mixinName, customArgs, script);
 
     }
-    $('.patterns-wrap').html(markup);
+    this.$parent.html(markup);
 
   }
 

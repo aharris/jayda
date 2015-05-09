@@ -11,17 +11,23 @@ html.jayda(lang="en")
     link(rel="stylesheet" type="text/css" href="../css/main.css")
 
   body
-    .container
-      h1
-        a(href="./") Jayda
+    header.jayda-header
+      .jayda-container
+        button.jayda-nav-button
+          span.jayda-nav-button-row
+          span.jayda-nav-button-row
+          span.jayda-nav-button-row
+        h1.jayda-header-logo
+          a.jayda-header-logo-link(href="./") Jayda
 
-      .side-nav-wrap
-        //- +side-nav() loaded dynamically
+    .jayda-side-nav-wrap.jayda-container
+      //- +side-nav() loaded dynamically
 
-      hr
-
-      .patterns-wrap
+    .jayda-container
+      .jayda-patterns-wrap
         //- Patterns loaded dynamically
+
+    .jayda-overlay(style="display: none")
 
     script(type="text/javascript" src="../bower_components/jQuery/dist/jquery.min.js")
     script(type="text/javascript" src="../bower_components/underscore/underscore-min.js")

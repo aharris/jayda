@@ -1,3 +1,86 @@
+*
+  box-sizing border-box
+
 body
   background $white
 
+.jayda-container
+  padding 1em
+  cf()
+
+
+// Header
+.jayda-header
+  background $brand-primary
+  position relative
+  z-index 1000
+
+.jayda-header-logo
+  margin 0
+  float left
+
+.jayda-header-logo-link
+  color $white
+
+.jayda-nav-button
+  -webkit-appearance none
+  border 0
+  background none
+  float left
+  margin 1em 2em 1em 1em
+
+  &.jayda-expanded
+    .jayda-nav-button-row
+      &:first-child
+        transform rotate3d(0,0,1,45deg) translate3d(5px,6px,0)
+
+      &:nth-child(2)
+        opacity 0
+
+      &:last-child
+        transform rotate3d(0,0,1,-45deg) translate3d(5px,-6px,0)
+
+.jayda-nav-button-row
+  width 30px
+  height 4px
+  background-color $white
+  margin 4px 0
+  display block
+  transition(all 200ms)
+
+// Nav
+.jayda-side-nav-wrap
+  width 240px
+  height 100%
+  transform translate3d(-@width,0,0)
+  background-color $brand-primary
+  position absolute
+  transition(all 200ms)
+  z-index 1000
+
+  &.jayda-expanded
+    transform translate3d(0,0,0)
+
+.jayda-side-nav-list-item
+  border-bottom 1px solid rgba(255,255,255,.3)
+
+  &:first-child
+    border-top 1px solid rgba(255,255,255,.3)
+
+.jayda-side-nav-link
+  color $white
+  display block
+  padding 1em
+
+  &:hover
+    background-color darken(#7190d6, 4%)
+
+.jayda-overlay
+  position fixed
+  top 0
+  left 0
+  right 0
+  height 120vh
+  background-color rgba(0, 0, 0, 0.5)
+  z-index 997
+  will-change opacity

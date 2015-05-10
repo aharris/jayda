@@ -17,22 +17,20 @@ J = {
   // Routing ------------------------
   // --------------------------------
 
-  getCurrentRoute: function (res) {
-    this.getPatterns(window.location.hash.split('#')[1], res);
+  router: function () {
+    var routes = {
+      'overview': this.loadOverview,
+      ':route': this.getPatterns
+    };
+
+    var router = Router(routes);
+
+    router.init();
   },
 
   // --------------------------------
   // JAYDA CORE ---------------------
   // --------------------------------
-
-  bindCoreNav: function () {
-    var self = this;
-    $('.jayda-side-nav-core a').click(function (e) {
-      var file = e.target.hash.split('#')[1];
-
-      self.renderCoreTemplate(file);
-    });
-  },
 
   loadOverview: function () {
     var overview = J.Jayda.templatizer._overview();
@@ -54,10 +52,10 @@ J = {
     $.ajax({
       url: "data/tree.json"
     }).done(function(res) {
+      self.model = res;
       self.appendSideNav(res);
-      if (window.location.hash) {
-        self.getCurrentRoute(res);
-      } else {
+      self.router();
+      if (!window.location.hash) {
         self.loadOverview();
       }
     });
@@ -206,19 +204,8 @@ J = {
     var patterns = this.parseJade(res);
     $('.jayda-side-nav-wrap').append(J.Jayda.templatizer["side-nav"]["side-nav"]({jayda : true, patterns: patterns}));
 
-    this.bindNav(res);
-    this.bindCoreNav();
     this.bindNavButton();
     this.bindOverlay();
-  },
-
-  bindNav: function (res) {
-    var self = this;
-    $('.jayda-side-nav-components a').click(function (e) {
-      var file = e.target.hash.split('#')[1];
-
-      self.getPatterns(file, res);
-    });
   },
 
   bindNavButton: function () {
@@ -237,19 +224,20 @@ J = {
     });
   },
 
-  getPatterns: function (file, res) {
+  getPatterns: function (file) {
+    res = J.model;
     // Prevent pattern duplication
-    if (this.currentPattern === file) {return false;}
+    if (J.currentPattern === file) {return false;}
 
     if (!J.templatizer[file]) {
-      return this.renderCoreTemplate(file);
+      return J.renderCoreTemplate(file);
     }
 
-    this.currentPattern = file;
+    J.currentPattern = file;
 
     var tmpl = $.trim(J.templatizer[file].toString());
 
-    this.createObj(tmpl, file, res);
+    J.createObj(tmpl, file, res);
   },
 
   toSingleLine: function (string) {

@@ -1,62 +1,63 @@
 // Caption: Cards are a convenient means of displaying content composed of different types of objects. They’re also well-suited for presenting similar objects whose size or supported actions can vary considerably, like photos with captions of variable length.
-
-mixin card-basic(it)
-  .row
-    .col.s12.m6
-      .card.blue-grey.darken-1
-        .card-content.white-text
-          span.card-title= it.title
-          p= it.description
-
-        .card-action
-          each link in it.links
-            a(href='##{link.href}')= link.text
-
-mixin card-image(it)
-  .row
-    .col.s12.m7
-      .card
-        .card-image
-          img(src="#{it.image}")
-          span.card-title= it.title
-        .card-content
-          p= it.description
-        .card-action
-          each link in it.links
-            a(href='##{link.href}')= link.text
-
-mixin card-reveal(it)
-  .card
-    .card-image.waves-effect.waves-block.waves-light
-      img.activator(src='#{it.image}')
-    .card-content
-      span.card-title.activator.grey-text.text-darken-4
-        | Card Title
-        i.mdi-navigation-more-vert.right
-      p
-        a(href='#') This is a link
-    .card-reveal
-      span.card-title.grey-text.text-darken-4
-        | Card Title
-        i.mdi-navigation-close.right
-      p
-        | Here is some more information about this product that is only revealed once clicked on.
-
-mixin card-panel(it)
+mixin card(it)
   .row
     .col.s12.m5
-      .card-panel.teal
-        span.white-text
-          | I am a very simple card. I am good at containing small bits of information.
-          | I am convenient because I require little markup to use effectively. I am similar to what is called a panel in other frameworks.
+      if it.title
+        .card(class="#{it.bgColor}")
+          if it.image
+            if it.reveal
+              .card-image.waves-effect.waves-block.waves-light
+                img.activator(src="#{it.image}")
+            else
+              .card-image
+                img(src="#{it.image}")
+                span.card-title= it.title
 
+          .card-content(class="#{it.descriptionColor}-text")
+            if it.reveal
+              span.card-title.activator.grey-text.text-darken-4= it.title
+                i.mdi-navigation-more-vert.right
+              each link in it.links
+                p
+                  a(href='##{link.href}')= link.text
 
+            if !it.image
+              span.card-title= it.title
+
+            if !it.reveal
+              p= it.description
+
+          if it.links && !it.reveal
+            .card-action
+              each link in it.links
+                a(href='##{link.href}')= link.text
+
+          if it.reveal
+            .card-reveal
+              span.card-title.grey-text.text-darken-4= it.title
+                i.mdi-navigation-close.right
+              p= it.description
+
+      else
+        .card-panel(class="#{it.bgColor}")
+          span(class="#{it.descriptionColor}-text") !{it.description}
 
 
 if patternLibrary
+  // Title: Card panel
+  // hideScript: true
+  // Description: For a simpler card with less markup, try using a card panel which just has padding and a shadow effect.
+  +card({
+    bgColor: "teal",
+    descriptionColor: "white",
+    description: "I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively. I am similar to what is called a panel in other frameworks."
+  })
+
   // Title: Basic Card
   // hideScript: true
-  +card-basic({
+  +card({
+    bgColor: "blue-grey darken-1",
+    descriptionColor: "white",
     title: "Card Title",
     description: "I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.",
     links: [
@@ -74,7 +75,7 @@ if patternLibrary
   // Title: Image Card
   // Description: Here is the standard card with an image thumbnail.
   // hideScript: true
-  +card-image({
+  +card({
     title: "Card Title",
     image: "http://dummyimage.com/600x400/7190d6/fff.png&text=J",
     description: "I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.",
@@ -92,7 +93,8 @@ if patternLibrary
 
   // Title: Reveal Card
   // Description: Here you can add a card that reveals more information once clicked. Just add the <code>card-reveal</code> div with a <code>span.card-title</code> inside to make this work. Add the class activator to an element inside the card to allow it to open the card reveal.
-  +card-reveal({
+  +card({
+    reveal: true,
     title: "Card Title",
     image: "http://dummyimage.com/600x400/7190d6/fff.png&text=J",
     description: "I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.",
@@ -100,19 +102,8 @@ if patternLibrary
       {
         href: "#",
         text: "This is a link"
-      },
-      {
-        href: "#",
-        text: "This is a link"
       }
     ]
-  })
-
-  // Title: Card panel
-  // hideScript: true
-  // Description: For a simpler card with less markup, try using a card panel which just has padding and a shadow effect.
-  +card-panel({
-    description: "I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively. I am similar to what is called a panel in other frameworks."
   })
 
 

@@ -281,7 +281,7 @@ J = {
         for (var i = 0; i < mixinArray.length; i++) {
           var patternObj = {};
 
-          patternObj.title = self.parseComments(mixinArray[i], '<!-- Title:');
+          patternObj.title = self.getTitle(mixinArray[i]);
           patternObj.description = self.parseComments(mixinArray[i], '<!-- Description:');
           patternObj.mixinName = self.getMixinName(mixinArray[i], file);
           patternObj.example = self.getExample(mixinArray[i], file, patternObj.mixinName);
@@ -305,6 +305,10 @@ J = {
     }
 
     return str.split(match)[1].split('-->')[0].trim();
+  },
+
+  getTitle: function (str) {
+    return str.split('-->')[0].trim() || '';
   },
 
   hideScript: function (val) {

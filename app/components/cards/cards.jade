@@ -15,15 +15,15 @@ mixin card-basic(it)
 mixin card-image(it)
   .row
     .col.s12.m7
-        .card
-          .card-image
-            img(src="#{it.image}")
-            span.card-title= it.title
-          .card-content
-            p= it.description
-          .card-action
-            each link in it.links
-              a(href='##{link.href}')= link.text
+      .card
+        .card-image
+          img(src="#{it.image}")
+          span.card-title= it.title
+        .card-content
+          p= it.description
+        .card-action
+          each link in it.links
+            a(href='##{link.href}')= link.text
 
 mixin card-reveal(it)
   .card

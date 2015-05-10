@@ -10,11 +10,42 @@ mixin card-basic(it)
           each link in it.links
             a(href='##{link.href}')= link.text
 
+mixin card-image(it)
+  .row
+    .col.s12.m7
+        .card
+          .card-image
+            img(src="#{it.image}")
+            span.card-title= it.title
+          .card-content
+            p= it.description
+          .card-action
+            each link in it.links
+              a(href='##{link.href}')= link.text
+
 if patternLibrary
   // Title: Basic Card
   // Description: Cards
   +card-basic({
     title: "Card Title",
+    description: "I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.",
+    links: [
+      {
+        href: "#",
+        text: "This is a link"
+      },
+      {
+        href: "#",
+        text: "This is a link"
+      }
+    ]
+  })
+
+  // Title: Image Card
+  // Description: Here is the standard card with an image thumbnail.
+  +card-image({
+    title: "Card Title",
+    image: "http://dummyimage.com/600x400/7190d6/fff.png&text=J",
     description: "I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.",
     links: [
       {

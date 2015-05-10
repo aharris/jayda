@@ -330,7 +330,7 @@ J = {
   getValidJSON: function (str) {
     var string;
 
-    string = str.replace((/([\w]+)(:)/g), "\"$1\"$2");
+    string = str.replace((/(\w+)(:)\s*(?='|"|[0-9+\-.]+|true|false|\[|{)/gi), "\"$1\"$2");
 
     string = '[' + string + ']';
     string = JSON.parse(string) || string;

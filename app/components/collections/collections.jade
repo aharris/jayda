@@ -1,7 +1,11 @@
 // Caption: Collections allow you to group list objects together.
 
 mixin collection(it)
-  ul.collection
+  - headerClass = it.header ? 'with-header' : ''
+  ul.collection(class="#{headerClass}")
+    if it.header
+      li.collection-header
+        h4= it.header
     each item in it.items
       if item.href
         - activeClass = item.active ? 'active' : ''
@@ -30,6 +34,30 @@ if patternLibrary
 
   // Title: Links
   +collection({
+    items: [
+      {
+        href: "#",
+        text: "Alvin"
+      },
+      {
+        href: "#",
+        active: true,
+        text: "James"
+      },
+      {
+        href: "#",
+        text: "Alvin"
+      },
+      {
+        href: "#",
+        text: "Alvin"
+      }
+    ]
+  })
+
+  // Title: Headers
+  +collection({
+    header: "First Names",
     items: [
       {
         href: "#",

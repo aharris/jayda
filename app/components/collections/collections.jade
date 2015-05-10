@@ -3,16 +3,34 @@
 mixin collection(it)
   - headerClass = it.header ? 'with-header' : ''
   ul.collection(class="#{headerClass}")
+
     if it.header
       li.collection-header
         h4= it.header
-    each item in it.items
-      if item.href
-        - activeClass = item.active ? 'active' : ''
-        a.collection-item(href="#{item.href}" class="#{activeClass}")= item.text
-      else
-        li.collection-item= item.text
 
+    each item in it.items
+      if it.secondaryContent
+        li.collection-item
+          div
+            | #{item.text}
+            a.secondary-content(href='#{item.href}')
+              i.mdi-content-send
+
+      else
+        if item.href
+          - activeClass = item.active ? 'active' : ''
+          a.collection-item(href="#{item.href}" class="#{activeClass}")= item.text
+
+        else
+          li.collection-item= item.text
+
+//- <li class="collection-item">
+//-   <div>Alvin
+//-     <a href="#!" class="secondary-content">
+//-       <i class="mdi-content-send"></i>
+//-     </a>
+//-   </div>
+//- </li>
 if patternLibrary
   // Title: Collection
   +collection({
@@ -58,6 +76,31 @@ if patternLibrary
   // Title: Headers
   +collection({
     header: "First Names",
+    items: [
+      {
+        href: "#",
+        text: "Alvin"
+      },
+      {
+        href: "#",
+        active: true,
+        text: "James"
+      },
+      {
+        href: "#",
+        text: "Alvin"
+      },
+      {
+        href: "#",
+        text: "Alvin"
+      }
+    ]
+  })
+
+  // Title: Secondary Content
+  +collection({
+    header: "First Names",
+    secondaryContent: true,
     items: [
       {
         href: "#",

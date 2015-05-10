@@ -2,7 +2,7 @@ mixin pattern(title, desc, example, mixinName, customArgs, script)
   h3= title
 
   if desc
-    p= desc
+    p.jayda-example-description !{desc}
 
   div.example !{example}
 

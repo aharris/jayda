@@ -25,6 +25,25 @@ mixin card-image(it)
             each link in it.links
               a(href='##{link.href}')= link.text
 
+mixin card-reveal(it)
+  .card
+    .card-image.waves-effect.waves-block.waves-light
+      img.activator(src='#{it.image}')
+    .card-content
+      span.card-title.activator.grey-text.text-darken-4
+        | Card Title
+        i.mdi-navigation-more-vert.right
+      p
+        a(href='#') This is a link
+    .card-reveal
+      span.card-title.grey-text.text-darken-4
+        | Card Title
+        i.mdi-navigation-close.right
+      p
+        | Here is some more information about this product that is only revealed once clicked on.
+
+
+
 if patternLibrary
   // Title: Basic Card
   +card-basic({
@@ -59,3 +78,27 @@ if patternLibrary
       }
     ]
   })
+
+  // Title: Reveal Card
+  // Description: Here you can add a card that reveals more information once clicked. Just add the <code>card-reveal</code> div with a <code>span.card-title</code> inside to make this work. Add the class activator to an element inside the card to allow it to open the card reveal.
+  +card-reveal({
+    title: "Card Title",
+    image: "http://dummyimage.com/600x400/7190d6/fff.png&text=J",
+    description: "I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.",
+    links: [
+      {
+        href: "#",
+        text: "This is a link"
+      },
+      {
+        href: "#",
+        text: "This is a link"
+      }
+    ]
+  })
+
+
+
+
+
+

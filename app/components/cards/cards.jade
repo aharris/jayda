@@ -1,0 +1,29 @@
+mixin card-basic(it)
+  .row
+    .col.s12.m6
+      .card.blue-grey.darken-1
+        .card-content.white-text
+          span.card-title= it.title
+          p= it.description
+
+        .card-action
+          each link in it.links
+            a(href='##{link.href}')= link.text
+
+if patternLibrary
+  // Title: Basic Card
+  // Description: Cards
+  +card-basic({
+    title: "Card Title",
+    description: "I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.",
+    links: [
+      {
+        href: "#",
+        text: "This is a link"
+      },
+      {
+        href: "#",
+        text: "This is a link"
+      }
+    ]
+  })

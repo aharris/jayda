@@ -42,6 +42,8 @@ J = {
   renderCoreTemplate: function (file) {
     var tmpl = J.Jayda.templatizer.core["_" + file]();
     this.$parent.html(tmpl);
+
+    Prism.highlightAll();
   },
 
   // --------------------------------

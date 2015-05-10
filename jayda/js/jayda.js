@@ -229,11 +229,11 @@ J = {
     // Prevent pattern duplication
     if (J.currentPattern === file) {return false;}
 
+    J.currentPattern = file;
+
     if (!J.templatizer[file]) {
       return J.renderCoreTemplate(file);
     }
-
-    J.currentPattern = file;
 
     var tmpl = $.trim(J.templatizer[file].toString());
 

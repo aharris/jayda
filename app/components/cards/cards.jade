@@ -22,7 +22,8 @@ mixin card(it)
                   a(href='##{link.href}')= link.text
 
             if !it.image
-              span.card-title= it.title
+              - it.titleColor = it.titleColor || 'grey-text text-darken-4'
+              span.card-title(class="#{it.titleColor}-text")= it.title
 
             if !it.reveal
               p= it.description

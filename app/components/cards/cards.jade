@@ -11,7 +11,7 @@ mixin card(it)
             else
               .card-image
                 img(src="#{it.image}")
-                span.card-title= it.title
+                span.card-title.white-text= it.title
 
           .card-content(class="#{it.descriptionColor}-text")
             if it.reveal
@@ -59,6 +59,7 @@ if patternLibrary
   +card({
     bgColor: "blue-grey darken-1",
     descriptionColor: "white",
+    titleColor: "white",
     title: "Card Title",
     description: "I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.",
     links: [
@@ -78,6 +79,7 @@ if patternLibrary
   // hideScript: true
   +card({
     title: "Card Title",
+    titleColor: "white",
     image: "http://dummyimage.com/600x400/7190d6/fff.png&text=J",
     description: "I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.",
     links: [
@@ -97,6 +99,7 @@ if patternLibrary
   +card({
     reveal: true,
     title: "Card Title",
+    titleColor: "white",
     image: "http://dummyimage.com/600x400/7190d6/fff.png&text=J",
     description: "I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.",
     links: [

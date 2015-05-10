@@ -4,33 +4,36 @@ mixin collection(it)
   - headerClass = it.header ? 'with-header' : ''
   ul.collection(class="#{headerClass}")
 
-    if it.header
-      li.collection-header
-        h4= it.header
+    if it.avatar
+      each item in it.items
+        li.collection-item.avatar
+          img.circle(src='#{item.image}', alt='')
+          span.title= item.title
+          p !{item.text}
+          a.secondary-content(href='#{item.href}')
+            i.mdi-action-grade
 
-    each item in it.items
-      if it.secondaryContent
-        li.collection-item
-          div
-            | #{item.text}
-            a.secondary-content(href='#{item.href}')
-              i.mdi-content-send
+    else
+      if it.header
+        li.collection-header
+          h4= it.header
 
-      else
-        if item.href
-          - activeClass = item.active ? 'active' : ''
-          a.collection-item(href="#{item.href}" class="#{activeClass}")= item.text
+      each item in it.items
+        if it.secondaryContent
+          li.collection-item
+            div
+              | #{item.text}
+              a.secondary-content(href='#{item.href}')
+                i.mdi-content-send
 
         else
-          li.collection-item= item.text
+          if item.href
+            - activeClass = item.active ? 'active' : ''
+            a.collection-item(href="#{item.href}" class="#{activeClass}")= item.text
 
-//- <li class="collection-item">
-//-   <div>Alvin
-//-     <a href="#!" class="secondary-content">
-//-       <i class="mdi-content-send"></i>
-//-     </a>
-//-   </div>
-//- </li>
+          else
+            li.collection-item= item.text
+
 if patternLibrary
   // Title: Collection
   +collection({
@@ -118,6 +121,25 @@ if patternLibrary
       {
         href: "#",
         text: "Alvin"
+      }
+    ]
+  })
+
+  // Title: Avatar Content
+  +collection({
+    avatar: true,
+    items: [
+      {
+        href: "#",
+        title: "Title",
+        text: "First line</br>Second Line",
+        image: "../images/avatars/avatar_1.jpg"
+      },
+      {
+        href: "#",
+        title: "Title",
+        text: "First line</br>Second Line",
+        image: "../images/avatars/avatar_2.jpg"
       }
     ]
   })

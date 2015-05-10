@@ -161,6 +161,11 @@ gulp.task('jayda-templatizer', function() {
     });
 });
 
+gulp.task('jayda-images', function() {
+  gulp.src('jayda/images/**/*')
+    .pipe(gulp.dest('dest/images'));
+});
+
 // --------------------------------------
 // Tests --------------------------------
 // --------------------------------------
@@ -205,6 +210,7 @@ gulp.task('watch', function () {
   gulp.watch(['jayda/**/*.jade'], ['jayda-jade', 'jayda-templatizer']);
   gulp.watch(['jayda/js/**/*.js'], ['jayda-js']);
   gulp.watch(['jayda/styl/**/*.styl'], ['jayda-stylus', 'stylint']);
+  gulp.watch(['jayda/images/**/*'], ['jayda-images']);
 });
 
 // --------------------------------------
@@ -224,7 +230,8 @@ gulp.task('default', function(callback){
       'js',
       'jayda-js',
       'jayda-get-js',
-      'fonts'
+      'fonts',
+      'jayda-images'
     ],
     [
     'tree'

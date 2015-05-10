@@ -1,10 +1,52 @@
-mixin collection()
+// Caption: Collections allow you to group list objects together.
+
+mixin collection(it)
   ul.collection
-    li.collection-item Alvin
-    li.collection-item Alvin
-    li.collection-item Alvin
-    li.collection-item Alvin
+    each item in it.items
+      if item.href
+        - activeClass = item.active ? 'active' : ''
+        a.collection-item(href="#{item.href}" class="#{activeClass}")= item.text
+      else
+        li.collection-item= item.text
 
 if patternLibrary
   // Title: Collection
-  +collection()
+  +collection({
+    items: [
+      {
+        text: "Alvin"
+      },
+      {
+        text: "James"
+      },
+      {
+        text: "Alvin"
+      },
+      {
+        text: "Alvin"
+      }
+    ]
+  })
+
+  // Title: Links
+  +collection({
+    items: [
+      {
+        href: "#",
+        text: "Alvin"
+      },
+      {
+        href: "#",
+        active: true,
+        text: "James"
+      },
+      {
+        href: "#",
+        text: "Alvin"
+      },
+      {
+        href: "#",
+        text: "Alvin"
+      }
+    ]
+  })

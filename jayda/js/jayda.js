@@ -378,7 +378,7 @@ J = {
         example = patternsArr[i].example,
         mixinName = patternsArr[i].mixinName,
         customArgs = patternsArr[i].customArgs,
-        script;
+        script = null;
 
       if (patternsArr[i].script[0] && !patternsArr[i].hideScript) {
         script = patternsArr[i].script[0].string.trim();

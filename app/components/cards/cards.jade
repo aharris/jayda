@@ -42,6 +42,15 @@ mixin card-reveal(it)
       p
         | Here is some more information about this product that is only revealed once clicked on.
 
+mixin card-panel(it)
+  .row
+    .col.s12.m5
+      .card-panel.teal
+        span.white-text
+          | I am a very simple card. I am good at containing small bits of information.
+          | I am convenient because I require little markup to use effectively. I am similar to what is called a panel in other frameworks.
+
+
 
 
 if patternLibrary
@@ -99,6 +108,12 @@ if patternLibrary
     ]
   })
 
+  // Title: Card panel
+  // hideScript: true
+  // Description: For a simpler card with less markup, try using a card panel which just has padding and a shadow effect.
+  +card-panel({
+    description: "I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively. I am similar to what is called a panel in other frameworks."
+  })
 
 
 

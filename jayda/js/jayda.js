@@ -281,14 +281,15 @@ J = {
         for (var i = 0; i < mixinArray.length; i++) {
           var patternObj = {};
 
-          patternObj.title = self.getTitle(mixinArray[i]);
-          patternObj.description = self.getDescription(mixinArray[i]);
+          patternObj.title = self.parseComments(mixinArray[i], '<!-- Title:');
+          patternObj.description = self.parseComments(mixinArray[i], '<!-- Description:');
           patternObj.mixinName = self.getMixinName(mixinArray[i], file);
           patternObj.example = self.getExample(mixinArray[i], file, patternObj.mixinName);
           patternObj.customArgs = self.getCustomArgs(mixinArray[i], file);
           patternObj.script = _.filter(scripts, function (it) {
             return it.file === file;
           })
+          patternObj.hideScript = self.hideScript(mixinArray[i]);
 
           patternsArr.push(patternObj);
         }
@@ -298,23 +299,26 @@ J = {
     );
   },
 
+  parseComments: function (str, match) {
+    if (!str.split(match)[1] || !str.split(match)[1].split('-->')[0]) {
+      return '';
+    }
+
+    return str.split(match)[1].split('-->')[0].trim();
+  },
+
+  hideScript: function (val) {
+    if (val.split('<!-- hideScript:')[1] && val.split('<!-- hideScript:')[1].split('-->')[0]) {
+      return !!val.split('<!-- hideScript:')[1].split('-->')[0].trim();
+    }
+    return false;
+  },
+
   getCaption: function (tmpl) {
     if (tmpl.split('<!-- Caption:')[1] && tmpl.split('<!-- Caption:')[1].split('-->')[0]) {
       return tmpl.split('<!-- Caption:')[1].split('-->')[0].trim();
     }
     return '';
-  },
-
-  getTitle: function (str) {
-    return str.split('-->')[0].trim() || '';
-  },
-
-  getDescription: function (str) {
-    var descID = '<!-- Description: ';
-
-    if (str.match(descID) === null) { return ''; }
-
-    return str.substring(str.indexOf(descID) + descID.length, str.lastIndexOf('-->')) || '';
   },
 
   getMixinName: function (str, file) {
@@ -376,7 +380,7 @@ J = {
         customArgs = patternsArr[i].customArgs,
         script;
 
-      if (patternsArr[i].script[0]) {
+      if (patternsArr[i].script[0] && !patternsArr[i].hideScript) {
         script = patternsArr[i].script[0].string.trim();
       }
 

@@ -256,12 +256,12 @@ J = {
     return string.replace(/\s+/g, ' ');
   },
 
-  parseTemplate: function(tmpl) {
+  getMixins: function(tmpl) {
     var mixinstring,
-      mixinArray;
+      mixinArray,
+      caption;
 
     tmpl = this.toSingleLine(tmpl);
-
     tmpl = tmpl.split('if (patternLibrary) {')[1] || '';
     mixinstring = tmpl.match(/(buf.push)([\s\S]*)(\)\)\;)/g);
     mixinArray = mixinstring[0].split('<!-- Title:');
@@ -273,7 +273,8 @@ J = {
   createObj: function (tmpl, file, res) {
     var self = this;
     var patternsArr = [],
-      mixinArray = this.parseTemplate(tmpl);
+      mixinArray = this.getMixins(tmpl),
+      caption = this.getCaption(tmpl);
 
     $.when( this.stringifyScripts(res) ).then(
       function( scripts ) {
@@ -292,9 +293,16 @@ J = {
           patternsArr.push(patternObj);
         }
 
-        self.renderPatternsTmpl(patternsArr);
+        self.renderPatternsTmpl(patternsArr, caption, file);
       }
     );
+  },
+
+  getCaption: function (tmpl) {
+    if (tmpl.split('<!-- Caption:')[1] && tmpl.split('<!-- Caption:')[1].split('-->')[0]) {
+      return tmpl.split('<!-- Caption:')[1].split('-->')[0].trim();
+    }
+    return '';
   },
 
   getTitle: function (str) {
@@ -355,9 +363,9 @@ J = {
     return snippet;
   },
 
-  renderPatternsTmpl: function (patternsArr) {
-    var markup = '';
-
+  renderPatternsTmpl: function (patternsArr, caption, file) {
+    var markup = '',
+      sectionTitle = this.toTitleCase(file);
 
     for (var i = 0; i < patternsArr.length; i++) {
 
@@ -375,7 +383,11 @@ J = {
       markup += J.Jayda.templatizer["_patterns"]["pattern"](title, desc, example, mixinName, customArgs, script);
 
     }
-    this.$parent.html(markup);
+
+    captionTmpl = J.Jayda.templatizer["_pattern_header"]({title: sectionTitle, caption: caption});
+
+    this.$parent.html(captionTmpl);
+    this.$parent.append(markup);
 
     Prism.highlightAll();
 

@@ -35,9 +35,6 @@ gulp.task('stylint', function() {
 gulp.task('jade', function() {
   gulp.src(['./app/templates/**/*.jade', '!./app/templates/**/_*.jade'])
     .pipe(jadeGlobbing())
-    .pipe(data(function() {
-      return require('./dest/jayda/data/' + 'tree' + '.json');
-    }))
     .pipe(jade())
     .on('error', gutil.log)
     .pipe(gulp.dest('dest'))
@@ -66,15 +63,18 @@ gulp.task('js', function () {
     .pipe(buffer())
     .pipe(sourcemaps.init({loadMaps: true}))
       // Add gulp plugins to the pipeline here.
-      .pipe(uglify())
-      .on('error', gutil.log)
+    .pipe(uglify())
+    .on('error', gutil.log)
     .pipe(sourcemaps.write('./'))
     .pipe(gulp.dest('./dest/js/'))
     .pipe(connect.reload());
 
   // "globby" replaces the normal "gulp.src" as Browserify
   // creates it's own readable stream.
-  globby(['./app/js/**/*.js', './app/components/**/*.js'], function(err, entries) {
+  globby([
+    './app/js/**/*.js',
+    './app/components/**/*.js'
+  ], function(err, entries) {
     // ensure any errors from globby are handled
     if (err) {
       bundledStream.emit('error', err);
@@ -144,19 +144,79 @@ gulp.task('jayda-stylus', function () {
     .pipe(connect.reload());
 });
 
+// gulp.task('jayda-js', function () {
+//   gulp.src('jayda/js/**/*.js')
+//     .pipe(gulp.dest('dest/jayda/js'));
+// });
+
 gulp.task('jayda-js', function () {
-  gulp.src('jayda/js/**/*.js')
-    .pipe(gulp.dest('dest/jayda/js'));
+  var browserify = require('browserify');
+  var source = require('vinyl-source-stream');
+  var buffer = require('vinyl-buffer');
+  var globby = require('globby');
+  var through = require('through2');
+  var uglify = require('gulp-uglify');
+  var sourcemaps = require('gulp-sourcemaps');
+  var reactify = require('reactify');
+
+  // gulp expects tasks to return a stream, so we create one here.
+  var bundledStream = through();
+
+  bundledStream
+    // turns the output bundle stream into a stream containing
+    // the normal attributes gulp plugins expect.
+    .pipe(source('jayda.js'))
+    // the rest of the gulp task, as you would normally write it.
+    // here we're copying from the Browserify + Uglify2 recipe.
+    .pipe(buffer())
+    .pipe(sourcemaps.init({loadMaps: true}))
+      // Add gulp plugins to the pipeline here.
+    .on('error', gutil.log)
+    .pipe(sourcemaps.write('./'))
+    .pipe(gulp.dest('./dest/jayda/js/'))
+    .pipe(connect.reload());
+
+  // "globby" replaces the normal "gulp.src" as Browserify
+  // creates it's own readable stream.
+  globby([
+    './jayda/js/jayda.js',
+    './jayda/js/router.js',
+    './jayda/js/jayda_jade.js'
+  ], function(err, entries) {
+    // ensure any errors from globby are handled
+    if (err) {
+      bundledStream.emit('error', err);
+      return;
+    }
+
+    // create the Browserify instance.
+    var b = browserify({
+      entries: entries,
+      debug: true,
+      transform: [reactify]
+    });
+
+    // pipe the Browserify stream into the stream we created earlier
+    // this starts our gulp pipeline.
+    b.bundle().pipe(bundledStream);
+  });
+
+  // finally, we return the stream, so gulp knows when this task is done.
+  return bundledStream;
 });
+
 
 gulp.task('jayda-get-js', function () {
   gulp.src('app/components/**/*.js')
     .pipe(gulp.dest('dest/components'));
+
+  gulp.src('jayda/js/lib/*.js')
+    .pipe(gulp.dest('dest/jayda/js/lib'));
 });
 
 gulp.task('jayda-templatizer', function() {
     templatizer('./jayda/components/**/*.jade', './dest/jayda/js/compiled_patterns.js', {
-      namespace: 'J.Jayda',
+      namespace: 'window.J.Jayda',
       dontremoveMixins: true
     });
 });

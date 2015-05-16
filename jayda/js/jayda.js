@@ -1,6 +1,4 @@
-var J = {};
-
-J = {
+var J = window.J = {
 
   Jayda: {},
 

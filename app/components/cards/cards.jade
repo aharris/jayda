@@ -3,7 +3,7 @@ mixin card(it)
   .row
     .col.s12.m5
       if it.title || it.links
-        .card(class="#{it.bgColor}")
+        .card(class="#{it.bgColor} #{it.size}")
           if it.image
             if it.reveal
               .card-image.waves-effect.waves-block.waves-light
@@ -104,6 +104,27 @@ if patternLibrary
     image: "http://dummyimage.com/600x400/7190d6/fff.png&text=J",
     description: "I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.",
     links: [
+      {
+        href: "#",
+        text: "This is a link"
+      }
+    ]
+  })
+
+  // Title: Card Sizes
+  // hideScript: true
+  // Description: In order to change the height of that card define the <code>size</code> property. Available Values: <code>small</code> <code>medium</code> <code>large</code>
+  +card({
+    size: "large",
+    title: "Card Title",
+    titleColor: "white",
+    image: "http://dummyimage.com/600x400/7190d6/fff.png&text=J",
+    description: "I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.",
+    links: [
+      {
+        href: "#",
+        text: "This is a link"
+      },
       {
         href: "#",
         text: "This is a link"

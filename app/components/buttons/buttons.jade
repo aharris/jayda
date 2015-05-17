@@ -1,0 +1,115 @@
+// Caption: There are 3 main button types described in material design. The raised button is a standard button that signify actions and seek to give depth to a mostly flat page. The floating circular action button is meant for very important functions. Flat buttons are usually used within elements that already have depth like cards or modals.
+
+mixin button(it)
+  - floating = it.floating ? 'btn-floating' : ''
+  - color = it.color ? it.color : ''
+  - size = it.size ? ("btn-" + it.size) : ''
+  - iconSize = it.iconSize ? it.iconSize : ''
+  - position = it.position || 'left'
+  - flat = it.flat ? "btn-flat" : 'btn'
+  - tag = it.button ? "button" : "a"
+  - disabled = it.disabled ? "disabled" : ''
+
+  if it.fixedAction
+    .fixed-action-btn(style='bottom: 45px; right: 24px;')
+      a.btn-floating(class="#{size} #{floating} #{color} #{disabled}")
+        i(class="mdi-#{it.icon} #{iconSize}")
+      ul
+        each action in it.actions
+          li
+            a.btn-floating(class="#{action.color}")
+              i.large(class="mdi-#{action.icon}")
+
+  else
+    if it.button
+      #{tag}.waves-effect.waves-light(class="#{size} #{floating} #{color} #{flat} #{disabled}" type='submit', name='action')= it.text
+        if it.icon
+          i(class="mdi-#{it.icon} #{position}")
+    else
+      #{tag}.waves-effect.waves-light(class="#{size} #{floating} #{color} #{flat} #{disabled}")= it.text
+        if it.icon
+          i(class="mdi-#{it.icon} #{position}")
+
+
+
+if patternLibrary
+
+  // Title: Default Raised Button
+  +button({
+    text: "Button"
+  })
+
+  // Title: With icon
+  +button({
+    text: "Button",
+    icon: "file-cloud"
+  })
+
+  // Title: Icon Position
+  +button({
+    text: "Button",
+    icon: "file-cloud",
+    position: "right"
+  })
+
+  // Title: Floating
+  +button({
+    floating: true,
+    size: "large",
+    color: "red",
+    icon: "content-add",
+    position: "right"
+  })
+
+  // Title: Fixed Action Button
+  +button({
+    fixedAction: true,
+    size: "large",
+    color: "red",
+    icon: "editor-mode-edit",
+    position: "right",
+    actions: [
+      {
+        color: "red",
+        icon: "editor-insert-chart"
+      },
+      {
+        color: "yellow darken-1",
+        icon: "editor-format-quote"
+      },
+      {
+        color: "green",
+        icon: "editor-publish"
+      },
+      {
+        color: "blue",
+        icon: "editor-attach-file"
+      }
+    ]
+  })
+
+  // Title: Flat
+  +button({
+    text: "Button",
+    flat: true
+  })
+
+  // Title: Submit Button
+  +button({
+    text: "Button",
+    button: true,
+    icon: "content-send",
+    position: "right"
+  })
+
+  // Title: Large
+  +button({
+    text: "Button",
+    size: "large"
+  })
+
+  // Title: Disabled
+  +button({
+    text: "Button",
+    disabled: true
+  })

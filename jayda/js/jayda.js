@@ -369,6 +369,7 @@ var J = window.J = {
     this.$parent.append(markup);
 
     Prism.highlightAll();
+    Materialize.dismissable();
 
   }
 

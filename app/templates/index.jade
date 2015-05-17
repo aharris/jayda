@@ -19,6 +19,31 @@ html(lang="en")
       p
         a(href="/jayda/") Jayda Pattern Library
 
+      +collection({
+        dismissable: true,
+        header: "First Names",
+        secondaryContent: true,
+        items: [
+          {
+            href: "#",
+            text: "Alvin"
+          },
+          {
+            href: "#",
+            active: true,
+            text: "James"
+          },
+          {
+            href: "#",
+            text: "Alvin"
+          },
+          {
+            href: "#",
+            text: "Alvin"
+          }
+        ]
+      })
+
       +card(
         {
           "reveal": true,
@@ -37,4 +62,6 @@ html(lang="en")
       )
 
     script(type="text/javascript" src="bower_components/jQuery/dist/jquery.min.js")
+    script(type="text/javascript" src="js/lib/hammer.min.js")
+    script(type="text/javascript" src="js/lib/jquery.hammer.js")
     script(type="text/javascript" src="js/app.js")

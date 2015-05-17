@@ -2,6 +2,8 @@
 
 mixin collection(it)
   - headerClass = it.header ? 'with-header' : ''
+  - dismissable = it.dismissable ? 'dismissable' : ''
+
   ul.collection(class="#{headerClass}")
 
     if it.avatar
@@ -20,7 +22,7 @@ mixin collection(it)
 
       each item in it.items
         if it.secondaryContent
-          li.collection-item
+          li.collection-item(class="#{dismissable}")
             div
               | #{item.text}
               a.secondary-content(href='#{item.href}')
@@ -29,12 +31,39 @@ mixin collection(it)
         else
           if item.href
             - activeClass = item.active ? 'active' : ''
-            a.collection-item(href="#{item.href}" class="#{activeClass}")= item.text
+            a.collection-item(href="#{item.href}" class="#{activeClass} #{dismissable}")= item.text
 
           else
-            li.collection-item= item.text
+            li.collection-item(class="#{dismissable}")= item.text
 
 if patternLibrary
+
+  // Title: Dismissable Content
+  +collection({
+    dismissable: true,
+    header: "First Names",
+    secondaryContent: true,
+    items: [
+      {
+        href: "#",
+        text: "Alvin"
+      },
+      {
+        href: "#",
+        active: true,
+        text: "James"
+      },
+      {
+        href: "#",
+        text: "Alvin"
+      },
+      {
+        href: "#",
+        text: "Alvin"
+      }
+    ]
+  })
+
   // Title: Collection
   +collection({
     items: [

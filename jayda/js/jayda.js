@@ -207,8 +207,17 @@ var J = window.J = {
     });
   },
 
+  removeNav: function () {
+      $('.jayda-nav-button' ).removeClass( 'jayda-expanded' );
+      $( '.jayda-side-nav-wrap' ).removeClass( 'jayda-expanded' );
+      $( '.jayda-overlay' ).fadeOut();
+  },
+
   getPatterns: function (file) {
     res = J.model;
+
+    J.removeNav();
+
     // Prevent pattern duplication
     if (J.currentPattern === file) {return false;}
 

@@ -7,7 +7,10 @@ mixin pattern(title, desc, example, mixinName, customArgs, script)
   div.example !{example}
 
   pre
-    code.language-jade +#{mixinName}(#{customArgs})
+    if mixinName
+      code.language-jade +#{mixinName}(#{customArgs})
+    else
+      code.language-markup #{example}
 
   if script
     h4 Script

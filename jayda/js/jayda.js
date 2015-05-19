@@ -44,57 +44,6 @@ var J = window.J = {
     });
   },
 
-  capitalizeFirstLetter: function (str) {
-    return str.charAt(0).toUpperCase() + str.slice(1);
-  },
-
-  toTitleCase: function (str) {
-    var words = str.split("-"),
-      wordsArr = [];
-
-    for (var i = 0; i < words.length; i++) {
-      var word = this.capitalizeFirstLetter(words[i]);
-
-      wordsArr.push(word);
-    }
-
-    var title = wordsArr.join(" ");
-
-    return title;
-  },
-
-  parseJade: function (res) {
-    var sections = _.toArray(res.components),
-      groups = _.keys(res.components),
-      patterns = [],
-      files = [];
-
-    for(var i = 0; i < sections.length; i++) {
-      files = _.toArray( _.filter(sections[i], function (it) {
-        return it.indexOf(".jade") >= 0;
-      }));
-      patterns[i] = [];
-
-      for(var j = 0; j < files.length; j++) {
-        var splitExtension = files[j].split('.'),
-          splitRoute = splitExtension[0].split('/'),
-          file = splitRoute[splitRoute.length -1],
-          name = this.toTitleCase(file);
-
-        var patternObj = {
-          group: groups[i],
-          route: files[j],
-          name: name,
-          file: file
-        };
-
-        patterns[i].push(patternObj);
-      }
-    }
-
-    return patterns;
-  },
-
   parseScripts: function (res) {
     var sections = _.toArray(res.components),
       groups = _.keys(res.components),
@@ -154,7 +103,6 @@ var J = window.J = {
             var scriptObj = {};
             scriptObj.string = res;
             scriptObj.file = file;
-            // console.log("file:", scriptObj.file);
             scriptsArr.push(scriptObj);
             return res;
           });
@@ -183,8 +131,40 @@ var J = window.J = {
 
   },
 
+  parseTree: function (res) {
+    var sections = _.toArray(res.components),
+      groups = _.keys(res.components),
+      patterns = [],
+      files = [];
+
+    for(var i = 0; i < sections.length; i++) {
+      files = _.toArray( _.filter(sections[i], function (it) {
+        return it.indexOf(".jade") >= 0 || it.indexOf(".html") >= 0;
+      }));
+      patterns[i] = [];
+
+      for(var j = 0; j < files.length; j++) {
+        var splitExtension = files[j].split('.'),
+          splitRoute = splitExtension[0].split('/'),
+          file = splitRoute[splitRoute.length -1],
+          name = this.toTitleCase(file);
+
+        var patternObj = {
+          group: groups[i],
+          route: files[j],
+          name: name,
+          file: file
+        };
+
+        patterns[i].push(patternObj);
+      }
+    }
+
+    return patterns;
+  },
+
   appendSideNav: function (res){
-    var patterns = this.parseJade(res);
+    var patterns = this.parseTree(res);
     $('.jayda-side-nav-wrap').append(J.Jayda.templatizer["side-nav"]["side-nav"]({jayda : true, patterns: patterns}));
 
     this.bindNavButton();
@@ -224,91 +204,16 @@ var J = window.J = {
     J.currentPattern = file;
 
     if (!J.templatizer[file]) {
-      return J.renderCoreTemplate(file);
+      if (J.Jayda.templatizer.core['_' + file]) {
+        return J.renderCoreTemplate(file);
+      } else {
+        return J.getFile(file);
+      }
     }
 
     var tmpl = $.trim(J.templatizer[file].toString());
 
     J.createObj(tmpl, file, res);
-  },
-
-  toSingleLine: function (string) {
-    return string.replace(/\s+/g, ' ');
-  },
-
-  getMixins: function(tmpl) {
-    var mixinstring,
-      mixinArray,
-      caption;
-
-    tmpl = this.toSingleLine(tmpl);
-    tmpl = tmpl.split('if (patternLibrary) {')[1] || '';
-    mixinstring = tmpl.match(/(buf.push)([\s\S]*)(\)\)\;)/g);
-    mixinArray = mixinstring[0].split('<!-- Title:');
-    mixinArray.splice(0,1);
-
-    return mixinArray;
-  },
-
-  createObj: function (tmpl, file, res) {
-    var self = this;
-    var patternsArr = [],
-      mixinArray = this.getMixins(tmpl),
-      caption = this.getCaption(tmpl);
-
-    $.when( this.stringifyScripts(res) ).then(
-      function( scripts ) {
-        for (var i = 0; i < mixinArray.length; i++) {
-          var patternObj = {};
-
-          patternObj.title = self.getTitle(mixinArray[i]);
-          patternObj.description = self.parseComments(mixinArray[i], '<!-- Description:');
-          patternObj.mixinName = self.getMixinName(mixinArray[i], file);
-          patternObj.example = self.getExample(mixinArray[i], file, patternObj.mixinName);
-          patternObj.customArgs = self.getCustomArgs(mixinArray[i], file);
-          patternObj.script = _.filter(scripts, function (it) {
-            return it.file === file;
-          })
-          patternObj.hideScript = self.hideScript(mixinArray[i]);
-
-          patternsArr.push(patternObj);
-        }
-
-        self.renderPatternsTmpl(patternsArr, caption, file);
-      }
-    );
-  },
-
-  parseComments: function (str, match) {
-    if (!str.split(match)[1] || !str.split(match)[1].split('-->')[0]) {
-      return '';
-    }
-
-    return str.split(match)[1].split('-->')[0].trim();
-  },
-
-  getTitle: function (str) {
-    return str.split('-->')[0].trim() || '';
-  },
-
-  hideScript: function (val) {
-    if (val.split('<!-- hideScript:')[1] && val.split('<!-- hideScript:')[1].split('-->')[0]) {
-      return !!val.split('<!-- hideScript:')[1].split('-->')[0].trim();
-    }
-    return false;
-  },
-
-  getCaption: function (tmpl) {
-    if (tmpl.split('<!-- Caption:')[1] && tmpl.split('<!-- Caption:')[1].split('-->')[0]) {
-      return tmpl.split('<!-- Caption:')[1].split('-->')[0].trim();
-    }
-    return '';
-  },
-
-  getMixinName: function (str, file) {
-      var codeArr = str.split('["' + file + '"]["');
-      codeArr = codeArr[1].split('"]');
-      return codeArr[0] || '';
   },
 
   getExample: function(str, file, mixinName) {
@@ -351,35 +256,13 @@ var J = window.J = {
     return snippet;
   },
 
-  renderPatternsTmpl: function (patternsArr, caption, file) {
-    var markup = '',
-      sectionTitle = this.toTitleCase(file);
-
-    for (var i = 0; i < patternsArr.length; i++) {
-
-      var title = patternsArr[i].title,
-        desc = patternsArr[i].description,
-        example = patternsArr[i].example,
-        mixinName = patternsArr[i].mixinName,
-        customArgs = patternsArr[i].customArgs,
-        script = null;
-
-      if (patternsArr[i].script[0] && !patternsArr[i].hideScript) {
-        script = patternsArr[i].script[0].string.trim();
-      }
-
-      markup += J.Jayda.templatizer["_patterns"]["pattern"](title, desc, example, mixinName, customArgs, script);
-
-    }
-
-    captionTmpl = J.Jayda.templatizer["_pattern_header"]({title: sectionTitle, caption: caption});
+  renderPatternsTmpl: function (captionTmpl, markup) {
 
     this.$parent.html(captionTmpl);
     this.$parent.append(markup);
 
     Prism.highlightAll();
     Materialize.dismissable();
-
   }
 
 };

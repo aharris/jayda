@@ -9,57 +9,85 @@ html(lang="en")
     link(rel="stylesheet" type="text/css" href="css/main.css")
 
   body
-    .container
-      h1 Your Jayda App
+    header
+      .container
+        h1 Your Jayda App
 
-      h2 Start Adding Patterns!!!
+        h2 Start Adding Patterns!!!
 
-      h3 View the Pattern Library:
+        h3 View the Pattern Library:
 
-      p
-        a(href="/jayda/") Jayda Pattern Library
+        p
+          a(href="/jayda/") Jayda Pattern Library
 
-      +collection({
-        dismissable: true,
-        header: "First Names",
-        secondaryContent: true,
-        items: [
+    main
+      .container
+        +collection({
+          dismissable: true,
+          header: "First Names",
+          secondaryContent: true,
+          items: [
+            {
+              href: "#",
+              text: "Alvin"
+            },
+            {
+              href: "#",
+              active: true,
+              text: "James"
+            },
+            {
+              href: "#",
+              text: "Alvin"
+            },
+            {
+              href: "#",
+              text: "Alvin"
+            }
+          ]
+        })
+
+        +card(
           {
-            href: "#",
-            text: "Alvin"
+            "reveal": true,
+            "title" : "Title",
+            "bgColor": "white",
+            "descriptionColor": "black",
+            "image": "http://dummyimage.com/600x400/7190d6/fff.png&text=J",
+            "description": "I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively. I am similar to what is called a panel in other frameworks.",
+            "links": [
+              {
+                "href": "#",
+                "text": "This is a link"
+              }
+            ]
+          }
+        )
+
+    footer
+      +footer({
+        header: "Footer Content",
+        text: "You can use rows and columns here to organize your footer content.",
+        linkHeader: "Links",
+        links: [
+          {
+            href: "#!",
+            text: "Link 1"
           },
           {
-            href: "#",
-            active: true,
-            text: "James"
+            href: "#!",
+            text: "Link 2"
           },
           {
-            href: "#",
-            text: "Alvin"
+            href: "#!",
+            text: "Link 3"
           },
           {
-            href: "#",
-            text: "Alvin"
+            href: "#!",
+            text: "Link 4"
           }
         ]
       })
-
-      +card(
-        {
-          "reveal": true,
-          "title" : "Title",
-          "bgColor": "white",
-          "descriptionColor": "black",
-          "image": "http://dummyimage.com/600x400/7190d6/fff.png&text=J",
-          "description": "I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively. I am similar to what is called a panel in other frameworks.",
-          "links": [
-            {
-              "href": "#",
-              "text": "This is a link"
-            }
-          ]
-        }
-      )
 
     script(type="text/javascript" src="bower_components/jQuery/dist/jquery.min.js")
     script(type="text/javascript" src="js/lib/hammer.min.js")

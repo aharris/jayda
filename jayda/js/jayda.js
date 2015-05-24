@@ -11,6 +11,18 @@ var J = window.J = {
     this.getTree();
   },
 
+  fireAppJs: function () {
+    // TODO: figure out a better way to do this
+    // Should call all app js after page loads
+    // Call Component JS after content loads
+
+    // Collections
+    Materialize.dismissable();
+
+    // Forms
+    $('select').material_select();
+  },
+
   // --------------------------------
   // JAYDA CORE ---------------------
   // --------------------------------
@@ -272,7 +284,7 @@ var J = window.J = {
           patternObj.script = _.filter(scripts, function (it) {
             return it.file === file;
           })
-          patternObj.hideScript = self.hideScript(mixinArray[i]);
+          patternObj.showScript = self.showScript(mixinArray[i]);
 
           patternsArr.push(patternObj);
         }
@@ -294,9 +306,9 @@ var J = window.J = {
     return str.split('-->')[0].trim() || '';
   },
 
-  hideScript: function (val) {
-    if (val.split('<!-- hideScript:')[1] && val.split('<!-- hideScript:')[1].split('-->')[0]) {
-      return !!val.split('<!-- hideScript:')[1].split('-->')[0].trim();
+  showScript: function (val) {
+    if (val.split('<!-- showScript:')[1] && val.split('<!-- showScript:')[1].split('-->')[0]) {
+      return !!val.split('<!-- showScript:')[1].split('-->')[0].trim();
     }
     return false;
   },
@@ -367,7 +379,7 @@ var J = window.J = {
         customArgs = patternsArr[i].customArgs,
         script = null;
 
-      if (patternsArr[i].script[0] && !patternsArr[i].hideScript) {
+      if (patternsArr[i].script[0] && patternsArr[i].showScript) {
         script = patternsArr[i].script[0].string.trim();
       }
 
@@ -381,8 +393,8 @@ var J = window.J = {
     this.$parent.append(markup);
 
     Prism.highlightAll();
-    Materialize.dismissable();
 
+    this.fireAppJs();
   }
 
 };

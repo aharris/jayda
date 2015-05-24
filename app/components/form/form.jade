@@ -1,4 +1,4 @@
-mixin form-element(it)
+mixin form(it)
   .row
     form.col.s12
       each row in it
@@ -8,22 +8,33 @@ mixin form-element(it)
             - active = field.placeholder || field.disabled ? 'active' : ''
             - placeholder = field.placeholder ? field.placeholder : ''
             - value = field.value ? field.value : ''
+
             .input-field.col(class="#{size}")
               if field.icon
                 i(class="mdi-#{field.icon} prefix")
 
               if field.type === 'textarea'
                 textarea(id="#{field.id}" class="materialize-textarea")
+
+              else if field.type === 'select'
+                select
+                  option(value='', disabled='', selected='') Choose your option
+                  option(value='1') Option 1
+                  option(value='2') Option 2
+                  option(value='3') Option 3
+
+
               else
                 if field.disabled
                   input.validate(id="#{field.id}" placeholder='#{placeholder}' type='#{field.type}' value='#{value}' disabled)
                 else
                   input.validate(id="#{field.id}" placeholder='#{placeholder}' type='#{field.type}' value='#{value}')
+
               label(for='#{field.id}' class="#{active}")= field.label
 
 if patternLibrary
   // Title: Input Fields
-  +form-element([
+  +form([
     {
       fields: [
         {
@@ -67,36 +78,45 @@ if patternLibrary
   ])
 
   // Title: Icon Prefixes
-  +form-element([
-    {
-      fields: [
-        {
-          size: 6,
-          type: "text",
-          label: "First Name",
-          id: "first_name",
-          icon: "action-account-circle"
-        },
-        {
-          size: 6,
-          type: "tel",
-          label: "Telephone",
-          id: "telephone",
-          icon: "communication-phone"
-        }
-      ]
-    }
-  ])
+  +form([{
+    fields: [
+      {
+        size: 6,
+        type: "text",
+        label: "First Name",
+        id: "first_name",
+        icon: "action-account-circle"
+      },
+      {
+        size: 6,
+        type: "tel",
+        label: "Telephone",
+        id: "telephone",
+        icon: "communication-phone"
+      }
+    ]
+  }])
 
   // Title: Textarea
-  +form-element([
-    {
-      fields: [
-        {
-          type: "textarea",
-          label: "Textarea",
-          id: "textarea"
-        }
-      ]
-    }
-  ])
+  +form([{
+    fields: [
+      {
+        type: "textarea",
+        label: "Textarea",
+        id: "textarea"
+      }
+    ]
+  }])
+
+  // Title: Select
+  // showScript: true
+  +form([{
+    fields: [
+      {
+        size: 6,
+        type: "select",
+        label: "Select",
+        id: "select"
+      }
+    ]
+  }])

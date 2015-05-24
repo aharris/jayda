@@ -5,21 +5,17 @@ mixin form(it)
         .row
           each field in row.fields
             - size = field.size ? 's' + field.size : 's12'
-            - active = field.placeholder || field.disabled ? 'active' : ''
+            - active = (field.placeholder || field.disabled) && field.type !== 'select'  ? 'active' : ''
             - placeholder = field.placeholder ? field.placeholder : ''
             - value = field.value ? field.value : ''
 
             if field.type === 'select' && field.browserDefault
-              select.browser-default
-                each option in field.options
-                  if option.selected && option.disabled
-                     option(value='#{option.value}', disabled='', selected='')= option.text
-                  else if option.selected
-                    option(value='#{option.value}', selected='')= option.text
-                  else if option.disabled
-                    option(value='#{option.value}', disabled='')= option.text
-                  else
-                    option(value='#{option.value}')= option.text
+              if field.disabled
+                select.browser-default(disabled)
+                  +select(field.options)
+              else
+                select.browser-default
+                  +select(field.options)
 
             else
               .input-field.col(class="#{size}")
@@ -30,17 +26,12 @@ mixin form(it)
                   textarea(id="#{field.id}" class="materialize-textarea")
 
                 else if field.type === 'select'
-                  select
-                    each option in field.options
-                      if option.selected && option.disabled
-                         option(value='#{option.value}', disabled='', selected='')= option.text
-                      else if option.selected
-                        option(value='#{option.value}', selected='')= option.text
-                      else if option.disabled
-                        option(value='#{option.value}', disabled='')= option.text
-                      else
-                        option(value='#{option.value}')= option.text
-
+                  if field.disabled
+                    select(disabled)
+                      +select(field.options)
+                  else
+                    select
+                      +select(field.options)
 
                 else
                   if field.disabled
@@ -49,6 +40,18 @@ mixin form(it)
                     input.validate(id="#{field.id}" placeholder='#{placeholder}' type='#{field.type}' value='#{value}')
 
                 label(for='#{field.id}' class="#{active}")= field.label
+
+mixin select(it)
+  each option in it
+    if option.selected && option.disabled
+       option(value='#{option.value}', disabled='', selected='')= option.text
+    else if option.selected
+      option(value='#{option.value}', selected='')= option.text
+    else if option.disabled
+      option(value='#{option.value}', disabled='')= option.text
+    else
+      option(value='#{option.value}')= option.text
+
 
 if patternLibrary
   // Title: Input Fields

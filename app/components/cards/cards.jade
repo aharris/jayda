@@ -46,7 +46,6 @@ mixin card(it)
 
 if patternLibrary
   // Title: Card panel
-  // hideScript: true
   // Description: For a simple card all you need to do is pass in is the <code>description</code> property. <code>bgColor</code> and <code>descriptionColor</code> add extra styling customization. Feel free to use any value for this found in <a href="#colors">Colors</a>.
   +card({
     bgColor: "teal",
@@ -56,7 +55,6 @@ if patternLibrary
 
   // Title: Basic Card
   // Description: If you add a <code>description</code> property or an array of <code>links</code> you will automatically be upgraded to the basic card.
-  // hideScript: true
   +card({
     bgColor: "blue-grey darken-1",
     descriptionColor: "white",
@@ -77,7 +75,6 @@ if patternLibrary
 
   // Title: Image Card
   // Description: In order to add an image to your card it is a simple as that. Just add the <code>image</code> property.
-  // hideScript: true
   +card({
     title: "Card Title",
     titleColor: "white",
@@ -96,6 +93,7 @@ if patternLibrary
   })
 
   // Title: Reveal Card
+  // showScript: true
   // Description: Here you can add a card that reveals more information once clicked. In order to do this all you need is <code>reveal: true</code>.
   +card({
     reveal: true,
@@ -112,7 +110,6 @@ if patternLibrary
   })
 
   // Title: Card Sizes
-  // hideScript: true
   // Description: In order to change the height of that card define the <code>size</code> property. Available Values: <code>small</code> <code>medium</code> <code>large</code>
   +card({
     size: "large",

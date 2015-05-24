@@ -17,7 +17,7 @@ J.createObj = function (tmpl, file, res) {
         patternObj.script = _.filter(scripts, function (it) {
           return it.file === file;
         })
-        patternObj.hideScript = self.hideScript(mixinArray[i]);
+        patternObj.showScript = self.showScript(mixinArray[i]);
 
         patternsArr.push(patternObj);
       }
@@ -41,7 +41,7 @@ J.parseJadeComments = function (patternsArr, caption, file) {
       customArgs = patternsArr[i].customArgs,
       script = null;
 
-    if (patternsArr[i].script[0] && !patternsArr[i].hideScript) {
+    if (patternsArr[i].script[0] && patternsArr[i].showScript) {
       script = patternsArr[i].script[0].string.trim();
     }
 
@@ -80,9 +80,9 @@ J.getTitle = function (str) {
   return str.split('-->')[0].trim() || '';
 };
 
-J.hideScript = function (val) {
-  if (val.split('<!-- hideScript:')[1] && val.split('<!-- hideScript:')[1].split('-->')[0]) {
-    return !!val.split('<!-- hideScript:')[1].split('-->')[0].trim();
+J.showScript = function (val) {
+  if (val.split('<!-- showScript:')[1] && val.split('<!-- showScript:')[1].split('-->')[0]) {
+    return !!val.split('<!-- showScript:')[1].split('-->')[0].trim();
   }
   return false;
 };

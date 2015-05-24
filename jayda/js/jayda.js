@@ -11,6 +11,18 @@ var J = window.J = {
     this.getTree();
   },
 
+  fireAppJs: function () {
+    // TODO: figure out a better way to do this
+    // Should call all app js after page loads
+    // Call Component JS after content loads
+
+    // Collections
+    Materialize.dismissable();
+
+    // Forms
+    $('select').material_select();
+  },
+
   // --------------------------------
   // JAYDA CORE ---------------------
   // --------------------------------
@@ -42,6 +54,60 @@ var J = window.J = {
         self.loadOverview();
       }
     });
+  },
+
+  capitalizeFirstLetter: function (str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  },
+
+  toTitleCase: function (str) {
+    var words,
+      wordsArr = [];
+
+    words = str.split("-");
+    words = str.split("_");
+
+    for (var i = 0; i < words.length; i++) {
+      var word = this.capitalizeFirstLetter(words[i]);
+
+      wordsArr.push(word);
+    }
+
+    var title = wordsArr.join(" ");
+
+    return title;
+  },
+
+  parseJade: function (res) {
+    var sections = _.toArray(res.components),
+      groups = _.keys(res.components),
+      patterns = [],
+      files = [];
+
+    for(var i = 0; i < sections.length; i++) {
+      files = _.toArray( _.filter(sections[i], function (it) {
+        return it.indexOf(".jade") >= 0;
+      }));
+      patterns[i] = [];
+
+      for(var j = 0; j < files.length; j++) {
+        var splitExtension = files[j].split('.'),
+          splitRoute = splitExtension[0].split('/'),
+          file = splitRoute[splitRoute.length -1],
+          name = this.toTitleCase(file);
+
+        var patternObj = {
+          group: groups[i],
+          route: files[j],
+          name: name,
+          file: file
+        };
+
+        patterns[i].push(patternObj);
+      }
+    }
+
+    return patterns;
   },
 
   parseScripts: function (res) {
@@ -262,7 +328,7 @@ var J = window.J = {
     this.$parent.append(markup);
 
     Prism.highlightAll();
-    Materialize.dismissable();
+    this.fireAppJs();
   }
 
 };

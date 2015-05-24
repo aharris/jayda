@@ -11,10 +11,15 @@ mixin form(it)
 
             if field.type === 'select' && field.browserDefault
               select.browser-default
-                option(value='', disabled='', selected='') Choose your option
-                option(value='1') Option 1
-                option(value='2') Option 2
-                option(value='3') Option 3
+                each option in field.options
+                  if option.selected && option.disabled
+                     option(value='#{option.value}', disabled='', selected='')= option.text
+                  else if option.selected
+                    option(value='#{option.value}', selected='')= option.text
+                  else if option.disabled
+                    option(value='#{option.value}', disabled='')= option.text
+                  else
+                    option(value='#{option.value}')= option.text
 
             else
               .input-field.col(class="#{size}")
@@ -26,10 +31,15 @@ mixin form(it)
 
                 else if field.type === 'select'
                   select
-                    option(value='', disabled='', selected='') Choose your option
-                    option(value='1') Option 1
-                    option(value='2') Option 2
-                    option(value='3') Option 3
+                    each option in field.options
+                      if option.selected && option.disabled
+                         option(value='#{option.value}', disabled='', selected='')= option.text
+                      else if option.selected
+                        option(value='#{option.value}', selected='')= option.text
+                      else if option.disabled
+                        option(value='#{option.value}', disabled='')= option.text
+                      else
+                        option(value='#{option.value}')= option.text
 
 
                 else
@@ -124,7 +134,27 @@ if patternLibrary
         size: 6,
         type: "select",
         label: "Select",
-        id: "select"
+        id: "select",
+        options: [
+          {
+            value: '',
+            text: "Choose your option",
+            disabled: true,
+            selected: true
+          },
+          {
+            value: 1,
+            text: "Option 1"
+          },
+          {
+            value: 2,
+            text: "Option 2"
+          },
+          {
+            value: 3,
+            text: "Option 3"
+          }
+        ]
       }
     ]
   }])
@@ -137,7 +167,27 @@ if patternLibrary
         type: "select",
         label: "Select",
         id: "select",
-        browserDefault: true
+        browserDefault: true,
+        options: [
+          {
+            value: '',
+            text: "Choose your option",
+            disabled: true,
+            selected: true
+          },
+          {
+            value: 1,
+            text: "Option 1"
+          },
+          {
+            value: 2,
+            text: "Option 2"
+          },
+          {
+            value: 3,
+            text: "Option 3"
+          }
+        ]
       }
     ]
   }])

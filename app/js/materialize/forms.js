@@ -53,7 +53,7 @@
     });
 
     $(document).on('blur', input_selector, function () {
-      if ($(this).val().length === 0 && $(this).attr('placeholder') === undefined) {
+      if ( $(this).val().length === 0 && ( $(this).attr('placeholder') === "" || $(this).attr('placeholder') === undefined ) ) {
         $(this).siblings('label, i').removeClass('active');
       }
       validate_field($(this));

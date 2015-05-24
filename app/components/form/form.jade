@@ -9,28 +9,36 @@ mixin form(it)
             - placeholder = field.placeholder ? field.placeholder : ''
             - value = field.value ? field.value : ''
 
-            .input-field.col(class="#{size}")
-              if field.icon
-                i(class="mdi-#{field.icon} prefix")
+            if field.type === 'select' && field.browserDefault
+              select.browser-default
+                option(value='', disabled='', selected='') Choose your option
+                option(value='1') Option 1
+                option(value='2') Option 2
+                option(value='3') Option 3
 
-              if field.type === 'textarea'
-                textarea(id="#{field.id}" class="materialize-textarea")
+            else
+              .input-field.col(class="#{size}")
+                if field.icon
+                  i(class="mdi-#{field.icon} prefix")
 
-              else if field.type === 'select'
-                select
-                  option(value='', disabled='', selected='') Choose your option
-                  option(value='1') Option 1
-                  option(value='2') Option 2
-                  option(value='3') Option 3
+                if field.type === 'textarea'
+                  textarea(id="#{field.id}" class="materialize-textarea")
+
+                else if field.type === 'select'
+                  select
+                    option(value='', disabled='', selected='') Choose your option
+                    option(value='1') Option 1
+                    option(value='2') Option 2
+                    option(value='3') Option 3
 
 
-              else
-                if field.disabled
-                  input.validate(id="#{field.id}" placeholder='#{placeholder}' type='#{field.type}' value='#{value}' disabled)
                 else
-                  input.validate(id="#{field.id}" placeholder='#{placeholder}' type='#{field.type}' value='#{value}')
+                  if field.disabled
+                    input.validate(id="#{field.id}" placeholder='#{placeholder}' type='#{field.type}' value='#{value}' disabled)
+                  else
+                    input.validate(id="#{field.id}" placeholder='#{placeholder}' type='#{field.type}' value='#{value}')
 
-              label(for='#{field.id}' class="#{active}")= field.label
+                label(for='#{field.id}' class="#{active}")= field.label
 
 if patternLibrary
   // Title: Input Fields
@@ -117,6 +125,19 @@ if patternLibrary
         type: "select",
         label: "Select",
         id: "select"
+      }
+    ]
+  }])
+
+  // Title: Select - Browser Default
+  +form([{
+    fields: [
+      {
+        size: 6,
+        type: "select",
+        label: "Select",
+        id: "select",
+        browserDefault: true
       }
     ]
   }])

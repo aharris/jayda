@@ -55,6 +55,7 @@ mixin select(it)
 
 if patternLibrary
   // Title: Input Fields
+  // Description: Text fields allow user input. The border should light up simply and clearly indicating which field the user is currently editing.
   +form([
     {
       fields: [
@@ -99,6 +100,7 @@ if patternLibrary
   ])
 
   // Title: Icon Prefixes
+  // Description: You can add an icon prefix to make the form input label even more clear. Just add the <code>icon</code> property with the name of the icon.
   +form([{
     fields: [
       {
@@ -119,6 +121,7 @@ if patternLibrary
   }])
 
   // Title: Textarea
+  // Description: <p>Textareas allow larger expandable user input. The border should light up simply and clearly indicating which field the user is currently editing.</p><p><strong>Textareas will auto resize to the text inside.</strong></p>
   +form([{
     fields: [
       {
@@ -131,6 +134,7 @@ if patternLibrary
 
   // Title: Select
   // showScript: true
+  // Description: Select allows user input through specified options.
   +form([{
     fields: [
       {
@@ -163,6 +167,7 @@ if patternLibrary
   }])
 
   // Title: Select - Browser Default
+  // Description: You can set <code>browserDefault: true</code> to get the browser default.
   +form([{
     fields: [
       {

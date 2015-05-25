@@ -93,7 +93,7 @@ textarea.materialize-textarea
   position relative
   margin-top 1rem
 
-  label
+  > label
     color $input-border-color
     position absolute
     top 0.8rem
@@ -102,7 +102,7 @@ textarea.materialize-textarea
     cursor text
     transition .2s ease-out
 
-  label.active
+  > label.active
     font-size $label-font-size
     transform translateY(-140%)
 
@@ -489,6 +489,9 @@ form p:last-child
   -moz-user-select none
   -khtml-user-select none
   -ms-user-select none
+
+.switch
+  padding 1rem 0
 
 .switch label
   cursor pointer

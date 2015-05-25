@@ -20,6 +20,9 @@ mixin form(it)
             if field.type === 'radio'
               +radio(field.buttons)
 
+            if field.type === 'checkbox'
+              +checkbox(field)
+
             else
               .input-field.col(class="#{size}")
                 if field.icon
@@ -44,21 +47,6 @@ mixin form(it)
 
                 label(for='#{field.id}' class="#{active}")= field.label
 
-//- form(action='#')
-//-   p
-//-     input#test1(name='group1', type='radio')
-//-     label(for='test1') Red
-//-   p
-//-     input#test2(name='group1', type='radio')
-//-     label(for='test2') Yellow
-//-   p
-//-     input#test3.with-gap(name='group1', type='radio')
-//-     label(for='test3') Green
-//-   p
-//-     input#test4(name='group1', type='radio', disabled='disabled')
-//-     label(for='test4') Brown
-
-
 
 mixin select(it)
   each option in it
@@ -79,6 +67,20 @@ mixin radio(it)
       else
         input(id='#{button.id}' name='${button.name}', type='radio')
       label(for='#{button.id}')= button.label
+
+mixin checkbox(it)
+  - checked = it.checked ? 'checked' : ''
+  - filledIn = it.filledIn ? 'filled-in' : ''
+  p
+    if it.checked && it.disabled
+      input(id='#{it.id}' class="#{filledIn}" type='checkbox' checked='checked', disabled='disabled')
+    else if it.disabled
+      input(id='#{it.id}' class="#{filledIn}" type='checkbox' disabled='disabled')
+    else if it.checked
+      input(id='#{it.id}' class="#{filledIn}" type='checkbox' checked='checked')
+    else
+      input(id='#{it.id}' class="#{filledIn}" type='checkbox')
+    label(for='#{it.id}')= it.label
 
 
 if patternLibrary
@@ -269,7 +271,43 @@ if patternLibrary
     ]
   }])
 
-
+  // Title: Checkboxes
+  +form([
+    {
+      fields: [
+        {
+          type: "checkbox",
+          label: "Red",
+          id: "test5"
+        },
+        {
+          type: "checkbox",
+          label: "Yellow",
+          id: "test6",
+          checked: true
+        },
+        {
+          type: "checkbox",
+          label: "Filled In",
+          id: "filled-in-box",
+          filledIn: true
+        },
+        {
+          type: "checkbox",
+          label: "Green",
+          id: "test7",
+          checked: true,
+          disabled: true
+        },
+        {
+          type: "checkbox",
+          label: "Green",
+          id: "test8",
+          disabled: true
+        }
+      ]
+    }
+  ])
 
 
 

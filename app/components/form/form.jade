@@ -5,7 +5,7 @@ mixin form(it)
         .row
           each field in row.fields
             - size = field.size ? 's' + field.size : 's12'
-            - active = (field.placeholder || field.disabled) && field.type !== 'select'  ? 'active' : ''
+            - active = (field.placeholder || field.disabled || field.type === 'radio') && (field.type !== 'select')  ? 'active' : ''
             - placeholder = field.placeholder ? field.placeholder : ''
             - value = field.value ? field.value : ''
 
@@ -16,12 +16,6 @@ mixin form(it)
               else
                 select.browser-default
                   +select(field.options)
-
-            else if field.type === 'radio'
-              +radio(field.buttons)
-
-            else if field.type === 'checkbox'
-              +checkbox(field)
 
             else
               .input-field.col(class="#{size}")
@@ -39,13 +33,20 @@ mixin form(it)
                     select
                       +select(field.options)
 
+                else if field.type === 'radio'
+                  +radio(field.buttons)
+
+                else if field.type === 'checkbox'
+                  +checkbox(field)
+
                 else
                   if field.disabled
                     input.validate(id="#{field.id}" placeholder='#{placeholder}' type='#{field.type}' value='#{value}' disabled)
                   else
                     input.validate(id="#{field.id}" placeholder='#{placeholder}' type='#{field.type}' value='#{value}')
 
-                label(for='#{field.id}' class="#{active}")= field.label
+                unless field.type === 'checkbox'
+                  label(for='#{field.id}' class="#{active}")= field.label
 
 
 mixin select(it)

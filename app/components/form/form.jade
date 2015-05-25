@@ -17,6 +17,9 @@ mixin form(it)
                 select.browser-default
                   +select(field.options)
 
+            if field.type === 'radio'
+              +radio(field.buttons)
+
             else
               .input-field.col(class="#{size}")
                 if field.icon
@@ -41,6 +44,22 @@ mixin form(it)
 
                 label(for='#{field.id}' class="#{active}")= field.label
 
+//- form(action='#')
+//-   p
+//-     input#test1(name='group1', type='radio')
+//-     label(for='test1') Red
+//-   p
+//-     input#test2(name='group1', type='radio')
+//-     label(for='test2') Yellow
+//-   p
+//-     input#test3.with-gap(name='group1', type='radio')
+//-     label(for='test3') Green
+//-   p
+//-     input#test4(name='group1', type='radio', disabled='disabled')
+//-     label(for='test4') Brown
+
+
+
 mixin select(it)
   each option in it
     if option.selected && option.disabled
@@ -51,6 +70,15 @@ mixin select(it)
       option(value='#{option.value}', disabled='')= option.text
     else
       option(value='#{option.value}')= option.text
+
+mixin radio(it)
+  each button in it
+    p
+      if button.disabled
+        input(id='#{button.id}' name='${button.name}', type='radio' disabled='')
+      else
+        input(id='#{button.id}' name='${button.name}', type='radio')
+      label(for='#{button.id}')= button.label
 
 
 if patternLibrary
@@ -205,6 +233,41 @@ if patternLibrary
   pre
     code.language-javascript
       $('select').material_select('destroy');
+
+  // Title: Radio Buttons
+  // Description: Radio Buttons are used when the user must make only one selection out of a group of items.
+  +form([{
+    fields: [
+      {
+        type: "radio",
+        label: "radio",
+        id: "radio",
+        buttons: [
+          {
+            id: "test1",
+            name: "group1",
+            label: "Red"
+          },
+          {
+            id: "test2",
+            name: "group1",
+            label: "Yellow"
+          },
+          {
+            id: "test3",
+            name: "group1",
+            label: "Green"
+          },
+          {
+            id: "test4",
+            name: "group1",
+            label: "Brown",
+            disabled: true
+          }
+        ]
+      }
+    ]
+  }])
 
 
 

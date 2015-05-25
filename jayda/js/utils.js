@@ -3,8 +3,11 @@ J.capitalizeFirstLetter = function (str) {
 };
 
 J.toTitleCase = function (str) {
-  var words = str.split("-"),
+  var words,
     wordsArr = [];
+
+    words = str.split("-");
+    words = str.split("_");
 
   for (var i = 0; i < words.length; i++) {
     var word = this.capitalizeFirstLetter(words[i]);

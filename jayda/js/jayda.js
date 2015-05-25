@@ -56,28 +56,6 @@ var J = window.J = {
     });
   },
 
-  capitalizeFirstLetter: function (str) {
-    return str.charAt(0).toUpperCase() + str.slice(1);
-  },
-
-  toTitleCase: function (str) {
-    var words,
-      wordsArr = [];
-
-    words = str.split("-");
-    words = str.split("_");
-
-    for (var i = 0; i < words.length; i++) {
-      var word = this.capitalizeFirstLetter(words[i]);
-
-      wordsArr.push(word);
-    }
-
-    var title = wordsArr.join(" ");
-
-    return title;
-  },
-
   parseJade: function (res) {
     var sections = _.toArray(res.components),
       groups = _.keys(res.components),
@@ -287,6 +265,9 @@ var J = window.J = {
       pseudoJson;
 
     codeArr = str.split('["' + file + '"]["');
+
+    if (!codeArr[1]) {return false}
+
     codeArr = codeArr[1].split('"]');
 
     pseudoJson = codeArr[1].substring(codeArr[1].indexOf('(') + 1, codeArr[1].lastIndexOf('));'));
@@ -303,23 +284,6 @@ var J = window.J = {
     string = JSON.parse(string) || string;
 
     return string;
-  },
-
-  getCustomArgs: function(str, file) {
-    var codeArr,
-      pseudoJson,
-      snippet;
-
-    codeArr = str.split('["' + file + '"]["');
-    codeArr = codeArr[1].split('"]');
-
-    pseudoJson = codeArr[1].substring(codeArr[1].indexOf('(') + 1, codeArr[1].lastIndexOf('));'));
-
-    snippet = JSON.stringify(this.getValidJSON(pseudoJson), null, 2);
-
-    snippet = snippet.substring(snippet.indexOf('[') + 1, snippet.lastIndexOf(']'));
-
-    return snippet;
   },
 
   renderPatternsTmpl: function (captionTmpl, markup) {

@@ -1,21 +1,25 @@
-mixin pattern(title, desc, example, mixinName, customArgs, script)
-  h3= title
+mixin pattern(it)
+  h3= it.title
 
-  if desc
-    p.jayda-example-description !{desc}
+  if it.desc
+    p.jayda-example-description !{it.desc}
 
-  div.example !{example}
+  if it.example
+    div.example !{it.example}
 
   pre
-    if mixinName
-      code.language-jade +#{mixinName}(#{customArgs})
+    if it.mixinName
+      code.language-jade +#{it.mixinName}(#{it.customArgs})
+    else if it.codeSnippet
+      - lang = it.codeSnippetLanguage ? it.codeSnippetLanguage : 'language-markup'
+      code(class="#{lang}") #{it.codeSnippet}
     else
-      code.language-markup #{example}
+      code.language-markup #{it.example}
 
-  if script
+  if it.script
     h4 Script
     pre
-      code.language-javascript= script
+      code.language-javascript= it.script
 
 
 // Call Mixin

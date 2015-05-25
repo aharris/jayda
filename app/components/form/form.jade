@@ -17,10 +17,10 @@ mixin form(it)
                 select.browser-default
                   +select(field.options)
 
-            if field.type === 'radio'
+            else if field.type === 'radio'
               +radio(field.buttons)
 
-            if field.type === 'checkbox'
+            else if field.type === 'checkbox'
               +checkbox(field)
 
             else
@@ -61,11 +61,12 @@ mixin select(it)
 
 mixin radio(it)
   each button in it
+    - gap = button.gap ? 'with-gap' : ''
     p
       if button.disabled
-        input(id='#{button.id}' name='${button.name}', type='radio' disabled='')
+        input(id='#{button.id}' class="#{gap}" name='${button.name}', type='radio' disabled='')
       else
-        input(id='#{button.id}' name='${button.name}', type='radio')
+        input(id='#{button.id}' class="#{gap}" name='${button.name}', type='radio')
       label(for='#{button.id}')= button.label
 
 mixin checkbox(it)
@@ -258,7 +259,8 @@ if patternLibrary
           {
             id: "test3",
             name: "group1",
-            label: "Green"
+            label: "Green",
+            gap: true
           },
           {
             id: "test4",

@@ -12,15 +12,14 @@ var J = window.J = {
   },
 
   fireAppJs: function () {
-    // TODO: figure out a better way to do this
-    // Should call all app js after page loads
-    // Call Component JS after content loads
-
-    // Collections
-    Materialize.dismissable();
-
-    // Forms
-    $('select').material_select();
+    // Reload app JS after Pattern loads
+    _.each($('script'), function(it) {
+      if (it.attributes.src && it.attributes.src.value === '../js/app.js') {
+        var old_script = it;
+        it.remove();
+        $('head').append(it);
+      }
+    });
   },
 
   // --------------------------------

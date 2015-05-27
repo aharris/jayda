@@ -5,9 +5,10 @@ mixin form(it)
         .row
           each field in row.fields
             - size = field.size ? 's' + field.size : 's12'
-            - active = (field.placeholder || field.disabled || field.type === 'radio' || field.type === 'switch') && (field.type !== 'select')  ? 'active' : ''
+            - active = (field.placeholder || field.disabled || field.type === 'radio' || field.type === 'switch' || field.type === 'file') && (field.type !== 'select')  ? 'active' : ''
             - placeholder = field.placeholder ? field.placeholder : ''
             - value = field.value ? field.value : ''
+            - fileField = field.type === 'file' ? 'file-field' : ''
 
             if field.type === 'select' && field.browserDefault
               if field.disabled
@@ -18,7 +19,7 @@ mixin form(it)
                   +select(field.options)
 
             else
-              .input-field.col(class="#{size}")
+              .input-field.col(class="#{size} #{fileField}")
                 if field.icon
                   i(class="mdi-#{field.icon} prefix")
 
@@ -41,6 +42,9 @@ mixin form(it)
 
                 else if field.type === 'switch'
                   +switch(field)
+
+                else if field.type === 'file'
+                  +file-input(field)
 
                 else
                   if field.disabled
@@ -96,6 +100,14 @@ mixin switch(it)
         input(type='checkbox')
       span.lever
       span On
+
+mixin file-input(it)
+  .file-field.input-field
+    input.file-path.validate(type='text')
+    .btn
+      span= it.label
+      input(type='file')
+
 
 
 if patternLibrary
@@ -346,6 +358,17 @@ if patternLibrary
           'On',
           'Off'
         ]
+      }
+    ]
+  }])
+
+  // Title: File Input
+  +form([{
+    fields: [
+      {
+        type: "file",
+        label: "File",
+        id: "file"
       }
     ]
   }])

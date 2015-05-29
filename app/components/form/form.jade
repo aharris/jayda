@@ -5,7 +5,7 @@ mixin form(it)
         .row
           each field in row.fields
             - size = field.size ? 's' + field.size : 's12'
-            - active = (field.placeholder || field.disabled || field.type === 'radio' || field.type === 'switch' || field.type === 'file') && (field.type !== 'select')  ? 'active' : ''
+            - active = (field.placeholder || field.disabled || field.type === 'radio' || field.type === 'switch' || field.type === 'file' || field.type === 'range') && (field.type !== 'select')  ? 'active' : ''
             - placeholder = field.placeholder ? field.placeholder : ''
             - value = field.value ? field.value : ''
             - fileField = field.type === 'file' ? 'file-field' : ''
@@ -45,6 +45,9 @@ mixin form(it)
 
                 else if field.type === 'file'
                   +file-input(field)
+
+                else if field.type === 'range'
+                  +range(field)
 
                 else
                   if field.disabled
@@ -102,12 +105,15 @@ mixin switch(it)
       span On
 
 mixin file-input(it)
-  .file-field.input-field
+  .input-field
     input.file-path.validate(type='text')
     .btn
       span= it.label
       input(type='file')
 
+mixin range(it)
+  p.range-field
+    input(id='#{it.id}' type='range', min='#{it.min}', max='#{it.max}')
 
 
 if patternLibrary
@@ -369,6 +375,20 @@ if patternLibrary
         type: "file",
         label: "File",
         id: "file"
+      }
+    ]
+  }])
+
+  // Title: Range
+  // Description: Add a range slider for values with a wide range. This one is set to be a number between 0 and 100.
+  +form([{
+    fields: [
+      {
+        type: "range",
+        label: "Range",
+        id: "range",
+        min: 0,
+        max: 100
       }
     ]
   }])

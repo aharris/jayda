@@ -9,7 +9,7 @@
   "depthLimit": 4,
   "duplicates": true,
   "efficient": true,
-  "enforceVarStyle": true,
+  "enforceVarStyle": false,
   "enforceBlockStyle": false,
   "extendPref": false,
   "globalDupe": false,

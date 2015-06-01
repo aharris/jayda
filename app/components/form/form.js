@@ -1,8 +1,8 @@
 $(document).ready(function() {
   $('select').material_select();
+
+  $('.datepicker').pickadate({
+    selectMonths: true, // Creates a dropdown to control month
+    selectYears: 15 // Creates a dropdown of 15 years to control year
+  });
 });
-
-
-// Updating/Destroying Select
-// If you want to update the items inside the select, just rerun the initialization code from above after editing the original select. Or you can destroy the material select with this function below, and create a new select altogether
-// $('select').material_select('destroy');

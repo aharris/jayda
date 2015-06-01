@@ -81,7 +81,7 @@ gulp.task('js', function () {
   // creates it's own readable stream.
   globby([
     './app/js/*.js',
-    './app/js/materialize/*.js',
+    './app/js/materialize/**/*.js',
     './app/components/**/*.js'
   ], function(err, entries) {
     // ensure any errors from globby are handled
@@ -129,7 +129,7 @@ gulp.task('libs', function() {
   gulp.src('bower_components/**/*')
     .pipe(gulp.dest('dest/bower_components'));
 
-  gulp.src('app/js/lib/*.js')
+  gulp.src('app/js/lib/**/*.js')
     .pipe(gulp.dest('dest/js/lib'));
 });
 

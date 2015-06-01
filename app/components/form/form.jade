@@ -5,7 +5,7 @@ mixin form(it)
         .row
           each field in row.fields
             - size = field.size ? 's' + field.size : 's12'
-            - active = (field.placeholder || field.disabled || field.type === 'radio' || field.type === 'switch' || field.type === 'file' || field.type === 'range') && (field.type !== 'select')  ? 'active' : ''
+            - active = (field.placeholder || field.disabled || field.type === 'radio' || field.type === 'switch' || field.type === 'file' || field.type === 'range' || field.type === 'date') && (field.type !== 'select')  ? 'active' : ''
             - placeholder = field.placeholder ? field.placeholder : ''
             - value = field.value ? field.value : ''
             - fileField = field.type === 'file' ? 'file-field' : ''
@@ -48,6 +48,9 @@ mixin form(it)
 
                 else if field.type === 'range'
                   +range(field)
+
+                else if field.type === 'date'
+                  +datepicker(field)
 
                 else
                   if field.disabled
@@ -114,6 +117,9 @@ mixin file-input(it)
 mixin range(it)
   p.range-field
     input(id='#{it.id}' type='range', min='#{it.min}', max='#{it.max}')
+
+mixin datepicker(it)
+  input.datepicker(type='date')
 
 
 if patternLibrary
@@ -389,6 +395,17 @@ if patternLibrary
         id: "range",
         min: 0,
         max: 100
+      }
+    ]
+  }])
+
+  // Title: Date Picker
+  +form([{
+    fields: [
+      {
+        type: "date",
+        label: "Date Picker",
+        id: "date"
       }
     ]
   }])

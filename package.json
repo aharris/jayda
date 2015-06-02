@@ -21,6 +21,7 @@
     "gulp-connect": "^2.2.0",
     "gulp-data": "^1.2.0",
     "gulp-directory-map": "^0.1.1",
+    "gulp-file": "^0.2.0",
     "gulp-jade": "^1.0.0",
     "gulp-jade-globbing": "^0.1.6",
     "gulp-shell": "^0.3.0",
@@ -46,5 +47,15 @@
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0"
   },
-  "dependencies": {}
+  "dependencies": {},
+  "config" : {
+    "// iconFontFile"  : "// CSS file to parse for icon font documentation",
+    "iconFontFile"     : "app/styl/components/_icons_material_design.styl",
+
+    "// markup"        : "// Options: jade / ?",
+    "markup"           : "jade",
+
+    "// css"           : "// Options: stylus / ?",
+    "css"              : "stylus"
+  }
 }

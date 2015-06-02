@@ -13,15 +13,10 @@ var gulp = require('gulp'),
   directoryMap = require("gulp-directory-map"),
   data = require('gulp-data'),
   templatizer = require('templatizer'),
-  karma = require('karma').server;
+  karma = require('karma').server,
+  p = require('./package.json');
 
-// --------------------------------------
-// Config ----------------------------------
-// --------------------------------------
-var config = {
-  markup: 'jade',    // Options: jade / ?
-  css   : 'stylus'   // Options: stylus / ?
-};
+
 
 // --------------------------------------
 // App ----------------------------------
@@ -37,7 +32,7 @@ gulp.task('stylus', function () {
 gulp.task('stylint', function() {
   var stylint = require('gulp-stylint');
   return gulp.src(['./app/**/*.styl', './jayda/**/*.styl', '!./jayda/styl/lib**/*.styl'])
-    .pipe(stylint({config: '.stylintrc'}))
+    .pipe(stylint({config: '.stylintrc'}));
 });
 
 gulp.task('jade', function() {
@@ -140,9 +135,6 @@ gulp.task('libs', function() {
 gulp.task('jayda-jade', function () {
   gulp.src(['./jayda/templates/**/*.jade', '!./jayda/templates/**/_*.jade'])
     .pipe(jadeGlobbing())
-    .pipe(data(function() {
-      return require('./dest/jayda/data/' + 'tree' + '.json');
-    }))
     .pipe(jade())
     .on('error', gutil.log)
     .pipe(gulp.dest('./dest/jayda'))
@@ -156,10 +148,6 @@ gulp.task('jayda-stylus', function () {
     .pipe(connect.reload());
 });
 
-// gulp.task('jayda-js', function () {
-//   gulp.src('jayda/js/**/*.js')
-//     .pipe(gulp.dest('dest/jayda/js'));
-// });
 
 gulp.task('jayda-js', function () {
   var browserify = require('browserify');
@@ -240,6 +228,12 @@ gulp.task('jayda-images', function() {
     .pipe(gulp.dest('dest/images'));
 });
 
+gulp.task('jayda-font-icons', function() {
+  return gulp.src(p.config.iconFontFile)
+    .pipe(gulp.dest('dest/jayda/data/icons'));
+});
+
+
 // --------------------------------------
 // Tests --------------------------------
 // --------------------------------------
@@ -313,6 +307,7 @@ gulp.task('default', function(callback){
     [
       'stylus',
       'jayda-stylus',
+      'jayda-font-icons',
       'stylint',
       'jade',
       'jayda-jade',

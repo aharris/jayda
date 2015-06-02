@@ -7,6 +7,10 @@ var J = window.J = {
     this.$parent = $('.jayda-patterns-wrap');
     this.currentPattern = '';
 
+    var p = require('./../../package.json');
+
+    this.config = p.config;
+
     // Initial function calls
     this.getTree();
   },

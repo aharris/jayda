@@ -16,7 +16,7 @@ J.createObj = function (tmpl, file, res) {
         patternObj.customArgs = self.getCustomArgs(mixinArray[i], file);
         patternObj.script = _.filter(scripts, function (it) {
           return it.file === file;
-        })
+        });
         patternObj.showScript = self.showScript(mixinArray[i]);
         patternObj.codeSnippet = self.getCodeSnippet(mixinArray[i]);
         patternObj.codeSnippetLanguage = self.getCodeSnippetLanguage(mixinArray[i]);
@@ -51,19 +51,17 @@ J.parseJadeComments = function (patternsArr, caption, file) {
       it.script = patternsArr[i].script[0].string.trim();
     }
 
-    markup += J.Jayda.templatizer["_patterns"]["pattern"](it);
+    markup += J.Jayda.templatizer._patterns.pattern(it);
 
   }
 
-  captionTmpl = J.Jayda.templatizer["_pattern_header"]({title: sectionTitle, caption: caption});
+  var captionTmpl = J.Jayda.templatizer._pattern_header({title: sectionTitle, caption: caption});
 
   this.renderPatternsTmpl(captionTmpl, markup);
 };
 
 J.getMixins = function(tmpl) {
-  var mixinstring,
-    mixinArray,
-    caption;
+  var mixinArray;
 
   tmpl = this.toSingleLine(tmpl);
   tmpl = tmpl.split('if (patternLibrary) {')[1] || '';
@@ -80,7 +78,7 @@ J.getCustomArgs = function(str, file) {
 
   codeArr = str.split('["' + file + '"]["');
 
-  if (!codeArr[1]) {return false}
+  if (!codeArr[1]) { return false; }
 
   codeArr = codeArr[1].split('"]');
 
@@ -128,7 +126,7 @@ J.getMixinName = function (str, file) {
 };
 
 J.getCodeSnippetLanguage = function (str) {
-  if (!str.split('<pre><code class=\\"')[1]) { return null};
+  if (!str.split('<pre><code class=\\"')[1]) { return null; }
 
   console.log(str.split('<pre><code class=\\"')[1].split('\\"')[0]);
   return str.split('<pre><code class=\\"')[1].split('\\"')[0];
@@ -138,7 +136,7 @@ J.getCodeSnippet = function (str) {
   var re = /(<pre><code)((\s\w*(.*?))?>)/g;
   var match = str.match(re);
 
-  if (!str.split(match)[1]) { return null};
+  if (!str.split(match)[1]) { return null; }
 
   var code = str.split(match)[1];
 

@@ -1,4 +1,4 @@
-var J = window.J = {
+window.J = {
 
   Jayda: {},
 
@@ -19,7 +19,6 @@ var J = window.J = {
     // Reload app JS after Pattern loads
     _.each($('script'), function(it) {
       if (it.attributes.src && it.attributes.src.value === '../js/app.js') {
-        var old_script = it;
         it.remove();
         $('head').append(it);
       }
@@ -140,7 +139,7 @@ var J = window.J = {
         var file = '';
 
         if (scripts[i][0]) {
-          scriptRoute = scripts[i][0].route
+          scriptRoute = scripts[i][0].route;
           file = scripts[i][0].file;
 
           promise = $.ajax({
@@ -241,7 +240,7 @@ var J = window.J = {
   },
 
   getPatterns: function (file) {
-    res = J.model;
+    var res = J.model;
 
     J.removeNav();
 
@@ -269,7 +268,7 @@ var J = window.J = {
 
     codeArr = str.split('["' + file + '"]["');
 
-    if (!codeArr[1]) {return false}
+    if (!codeArr[1]) { return false; }
 
     codeArr = codeArr[1].split('"]');
 

@@ -82,11 +82,13 @@
     // Custom Globals
     "globals"       : {
       "$"         : false,
+      "jQuery"    : false,
       "require"   : false,
       "__dirname" : false,
       "jade"      : false,
       "_"         : false,
       "expect"    : false,
-      "J"         : false
+      "J"         : false,
+      "Prism"     : false
     }
 }

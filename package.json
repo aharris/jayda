@@ -49,8 +49,8 @@
   },
   "dependencies": {},
   "config" : {
-    "// iconFontFile"  : "// CSS file to parse for icon font documentation",
-    "iconFontFile"     : "app/styl/components/_icons_material_design.styl",
+    "// iconFontFile"  : "// JSON file that lists icon class names",
+    "iconFontFile"     : "jayda/data/icons.json",
 
     "// markup"        : "// Options: jade / ?",
     "markup"           : "jade",

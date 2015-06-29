@@ -1,2 +1,13 @@
-h2.jayda-section-header Icons
+mixin jayda-icons(icons)
+  h2.jayda-section-header Icons
 
+  ul.jayda-icons
+    each icon in icons
+      li.jayda-sm-span-6.jayda-md-span-3
+        .jayda-icon-inner
+          .jayda-icon
+            span(class="#{icon}")
+          .jayda-icon-class-name
+            | #{icon}
+
++jayda-icons(icons)

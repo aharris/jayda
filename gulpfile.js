@@ -148,7 +148,6 @@ gulp.task('jayda-stylus', function () {
     .pipe(connect.reload());
 });
 
-
 gulp.task('jayda-js', function () {
   var browserify = require('browserify');
   var source = require('vinyl-source-stream');
@@ -183,7 +182,8 @@ gulp.task('jayda-js', function () {
     './jayda/js/utils.js',
     './jayda/js/router.js',
     './jayda/js/jayda_jade.js',
-    './jayda/js/jayda_html.js'
+    './jayda/js/jayda_html.js',
+    './jayda/js/jayda_icons.js'
   ], function(err, entries) {
     // ensure any errors from globby are handled
     if (err) {
@@ -230,7 +230,8 @@ gulp.task('jayda-images', function() {
 
 gulp.task('jayda-font-icons', function() {
   return gulp.src(p.config.iconFontFile)
-    .pipe(gulp.dest('dest/jayda/data/icons'));
+    .pipe(gulp.dest('dest/jayda/data'))
+    .pipe(connect.reload());
 });
 
 
@@ -279,6 +280,7 @@ gulp.task('watch', function () {
   gulp.watch(['jayda/js/**/*.js'], ['jayda-js']);
   gulp.watch(['jayda/styl/**/*.styl'], ['jayda-stylus', 'stylint']);
   gulp.watch(['jayda/images/**/*'], ['jayda-images']);
+  gulp.watch(['jayda/data/icons.json'], ['jayda-font-icons']);
 });
 
 // --------------------------------------

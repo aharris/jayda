@@ -1,0 +1,27 @@
+$totalColumns = 12
+
+.jayda-row
+  cf()
+
+for i in (1..$totalColumns)
+  .jayda-sm-col-{i}
+    col(i /$totalColumns, gutter: 2)
+
+  .jayda-sm-span-{i}
+    span(i /$totalColumns)
+
++above(48em)
+  for i in (1..$totalColumns)
+    .jayda-md-col-{i}
+      col(i /$totalColumns, gutter: 2)
+
+    .jayda-md-span-{i}
+      span(i /$totalColumns)
+
++above(64em)
+  for i in (1..$totalColumns)
+    .jayda-lg-col-{i}
+      col(i /$totalColumns, gutter: 2)
+
+    .jayda-lg-span-{i}
+      span(i /$totalColumns)

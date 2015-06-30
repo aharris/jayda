@@ -13,14 +13,17 @@ J.getFile = function (file) {
 };
 
 J.parseComponent = function (example, exampleData) {
-  var title = exampleData.name,
-    desc = exampleData.description,
-    script,
-    markup;
+  var markup;
 
-  markup = J.Jayda.templatizer._patterns.pattern(null, null, example, script);
+  var data = {
+    title : exampleData.name,
+    desc : exampleData.description,
+    example: example
+  };
 
-  var captionTmpl = J.Jayda.templatizer._pattern_header({title: title, caption: desc});
+  markup = J.Jayda.templatizer._patterns.pattern(data);
+
+  var captionTmpl = J.Jayda.templatizer._pattern_header({title: data.title, caption: data.desc});
 
   J.renderPatternsTmpl(captionTmpl, markup);
 };

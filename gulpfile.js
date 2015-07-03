@@ -13,7 +13,7 @@ var gulp = require('gulp'),
   directoryMap = require("gulp-directory-map"),
   templatizer = require('templatizer'),
   karma = require('karma').server,
-  p = require('./jayda/package.json');
+  p = require('./package.json');
 
 
 // --------------------------------------
@@ -170,13 +170,6 @@ gulp.task('watch', function () {
   gulp.watch([p.config.appSrc + '/**/*.jade'], ['jade']);
   gulp.watch([p.config.appSrc + '/components/**/*.jade'], ['tree', 'templatizer']);
   gulp.watch([p.config.appSrc + '/js/**/*.js', p.config.appSrc + '/components/**/*.js', p.config.appSrc + '/components/**/*.html'], ['js', 'jayda-get-components']);
-
-  // JAYDA
-  gulp.watch(['./jayda/**/*.jade'], ['jayda-jade', 'jayda-templatizer']);
-  gulp.watch(['./jayda/js/**/*.js'], ['jayda-js']);
-  gulp.watch(['./jayda/styl/**/*.styl'], ['jayda-stylus', 'stylint']);
-  gulp.watch(['./jayda/images/**/*'], ['jayda-images']);
-  gulp.watch(['./jayda/data/icons.json'], ['jayda-font-icons']);
 });
 
 // Set Up Jayda

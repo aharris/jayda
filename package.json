@@ -47,5 +47,18 @@
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0"
   },
-  "dependencies": {}
+  "dependencies": {},
+  "config": {
+    "// appSrc": "// The source of your application",
+    "appSrc": "./app_jade",
+
+    "// iconFontFile": "// JSON file that lists icon class names",
+    "iconFontFile": "data/icons.json",
+
+    "// markup": "// Options: jade / ?",
+    "markup": "jade",
+
+    "// css": "// Options: stylus / sass",
+    "css": "stylus"
+  }
 }

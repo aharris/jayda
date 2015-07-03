@@ -10,7 +10,7 @@ var gulp = require('gulp'),
   gutil = require('gulp-util'),
   directoryMap = require("gulp-directory-map"),
   templatizer = require('templatizer'),
-  p = require('./package.json');
+  p = require('../package.json');
 
 // --------------------------------------
 // App ----------------------------------
@@ -129,6 +129,14 @@ gulp.task('jayda-font-icons', function() {
   return gulp.src(p.config.iconFontFile)
     .pipe(gulp.dest('../dest/jayda/data'))
     .pipe(connect.reload());
+});
+
+gulp.task('watch', function() {
+  gulp.watch(['./**/*.jade'], ['jayda-jade', 'jayda-templatizer']);
+  gulp.watch(['./js/**/*.js'], ['jayda-js']);
+  gulp.watch(['./styl/**/*.styl'], ['jayda-stylus', 'stylint']);
+  gulp.watch(['./images/**/*'], ['jayda-images']);
+  gulp.watch(['./data/icons.json'], ['jayda-font-icons']);
 });
 
 // --------------------------------------

@@ -1,7 +1,7 @@
 J.getIcons = function () {
   var self = this;
   $.ajax({
-    url: '../' + self.config.iconFontFile
+    url: './' + self.config.iconFontFile
   }).done(function(res) {
     var markup = J.Jayda.templatizer.core._icon_fonts["jayda-icons"](res.icons);
 

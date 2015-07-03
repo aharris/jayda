@@ -22,19 +22,21 @@ var gulp = require('gulp'),
 // App ----------------------------------
 // --------------------------------------
 
-gulp.task('stylus', function () {
-  gulp.src([p.config.appSrc + '/styl/**/*.styl', !p.config.appSrc + '/styl/**/_*'])
-    .pipe(stylus({use: [nib(), jeet(), rupture()]}))
-    .pipe(gulp.dest('./dest/css'))
-    .pipe(connect.reload());
-});
+// CSS ----------------------------------
+// gulp.task('stylus', function () {
+//   gulp.src([p.config.appSrc + '/styl/**/*.styl', !p.config.appSrc + '/styl/**/_*'])
+//     .pipe(stylus({use: [nib(), jeet(), rupture()]}))
+//     .pipe(gulp.dest('./dest/css'))
+//     .pipe(connect.reload());
+// });
 
-gulp.task('stylint', function() {
-  var stylint = require('gulp-stylint');
-  return gulp.src([p.config.appSrc + '/**/*.styl', './jayda/**/*.styl', '!./jayda/styl/lib**/*.styl'])
-    .pipe(stylint({config: '.stylintrc'}));
-});
+// gulp.task('stylint', function() {
+//   var stylint = require('gulp-stylint');
+//   return gulp.src([p.config.appSrc + '/**/*.styl', './jayda/**/*.styl', '!./jayda/styl/lib**/*.styl'])
+//     .pipe(stylint({config: '.stylintrc'}));
+// });
 
+// JADE ----------------------------------
 gulp.task('jade', function() {
   gulp.src([p.config.appSrc + '/templates/**/*.jade', !p.config.appSrc + '/templates/**/_*.jade'])
     .pipe(jadeGlobbing())
@@ -76,7 +78,7 @@ gulp.task('js', function () {
   // creates it's own readable stream.
   globby([
     p.config.appSrc + '/js/*.js',
-    p.config.appSrc + '/js/materialize/**/*.js',
+    // p.config.appSrc + '/js/materialize/**/*.js',
     p.config.appSrc + '/components/**/*.js'
   ], function(err, entries) {
     // ensure any errors from globby are handled
@@ -125,6 +127,15 @@ gulp.task('libs', function() {
     .pipe(gulp.dest('dest/bower_components'));
 
   gulp.src(p.config.appSrc + '/js/lib/**/*.js')
+    .pipe(gulp.dest('dest/js/lib'));
+
+  gulp.src('node_modules/materialize-css/bin/materialize.css')
+    .pipe(gulp.dest('dest/css'));
+
+  gulp.src('node_modules/materialize-css/font/**/*')
+    .pipe(gulp.dest('dest/font'));
+
+  gulp.src('node_modules/materialize-css/bin/materialize.js')
     .pipe(gulp.dest('dest/js/lib'));
 });
 
@@ -307,10 +318,10 @@ gulp.task('default', function(callback){
     'tree'
     ],
     [
-      'stylus',
+      // 'stylus',
       'jayda-stylus',
       'jayda-font-icons',
-      'stylint',
+      // 'stylint',
       'jade',
       'jayda-jade',
       'templatizer',

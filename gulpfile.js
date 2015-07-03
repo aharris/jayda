@@ -23,7 +23,7 @@ var gulp = require('gulp'),
 // --------------------------------------
 
 gulp.task('stylus', function () {
-  gulp.src(['./app/styl/**/*.styl', '!app/styl/**/_*'])
+  gulp.src([p.config.appSrc + '/styl/**/*.styl', !p.config.appSrc + '/styl/**/_*'])
     .pipe(stylus({use: [nib(), jeet(), rupture()]}))
     .pipe(gulp.dest('./dest/css'))
     .pipe(connect.reload());
@@ -31,12 +31,12 @@ gulp.task('stylus', function () {
 
 gulp.task('stylint', function() {
   var stylint = require('gulp-stylint');
-  return gulp.src(['./app/**/*.styl', './jayda/**/*.styl', '!./jayda/styl/lib**/*.styl'])
+  return gulp.src([p.config.appSrc + '/**/*.styl', './jayda/**/*.styl', '!./jayda/styl/lib**/*.styl'])
     .pipe(stylint({config: '.stylintrc'}));
 });
 
 gulp.task('jade', function() {
-  gulp.src(['./app/templates/**/*.jade', '!./app/templates/**/_*.jade'])
+  gulp.src([p.config.appSrc + '/templates/**/*.jade', !p.config.appSrc + '/templates/**/_*.jade'])
     .pipe(jadeGlobbing())
     .pipe(jade())
     .on('error', gutil.log)
@@ -75,9 +75,9 @@ gulp.task('js', function () {
   // "globby" replaces the normal "gulp.src" as Browserify
   // creates it's own readable stream.
   globby([
-    './app/js/*.js',
-    './app/js/materialize/**/*.js',
-    './app/components/**/*.js'
+    p.config.appSrc + '/js/*.js',
+    p.config.appSrc + '/js/materialize/**/*.js',
+    p.config.appSrc + '/components/**/*.js'
   ], function(err, entries) {
     // ensure any errors from globby are handled
     if (err) {
@@ -102,12 +102,12 @@ gulp.task('js', function () {
 });
 
 gulp.task('fonts', function () {
-  return gulp.src('app/fonts/**/*')
+  return gulp.src(p.config.appSrc + '/fonts/**/*')
     .pipe(gulp.dest('dest/fonts'));
 });
 
 gulp.task('tree', function () {
-  return gulp.src(['app/components/**/*.jade', 'app/components/**/*.html', 'app/components/**/*.js', 'app/components/**/*.json'])
+  return gulp.src([p.config.appSrc + '/components/**/*.jade', p.config.appSrc + '/components/**/*.html', p.config.appSrc + '/components/**/*.js', p.config.appSrc + '/components/**/*.json'])
     .pipe(directoryMap({
       filename: 'tree.json',
       prefix: 'components'
@@ -124,7 +124,7 @@ gulp.task('libs', function() {
   gulp.src('bower_components/**/*')
     .pipe(gulp.dest('dest/bower_components'));
 
-  gulp.src('app/js/lib/**/*.js')
+  gulp.src(p.config.appSrc + '/js/lib/**/*.js')
     .pipe(gulp.dest('dest/js/lib'));
 });
 
@@ -142,7 +142,7 @@ gulp.task('jayda-jade', function () {
 });
 
 gulp.task('jayda-stylus', function () {
-  gulp.src(['./jayda/styl/**/*.styl', '!app/styl/**/_*'])
+  gulp.src(['./jayda/styl/**/*.styl', !p.config.appSrc + '/styl/**/_*'])
     .pipe(stylus({use: [nib(), jeet(), rupture()]}))
     .pipe(gulp.dest('./dest/jayda/css'))
     .pipe(connect.reload());
@@ -209,7 +209,7 @@ gulp.task('jayda-js', function () {
 
 
 gulp.task('jayda-get-components', function () {
-  gulp.src(['app/components/**/*.js', 'app/components/**/*.json', 'app/components/**/*.html'])
+  gulp.src([p.config.appSrc + '/components/**/*.js', p.config.appSrc + '/components/**/*.json', p.config.appSrc + '/components/**/*.html'])
     .pipe(gulp.dest('dest/components'));
 
   gulp.src('jayda/js/lib/*.js')
@@ -255,7 +255,7 @@ gulp.task('mkdirs', shell.task([
 ]));
 
 gulp.task('templatizer', function() {
-    templatizer('./app/components/**/*.jade', './dest/js/compiled_patterns.js', {
+    templatizer(p.config.appSrc + '/components/**/*.jade', './dest/js/compiled_patterns.js', {
       namespace: 'J',
       dontremoveMixins: true
     });
@@ -269,11 +269,11 @@ gulp.task('connect', function() {
 });
 
 gulp.task('watch', function () {
-  gulp.watch(['app/styl/**/*.styl', 'app/components/**/*.styl'], ['stylus', 'stylint']);
-  gulp.watch(['app/fonts/**/*'], ['fonts']);
-  gulp.watch(['app/**/*.jade'], ['jade']);
-  gulp.watch(['app/components/**/*.jade'], ['tree', 'templatizer']);
-  gulp.watch(['app/js/**/*.js', 'app/components/**/*.js', 'app/components/**/*.html'], ['js', 'jayda-get-components']);
+  gulp.watch([p.config.appSrc + '/styl/**/*.styl', p.config.appSrc + '/components/**/*.styl'], ['stylus', 'stylint']);
+  gulp.watch([p.config.appSrc + '/fonts/**/*'], ['fonts']);
+  gulp.watch([p.config.appSrc + '/**/*.jade'], ['jade']);
+  gulp.watch([p.config.appSrc + '/components/**/*.jade'], ['tree', 'templatizer']);
+  gulp.watch([p.config.appSrc + '/js/**/*.js', p.config.appSrc + '/components/**/*.js', p.config.appSrc + '/components/**/*.html'], ['js', 'jayda-get-components']);
 
   // Jayda
   gulp.watch(['jayda/**/*.jade'], ['jayda-jade', 'jayda-templatizer']);

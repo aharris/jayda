@@ -1,4 +1,4 @@
-include ../components/**/*
+//- include ../components/**/*
 doctype html
 html(lang="en")
   head
@@ -19,47 +19,47 @@ html(lang="en")
       p
         a(href="/jayda/") Jayda Pattern Library
 
-      +collection({
-        dismissable: true,
-        header: "First Names",
-        secondaryContent: true,
-        items: [
-          {
-            href: "#",
-            text: "Alvin"
-          },
-          {
-            href: "#",
-            active: true,
-            text: "James"
-          },
-          {
-            href: "#",
-            text: "Alvin"
-          },
-          {
-            href: "#",
-            text: "Alvin"
-          }
-        ]
-      })
+      //- +collection({
+      //-   dismissable: true,
+      //-   header: "First Names",
+      //-   secondaryContent: true,
+      //-   items: [
+      //-     {
+      //-       href: "#",
+      //-       text: "Alvin"
+      //-     },
+      //-     {
+      //-       href: "#",
+      //-       active: true,
+      //-       text: "James"
+      //-     },
+      //-     {
+      //-       href: "#",
+      //-       text: "Alvin"
+      //-     },
+      //-     {
+      //-       href: "#",
+      //-       text: "Alvin"
+      //-     }
+      //-   ]
+      //- })
 
-      +card(
-        {
-          "reveal": true,
-          "title" : "Title",
-          "bgColor": "white",
-          "descriptionColor": "black",
-          "image": "http://dummyimage.com/600x400/7190d6/fff.png&text=J",
-          "description": "I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively. I am similar to what is called a panel in other frameworks.",
-          "links": [
-            {
-              "href": "#",
-              "text": "This is a link"
-            }
-          ]
-        }
-      )
+      //- +card(
+      //-   {
+      //-     "reveal": true,
+      //-     "title" : "Title",
+      //-     "bgColor": "white",
+      //-     "descriptionColor": "black",
+      //-     "image": "http://dummyimage.com/600x400/7190d6/fff.png&text=J",
+      //-     "description": "I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively. I am similar to what is called a panel in other frameworks.",
+      //-     "links": [
+      //-       {
+      //-         "href": "#",
+      //-         "text": "This is a link"
+      //-       }
+      //-     ]
+      //-   }
+      //- )
 
     script(type="text/javascript" src="bower_components/jQuery/dist/jquery.min.js")
     script(type="text/javascript" src="js/lib/hammer.min.js")

@@ -49,6 +49,9 @@
   },
   "dependencies": {},
   "config" : {
+    "// appSrc" : "// The source of your application",
+    "appSrc" : "./app_jade",
+
     "// iconFontFile"  : "// JSON file that lists icon class names",
     "iconFontFile"     : "jayda/data/icons.json",
 

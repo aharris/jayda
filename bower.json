@@ -1,8 +1,8 @@
 {
-  "name": "epam-animation",
+  "name": "Jayda",
   "version": "0.0.0",
   "authors": [
-    "Ashton Harris <ashton_harris@epam.com>"
+    "Ashton Harris <ashtonharris.me@gmail.com>"
   ],
   "license": "MIT",
   "private": true,
@@ -17,5 +17,7 @@
     "jQuery": "~2.1.3",
     "underscore": "~1.8.2"
   },
-  "dependencies": {}
+  "dependencies": {
+    "jquery-ui": "~1.11.4"
+  }
 }

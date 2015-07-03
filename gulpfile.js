@@ -23,18 +23,18 @@ var gulp = require('gulp'),
 // --------------------------------------
 
 // CSS ----------------------------------
-// gulp.task('stylus', function () {
-//   gulp.src([p.config.appSrc + '/styl/**/*.styl', !p.config.appSrc + '/styl/**/_*'])
-//     .pipe(stylus({use: [nib(), jeet(), rupture()]}))
-//     .pipe(gulp.dest('./dest/css'))
-//     .pipe(connect.reload());
-// });
+gulp.task('stylus', function () {
+  gulp.src([p.config.appSrc + '/styl/**/*.styl', !p.config.appSrc + '/styl/**/_*'])
+    .pipe(stylus({use: [nib(), jeet(), rupture()]}))
+    .pipe(gulp.dest('./dest/css'))
+    .pipe(connect.reload());
+});
 
-// gulp.task('stylint', function() {
-//   var stylint = require('gulp-stylint');
-//   return gulp.src([p.config.appSrc + '/**/*.styl', './jayda/**/*.styl', '!./jayda/styl/lib**/*.styl'])
-//     .pipe(stylint({config: '.stylintrc'}));
-// });
+gulp.task('stylint', function() {
+  var stylint = require('gulp-stylint');
+  return gulp.src([p.config.appSrc + '/**/*.styl', './jayda/**/*.styl', '!./jayda/styl/lib**/*.styl'])
+    .pipe(stylint({config: '.stylintrc'}));
+});
 
 // JADE ----------------------------------
 gulp.task('jade', function() {
@@ -318,10 +318,10 @@ gulp.task('default', function(callback){
     'tree'
     ],
     [
-      // 'stylus',
+      'stylus',
       'jayda-stylus',
       'jayda-font-icons',
-      // 'stylint',
+      'stylint',
       'jade',
       'jayda-jade',
       'templatizer',

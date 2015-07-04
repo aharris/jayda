@@ -259,7 +259,7 @@ window.J = {
 
     if (!J.templatizer[file]) {
       if (J.Jayda.templatizer.core['_' + file]) {
-        if (file === 'icon_fonts') {
+        if (file === 'icons') {
           return J.getIcons();
         } else {
           return J.renderCoreTemplate(file);

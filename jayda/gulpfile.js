@@ -119,13 +119,6 @@ gulp.task('jayda-lib', function () {
   ])
     .pipe(gulp.dest('../dest/jayda/js/lib'));
 
-  // jquery ui theme
-  gulp.src([
-    './bower_components/jquery-ui/themes/smoothness/**/*'
-  ])
-    .pipe(gulp.dest('../dest/jayda/css/jquery-ui/smoothness'));
-
-
 });
 
 

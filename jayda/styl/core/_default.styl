@@ -67,12 +67,16 @@ body
   &:first-child
     border-top 1px solid rgba(255,255,255,.3)
 
+  &.ui-state-focus
+    .jayda-side-nav-link
+      background-color darken(#7190d6, 4%)
+
 .jayda-side-nav-link
   color $white
   display block
   padding 1em
 
-  &:hover
+  &:hover, &:focus
     background-color darken(#7190d6, 4%)
 
 .jayda-overlay
@@ -114,7 +118,11 @@ body
 // jQuery UI overides
 .ui-autocomplete
   z-index 1000
+  display block !important
+  position relative
+  top 0 !important
+  left 0 !important
 
 // Search
-.jayda-search
-  float right
+// .jayda-search
+//   float right

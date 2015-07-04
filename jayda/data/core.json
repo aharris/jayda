@@ -6,8 +6,8 @@
       "route" : "colors"
     },
       {
-      "title" : "Icon Fonts",
-      "route" : "icon_fonts"
+      "title" : "Icons",
+      "route" : "icons"
     }
   ]
 }

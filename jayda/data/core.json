@@ -1,0 +1,13 @@
+{
+  "groupName" : "Core",
+  "pages" : [
+    {
+      "title" : "Colors",
+      "route" : "colors"
+    },
+      {
+      "title" : "Icon Fonts",
+      "route" : "icon_fonts"
+    }
+  ]
+}

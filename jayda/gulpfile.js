@@ -45,6 +45,12 @@ gulp.task('jayda-stylus', function () {
     .pipe(connect.reload());
 });
 
+gulp.task('jayda-stylint', function() {
+  var stylint = require('gulp-stylint');
+  return gulp.src([p.config.appSrc + './**/*.styl', '!./styl/lib**/*.styl', '!./node_modules/**/*.styl', '!./bower_components/**/*.styl'])
+    .pipe(stylint({config: '.stylintrc'}));
+});
+
 gulp.task('jayda-js', function () {
   var browserify = require('browserify');
   var source = require('vinyl-source-stream');
@@ -80,7 +86,8 @@ gulp.task('jayda-js', function () {
     './js/router.js',
     './js/jayda_jade.js',
     './js/jayda_html.js',
-    './js/jayda_icons.js'
+    './js/jayda_icons.js',
+    './js/jayda_search.js'
   ], function(err, entries) {
     // ensure any errors from globby are handled
     if (err) {
@@ -104,13 +111,27 @@ gulp.task('jayda-js', function () {
   return bundledStream;
 });
 
+gulp.task('jayda-lib', function () {
+  // JS
+  gulp.src([
+    './js/lib/*.js',
+    './bower_components/jquery-ui/jquery-ui.min.js'
+  ])
+    .pipe(gulp.dest('../dest/jayda/js/lib'));
+
+  // jquery ui theme
+  gulp.src([
+    './bower_components/jquery-ui/themes/smoothness/**/*'
+  ])
+    .pipe(gulp.dest('../dest/jayda/css/jquery-ui/smoothness'));
+
+
+});
+
 
 gulp.task('jayda-get-components', function () {
   gulp.src(['../' + p.config.appSrc + '/components/**/*.js', '../' + p.config.appSrc + '/components/**/*.json', '../' + p.config.appSrc + '/components/**/*.html'])
     .pipe(gulp.dest('../dest/components'));
-
-  gulp.src('./js/lib/*.js')
-    .pipe(gulp.dest('../dest/jayda/js/lib'));
 });
 
 gulp.task('jayda-templatizer', function() {
@@ -131,12 +152,18 @@ gulp.task('jayda-font-icons', function() {
     .pipe(connect.reload());
 });
 
+gulp.task('jayda-data', function() {
+    return gulp.src('./data/**/*')
+    .pipe(gulp.dest('../dest/jayda/data'));
+});
+
 gulp.task('watch', function() {
   gulp.watch(['./**/*.jade'], ['jayda-jade', 'jayda-templatizer']);
   gulp.watch(['./js/**/*.js'], ['jayda-js']);
-  gulp.watch(['./styl/**/*.styl'], ['jayda-stylus', 'stylint']);
+  gulp.watch(['./styl/**/*.styl'], ['jayda-stylus', 'jayda-stylint']);
   gulp.watch(['./images/**/*'], ['jayda-images']);
   gulp.watch(['./data/icons.json'], ['jayda-font-icons']);
+  gulp.watch(['./data/**/*'], ['jayda-data']);
 });
 
 // --------------------------------------
@@ -147,14 +174,17 @@ gulp.task('default', function(callback){
   runSequence(
     [
       'jayda-js',
+      'jayda-lib',
       'jayda-get-components',
-      'jayda-images'
+      'jayda-images',
     ],
     [
+      'jayda-data',
       'tree'
     ],
     [
       'jayda-stylus',
+      'jayda-stylint',
       'jayda-font-icons',
       'jayda-jade',
       'jayda-templatizer'

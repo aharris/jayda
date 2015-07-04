@@ -12,7 +12,7 @@ window.J = {
     this.config = p.config;
 
     // Initial function calls
-    this.getTree();
+    this.getData();
   },
 
   fireAppJs: function () {
@@ -44,18 +44,24 @@ window.J = {
   // --------------------------------
   // MAIN APP -----------------------
   // --------------------------------
-  getTree: function () {
-    var self = this;
-    $.ajax({
-      url: "data/tree.json"
-    }).done(function(res) {
-      self.model = res;
-      self.appendSideNav(res);
-      self.router();
-      if (!window.location.hash) {
-        self.loadOverview();
-      }
-    });
+  getData: function () {
+    $.when(
+      $.ajax("data/core.json"),
+      $.ajax("data/tree.json")
+      )
+      .done(function(core, components){
+        J.model = components[0];
+        J.appendSideNav(core[0], components[0] );
+        J.router();
+        J.initSearch(core[0], components[0]);
+
+        if (!window.location.hash) {
+          J.loadOverview();
+        }
+      })
+      .fail(function(err){
+        console.log('getData error', err);
+      });
   },
 
   parseJade: function (res) {
@@ -168,7 +174,6 @@ window.J = {
     }
 
     getStrings().done(function (requests) {
-      // console.log( "scriptsArr: ", scriptsArr );
       dfd.resolve( scriptsArr );
       return requests;
     });
@@ -209,9 +214,12 @@ window.J = {
     return patterns;
   },
 
-  appendSideNav: function (res){
-    var patterns = this.parseTree(res);
-    $('.jayda-side-nav-wrap').append(J.Jayda.templatizer["side-nav"]["side-nav"]({jayda : true, patterns: patterns}));
+  appendSideNav: function (core, components){
+    var data = {};
+    data.patterns = this.parseTree(components);
+    data.core = core;
+
+    $('.jayda-side-nav-wrap').append(J.Jayda.templatizer["side-nav"]["side-nav"]({it: data}));
 
     this.bindNavButton();
     this.bindOverlay();

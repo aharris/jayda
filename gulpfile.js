@@ -30,7 +30,7 @@ gulp.task('stylus', function () {
 
 gulp.task('stylint', function() {
   var stylint = require('gulp-stylint');
-  return gulp.src([p.config.appSrc + '/**/*.styl', './jayda/**/*.styl', '!./jayda/styl/lib**/*.styl', '!./jayda/node_modules/**/*.styl'])
+  return gulp.src([p.config.appSrc + './**/*.styl', '!./jayda/**/*.styl', '!./jayda/styl/lib**/*.styl', '!./jayda/node_modules/**/*.styl'])
     .pipe(stylint({config: '.stylintrc'}));
 });
 

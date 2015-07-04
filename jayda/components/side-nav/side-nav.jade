@@ -1,19 +1,17 @@
-mixin side-nav(patterns)
-  h5 Core
+mixin side-nav(it)
+  h5= it.core.groupName
   ul.jayda-side-nav.jayda-side-nav-core
-    li.jayda-side-nav-list-item
-      a.jayda-side-nav-link(href="#colors") Colors
-      a.jayda-side-nav-link(href="#icon_fonts") Icon Fonts
+    each item in it.core.pages
+      li.jayda-side-nav-list-item
+        a.jayda-side-nav-link(href="##{item.route}")= item.title
 
   h5 Components
   ul.jayda-side-nav.jayda-side-nav-components
-    each pattern, index in patterns
-      //- h2= pattern[0].group
+    each pattern, index in it.patterns
       each item in pattern
-        //- ul
         li.jayda-side-nav-list-item
           a.jayda-side-nav-link(href="##{item.file}")= item.name
 
 
-+side-nav(patterns)
++side-nav(it)
 

@@ -7,8 +7,11 @@ html.jayda(lang="en")
     meta(name="viewport" content="width=device-width, initial-scale=1")
     meta(http-equiv="Content-Type" content="text/html;charset=utf-8")
 
-    link(rel="stylesheet" type="text/css" href="css/jayda.css")
     link(rel="stylesheet" type="text/css" href="../css/materialize.css")
+
+    link(rel="stylesheet" type="text/css" href="css/jquery-ui/smoothness/jquery-ui.min.css")
+    link(rel="stylesheet" type="text/css" href="css/jayda.css")
+
     //- link(rel="stylesheet" type="text/css" href="../css/main.css")
 
   body
@@ -20,6 +23,10 @@ html.jayda(lang="en")
           span.jayda-nav-button-row
         h1.jayda-header-logo
           a.jayda-header-logo-link(href="./") Jayda
+
+        .ui-widget.jayda-search
+          input#tags(placeholder="Search")
+
 
     .jayda-side-nav-wrap.jayda-container
       //- +side-nav() loaded dynamically
@@ -33,6 +40,7 @@ html.jayda(lang="en")
 
     script(type="text/javascript" src="../bower_components/jQuery/dist/jquery.min.js")
     script(type="text/javascript" src="../bower_components/underscore/underscore-min.js")
+    script(type="text/javascript" src="js/lib/jquery-ui.min.js")
     script(type="text/javascript" src="js/lib/director.min.js")
     script(type="text/javascript" src="js/lib/prism.js")
 

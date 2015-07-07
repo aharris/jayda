@@ -1,11 +1,10 @@
 {
-  "name": "Jayda",
+  "name": "jayda",
   "version": "0.0.0",
   "authors": [
     "Ashton Harris <ashtonharris.me@gmail.com>"
   ],
   "license": "MIT",
-  "private": true,
   "ignore": [
     "**/.*",
     "node_modules",
@@ -13,9 +12,7 @@
     "test",
     "tests"
   ],
-  "devDependencies": {},
   "dependencies": {
-    "jQuery": "~2.1.3",
-    "underscore": "~1.8.2"
+    "jquery-ui": "~1.11.4"
   }
 }

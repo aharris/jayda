@@ -3,48 +3,55 @@ var gulp = require('gulp'),
   nib = require('nib'),
   jeet = require('jeet'),
   connect = require('gulp-connect'),
-  clean = require('gulp-clean'),
   runSequence = require('run-sequence'),
   rupture = require('rupture'),
   jade = require('gulp-jade'),
   jadeGlobbing  = require('gulp-jade-globbing'),
-  shell = require('gulp-shell'),
   gutil = require('gulp-util'),
   directoryMap = require("gulp-directory-map"),
   templatizer = require('templatizer'),
-  karma = require('karma').server,
-  p = require('./package.json');
-
+  p = require('../package.json');
 
 // --------------------------------------
 // App ----------------------------------
 // --------------------------------------
 
-// CSS ----------------------------------
-gulp.task('stylus', function () {
-  gulp.src([p.config.appSrc + '/styl/**/*.styl', !p.config.appSrc + '/styl/**/_*'])
-    .pipe(stylus({use: [nib(), jeet(), rupture()]}))
-    .pipe(gulp.dest('./dest/css'))
-    .pipe(connect.reload());
+gulp.task('tree', function () {
+  return gulp.src(['../' + p.config.appSrc + '/components/**/*.jade', '../' + p.config.appSrc + '/components/**/*.html', '../' + p.config.appSrc + '/components/**/*.js', '../' + p.config.appSrc + '/components/**/*.json'])
+    .pipe(directoryMap({
+      filename: 'tree.json',
+      prefix: 'components'
+    }))
+    .pipe(gulp.dest('../dest/jayda/data/'));
 });
 
-gulp.task('stylint', function() {
-  var stylint = require('gulp-stylint');
-  return gulp.src([p.config.appSrc + './**/*.styl', '!./jayda/**/*.styl', '!./jayda/styl/lib**/*.styl', '!./jayda/node_modules/**/*.styl'])
-    .pipe(stylint({config: '.stylintrc'}));
-});
+// --------------------------------------
+// JAYDA --------------------------------
+// --------------------------------------
 
-// JADE ----------------------------------
-gulp.task('jade', function() {
-  gulp.src([p.config.appSrc + '/templates/**/*.jade', !p.config.appSrc + '/templates/**/_*.jade'])
+gulp.task('jayda-jade', function () {
+  gulp.src(['./templates/**/*.jade', '!./templates/**/_*.jade'])
     .pipe(jadeGlobbing())
     .pipe(jade())
     .on('error', gutil.log)
-    .pipe(gulp.dest('dest'))
+    .pipe(gulp.dest('../dest/jayda'))
     .pipe(connect.reload());
 });
 
-gulp.task('js', function () {
+gulp.task('jayda-stylus', function () {
+  gulp.src(['./styl/**/*.styl', !'../' + p.config.appSrc + '/styl/**/_*'])
+    .pipe(stylus({use: [nib(), jeet(), rupture()]}))
+    .pipe(gulp.dest('../dest/jayda/css'))
+    .pipe(connect.reload());
+});
+
+gulp.task('jayda-stylint', function() {
+  var stylint = require('gulp-stylint');
+  return gulp.src([p.config.appSrc + './**/*.styl', '!./styl/lib**/*.styl', '!./node_modules/**/*.styl', '!./bower_components/**/*.styl'])
+    .pipe(stylint({config: '.stylintrc'}));
+});
+
+gulp.task('jayda-js', function () {
   var browserify = require('browserify');
   var source = require('vinyl-source-stream');
   var buffer = require('vinyl-buffer');
@@ -60,24 +67,27 @@ gulp.task('js', function () {
   bundledStream
     // turns the output bundle stream into a stream containing
     // the normal attributes gulp plugins expect.
-    .pipe(source('app.js'))
+    .pipe(source('jayda.js'))
     // the rest of the gulp task, as you would normally write it.
     // here we're copying from the Browserify + Uglify2 recipe.
     .pipe(buffer())
     .pipe(sourcemaps.init({loadMaps: true}))
       // Add gulp plugins to the pipeline here.
-    .pipe(uglify())
     .on('error', gutil.log)
     .pipe(sourcemaps.write('./'))
-    .pipe(gulp.dest('./dest/js/'))
+    .pipe(gulp.dest('../dest/jayda/js/'))
     .pipe(connect.reload());
 
   // "globby" replaces the normal "gulp.src" as Browserify
   // creates it's own readable stream.
   globby([
-    p.config.appSrc + '/js/*.js',
-    // p.config.appSrc + '/js/materialize/**/*.js',
-    p.config.appSrc + '/components/**/*.js'
+    './js/jayda.js',
+    './js/utils.js',
+    './js/router.js',
+    './js/jayda_jade.js',
+    './js/jayda_html.js',
+    './js/jayda_icons.js',
+    './js/jayda_search.js'
   ], function(err, entries) {
     // ensure any errors from globby are handled
     if (err) {
@@ -101,112 +111,76 @@ gulp.task('js', function () {
   return bundledStream;
 });
 
-gulp.task('tree', function () {
-  return gulp.src([p.config.appSrc + '/components/**/*.jade', p.config.appSrc + '/components/**/*.html', p.config.appSrc + '/components/**/*.js', p.config.appSrc + '/components/**/*.json'])
-    .pipe(directoryMap({
-      filename: 'tree.json',
-      prefix: 'components'
-    }))
-    .pipe(gulp.dest('dest/jayda/data/'));
+gulp.task('jayda-lib', function () {
+  // JS
+  gulp.src([
+    './js/lib/*.js',
+    './bower_components/jquery-ui/jquery-ui.min.js'
+  ])
+    .pipe(gulp.dest('../dest/jayda/js/lib'));
+
 });
 
-gulp.task('clean', function () {
-  return gulp.src('dest', {read: false})
-    .pipe(clean());
+
+gulp.task('jayda-get-components', function () {
+  gulp.src(['../' + p.config.appSrc + '/components/**/*.js', '../' + p.config.appSrc + '/components/**/*.json', '../' + p.config.appSrc + '/components/**/*.html'])
+    .pipe(gulp.dest('../dest/components'));
 });
 
-gulp.task('libs', function() {
-  gulp.src('bower_components/**/*')
-    .pipe(gulp.dest('dest/bower_components'));
-
-  gulp.src(p.config.appSrc + '/js/lib/**/*.js')
-    .pipe(gulp.dest('dest/js/lib'));
-
-  gulp.src('node_modules/materialize-css/bin/materialize.css')
-    .pipe(gulp.dest('dest/css'));
-
-  gulp.src('node_modules/materialize-css/font/**/*')
-    .pipe(gulp.dest('dest/font'));
-
-  gulp.src('node_modules/materialize-css/bin/materialize.js')
-    .pipe(gulp.dest('dest/js/lib'));
-});
-
-// --------------------------------------
-// Tests --------------------------------
-// --------------------------------------
-
-gulp.task('test', function (done) {
-  karma.start({
-    configFile: __dirname + '/karma.conf.js',
-    singleRun: false
-  }, done);
-});
-
-// --------------------------------------
-// Global -------------------------------
-// --------------------------------------
-
-gulp.task('mkdirs', shell.task([
-  'mkdir ./dest && mkdir ./dest/jayda && mkdir ./dest/jayda/data'
-]));
-
-gulp.task('templatizer', function() {
-    templatizer(p.config.appSrc + '/components/**/*.jade', './dest/js/compiled_patterns.js', {
-      namespace: 'J',
+gulp.task('jayda-templatizer', function() {
+    templatizer('./components/**/*.jade', '../dest/jayda/js/compiled_patterns.js', {
+      namespace: 'window.J.Jayda',
       dontremoveMixins: true
     });
 });
 
-gulp.task('connect', function() {
-  connect.server({
-    root: ['dest'],
-    livereload: true
-  });
+gulp.task('jayda-images', function() {
+  gulp.src('./images/**/*')
+    .pipe(gulp.dest('../dest/images'));
 });
 
-gulp.task('watch', function () {
-  gulp.watch([p.config.appSrc + '/styl/**/*.styl', p.config.appSrc + '/components/**/*.styl'], ['stylus', 'stylint']);
-  gulp.watch([p.config.appSrc + '/**/*.jade'], ['jade']);
-  gulp.watch([p.config.appSrc + '/components/**/*.jade'], ['tree', 'templatizer']);
-  gulp.watch([p.config.appSrc + '/js/**/*.js', p.config.appSrc + '/components/**/*.js', p.config.appSrc + '/components/**/*.html'], ['js', 'jayda-get-components']);
+gulp.task('jayda-font-icons', function() {
+  return gulp.src(p.config.iconFontFile)
+    .pipe(gulp.dest('../dest/jayda/data'))
+    .pipe(connect.reload());
 });
 
-// Set Up Jayda
-gulp.task('jayda', shell.task([
-  'cd jayda && gulp'
-]));
+gulp.task('jayda-data', function() {
+    return gulp.src('./data/**/*')
+    .pipe(gulp.dest('../dest/jayda/data'));
+});
+
+gulp.task('watch', function() {
+  gulp.watch(['./**/*.jade'], ['jayda-jade', 'jayda-templatizer']);
+  gulp.watch(['./js/**/*.js'], ['jayda-js']);
+  gulp.watch(['./styl/**/*.styl'], ['jayda-stylus', 'jayda-stylint']);
+  gulp.watch(['./images/**/*'], ['jayda-images']);
+  gulp.watch(['./data/icons.json'], ['jayda-font-icons']);
+  gulp.watch(['./data/**/*'], ['jayda-data']);
+});
 
 // --------------------------------------
 // Commands -----------------------------
 // --------------------------------------
+
 gulp.task('default', function(callback){
   runSequence(
     [
-      'clean'
+      'jayda-js',
+      'jayda-lib',
+      'jayda-get-components',
+      'jayda-images',
     ],
     [
-      'mkdirs'
-    ],
-    [
-      'libs',
-      'js'
-    ],
-    [
+      'jayda-data',
       'tree'
     ],
     [
-      'stylus',
-      'stylint',
-      'jade',
-      'templatizer',
-    ],
-    [
-      'jayda'
-    ],
-    [
-      'connect',
-      'watch'
+      'jayda-stylus',
+      'jayda-stylint',
+      'jayda-font-icons',
+      'jayda-jade',
+      'jayda-templatizer'
     ],
     callback);
 });

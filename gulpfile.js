@@ -22,7 +22,7 @@ gulp.task('tree', function () {
       filename: 'tree.json',
       prefix: 'components'
     }))
-    .pipe(gulp.dest('../dest/jayda/data/'));
+    .pipe(gulp.dest(p.config.target + '/jayda/data/'));
 });
 
 // --------------------------------------
@@ -34,14 +34,14 @@ gulp.task('jayda-jade', function () {
     .pipe(jadeGlobbing())
     .pipe(jade())
     .on('error', gutil.log)
-    .pipe(gulp.dest('../dest/jayda'))
+    .pipe(gulp.dest(p.config.target + '/jayda'))
     .pipe(connect.reload());
 });
 
 gulp.task('jayda-stylus', function () {
   gulp.src(['./styl/**/*.styl', !'../' + p.config.appSrc + '/styl/**/_*'])
     .pipe(stylus({use: [nib(), jeet(), rupture()]}))
-    .pipe(gulp.dest('../dest/jayda/css'))
+    .pipe(gulp.dest(p.config.target + '/jayda/css'))
     .pipe(connect.reload());
 });
 
@@ -75,7 +75,7 @@ gulp.task('jayda-js', function () {
       // Add gulp plugins to the pipeline here.
     .on('error', gutil.log)
     .pipe(sourcemaps.write('./'))
-    .pipe(gulp.dest('../dest/jayda/js/'))
+    .pipe(gulp.dest(p.config.target + '/jayda/js/'))
     .pipe(connect.reload());
 
   // "globby" replaces the normal "gulp.src" as Browserify
@@ -117,18 +117,18 @@ gulp.task('jayda-lib', function () {
     './js/lib/*.js',
     './bower_components/jquery-ui/jquery-ui.min.js'
   ])
-    .pipe(gulp.dest('../dest/jayda/js/lib'));
+    .pipe(gulp.dest(p.config.target + '/jayda/js/lib'));
 
 });
 
 
 gulp.task('jayda-get-components', function () {
   gulp.src(['../' + p.config.appSrc + '/components/**/*.js', '../' + p.config.appSrc + '/components/**/*.json', '../' + p.config.appSrc + '/components/**/*.html'])
-    .pipe(gulp.dest('../dest/components'));
+    .pipe(gulp.dest(p.config.target + '/components'));
 });
 
 gulp.task('jayda-templatizer', function() {
-    templatizer('./components/**/*.jade', '../dest/jayda/js/compiled_patterns.js', {
+    templatizer('./components/**/*.jade', p.config.target + '/jayda/js/compiled_patterns.js', {
       namespace: 'window.J.Jayda',
       dontremoveMixins: true
     });
@@ -136,18 +136,18 @@ gulp.task('jayda-templatizer', function() {
 
 gulp.task('jayda-images', function() {
   gulp.src('./images/**/*')
-    .pipe(gulp.dest('../dest/images'));
+    .pipe(gulp.dest(p.config.target + '/images'));
 });
 
 gulp.task('jayda-font-icons', function() {
   return gulp.src(p.config.iconFontFile)
-    .pipe(gulp.dest('../dest/jayda/data'))
+    .pipe(gulp.dest(p.config.target + '/jayda/data'))
     .pipe(connect.reload());
 });
 
 gulp.task('jayda-data', function() {
     return gulp.src('./data/**/*')
-    .pipe(gulp.dest('../dest/jayda/data'));
+    .pipe(gulp.dest(p.config.target + '/jayda/data'));
 });
 
 gulp.task('watch', function() {

@@ -46,6 +46,8 @@
   "config": {
     "// appSrc": "// The source of your application",
     "appSrc": "./app_jade",
+    "// target": "// The target directory of your application",
+    "target": "../dest",
     "// iconFontFile": "// JSON file that lists icon class names",
     "iconFontFile": "data/icons.json",
     "// markup": "// Options: jade / ?",

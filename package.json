@@ -1,6 +1,6 @@
 {
   "name": "jayda",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Jayda is an automatic pattern library generator with some built in start libraries if you choose to use them.",
   "main": "gulpfile.js",
   "scripts": {
@@ -43,7 +43,7 @@
     "vinyl-source-stream": "^1.1.0"
   },
   "dependencies": {},
-    "config": {
+  "config": {
     "// appSrc": "// The source of your application",
     "appSrc": "./app_jade",
     "// iconFontFile": "// JSON file that lists icon class names",

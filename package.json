@@ -1,6 +1,6 @@
 {
   "name": "jayda",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Jayda is an automatic pattern library generator with some built in start libraries if you choose to use them.",
   "main": "gulpfile.js",
   "scripts": {

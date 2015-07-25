@@ -10,7 +10,7 @@ var gulp = require('gulp'),
   gutil = require('gulp-util'),
   directoryMap = require("gulp-directory-map"),
   templatizer = require('templatizer'),
-  p = require('../package.json');
+  p = require('./package.json');
 
 // --------------------------------------
 // App ----------------------------------

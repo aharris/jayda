@@ -23,12 +23,21 @@ Download the "material" branch. (coming soon)
 Download the "bootstrap" branch. (coming soon)
 
 
-## Run
-Download repo.
+## Add to existing project
 ```
+$ npm install jayda --save
+```
+
+Copy contents to your app for customization
+```
+$ cp -r node_modules/jayda ./
+```
+
+Initialize jayda
+```
+$ cd jayda
 $ npm install
 $ bower install
-$ gulp
 ```
 
 ## Usage

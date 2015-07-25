@@ -52,5 +52,5 @@
     "markup": "jade",
     "// css": "// Options: stylus / sass",
     "css": "stylus"
-  },
+  }
 }

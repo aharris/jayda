@@ -55,5 +55,5 @@
     "iconFontFile": "data/icons.json",
     "// markup": "// Options: jade / ?",
     "markup": "html"
-  },
+  }
 }

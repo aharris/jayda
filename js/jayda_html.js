@@ -1,6 +1,6 @@
 J.getFile = function (file) {
-  var example = J.model.components[file][file + '.html'];
-  var data = J.model.components[file][file + '.json'];
+  var example = J.config.targetComponentsDir + '/' + J.model.components[file][file + '.html'];
+  var data = J.config.targetComponentsDir + '/' + J.model.components[file][file + '.json'];
   $.ajax({
     url: '../' + example
   }).done(function(exampleMarkup) {

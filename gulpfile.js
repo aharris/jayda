@@ -115,7 +115,9 @@ gulp.task('jayda-lib', function () {
   // JS
   gulp.src([
     './js/lib/*.js',
-    './bower_components/jquery-ui/jquery-ui.min.js'
+    './bower_components/jquery-ui/jquery-ui.min.js',
+    './bower_components/jQuery/dist/jquery.min.js',
+    'bower_components/underscore/underscore-min.js'
   ])
     .pipe(gulp.dest(p.config.target + '/jayda/js/lib'));
 
@@ -123,8 +125,8 @@ gulp.task('jayda-lib', function () {
 
 
 gulp.task('jayda-get-components', function () {
-  gulp.src(['../' + p.config.appSrc + '/components/**/*.js', '../' + p.config.appSrc + '/components/**/*.json', '../' + p.config.appSrc + '/components/**/*.html'])
-    .pipe(gulp.dest(p.config.target + '/components'));
+  gulp.src(p.config.componentsDir + '/**/*')
+    .pipe(gulp.dest(p.config.target + '/' + p.config.targetComponentsDir + '/components'));
 });
 
 gulp.task('jayda-templatizer', function() {
@@ -150,7 +152,7 @@ gulp.task('jayda-data', function() {
     .pipe(gulp.dest(p.config.target + '/jayda/data'));
 });
 
-gulp.task('watch', function() {
+gulp.task('doWatch', function() {
   gulp.watch(['./**/*.jade'], ['jayda-jade', 'jayda-templatizer']);
   gulp.watch(['./js/**/*.js'], ['jayda-js']);
   gulp.watch(['./styl/**/*.styl'], ['jayda-stylus', 'jayda-stylint']);
@@ -162,6 +164,17 @@ gulp.task('watch', function() {
 // --------------------------------------
 // Commands -----------------------------
 // --------------------------------------
+
+gulp.task('watch', function(callback){
+  runSequence(
+    [
+      'default'
+    ],
+    [
+      'doWatch'
+    ],
+    callback);
+});
 
 gulp.task('default', function(callback){
   runSequence(

@@ -45,14 +45,15 @@
   "dependencies": {},
   "config": {
     "// appSrc": "// The source of your application",
-    "appSrc": "./app_jade",
+    "appSrc": "./src/app",
+    "componentsDir": "../src/app/components",
     "// target": "// The target directory of your application",
-    "target": "../dest",
+    "target": "../dist",
+    "// targetComponentsDir": "// The directory of your components folder in the target",
+    "targetComponentsDir": "./app",
     "// iconFontFile": "// JSON file that lists icon class names",
     "iconFontFile": "data/icons.json",
     "// markup": "// Options: jade / ?",
-    "markup": "jade",
-    "// css": "// Options: stylus / sass",
-    "css": "stylus"
-  }
+    "markup": "html"
+  },
 }

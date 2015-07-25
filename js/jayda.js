@@ -257,7 +257,7 @@ window.J = {
 
     J.currentPattern = file;
 
-    if (!J.templatizer[file]) {
+    if (!J.templatizer || !J.templatizer[file]) {
       if (J.Jayda.templatizer.core['_' + file]) {
         if (file === 'icons') {
           return J.getIcons();

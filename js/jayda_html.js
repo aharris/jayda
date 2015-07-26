@@ -18,7 +18,21 @@ J.parseComponent = function (example, exampleData) {
   var tag = '';
 
   if (exampleData.tag) {
-    tag = '<' + exampleData.tag + ' creationDate="main.creationDate" />';
+    tag = '<' + exampleData.tag + '/>';
+
+    if (exampleData.data) {
+      var tagOpen = '<' + exampleData.tag + ' ';
+      _.each(Object.keys(exampleData.data), function (it) {
+        var dataString = JSON.stringify(exampleData.data[ it ]);
+          dataString = dataString[0] === '"' ? dataString : "'" + dataString + "'";
+
+        tagOpen += it + '=' + dataString + ' ';
+
+      });
+      var tagClose = ' />';
+      tag = tagOpen + tagClose;
+    }
+
   }
 
 

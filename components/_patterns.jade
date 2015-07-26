@@ -4,7 +4,7 @@ mixin pattern(it)
   if it.desc
     .jayda-example-description !{it.desc}
 
-  if it.example
+  if it.example && !it.tag
     div.example !{it.example}
 
   if it.tag

@@ -1,5 +1,4 @@
 {
-    "extends": "../.jshintrc",
     "maxerr"        : 50,       // {int} Maximum error before stopping
 
     // Enforcing
@@ -79,6 +78,7 @@
     "worker"        : false,    // Web Workers
     "wsh"           : false,    // Windows Scripting Host
     "yui"           : false,    // Yahoo User Interface
+    "angular"       : true
 
     // Custom Globals
     "globals"       : {

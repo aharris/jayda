@@ -307,6 +307,11 @@ window.J = {
 
     Prism.highlightAll();
     this.fireAppJs();
+
+    if (J.config.framework === "angular") {
+      J.bootstrapAngularApp();
+    }
+
   }
 
 };

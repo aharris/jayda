@@ -68,8 +68,9 @@ $ cd jayda && npm install && bower install && cd -
 2. Follow instructions to set config options above
 3. cd into jayda directory
 4. build jayda
-  * ``` gulp ```
-5.
+  * ``` gulp watch ```
+5. Add you controller to ``` jayda/templates/index.jade ```
+  * ``` html.jayda(lang="en" ng-app="jaydaAngularDemo") ```
 
 
 

@@ -7,6 +7,15 @@ mixin pattern(it)
   if it.example
     div.example !{it.example}
 
+  if it.tag
+    div.example !{it.tag}
+
+  if it.tag
+    pre
+      code.language-markup
+        div.example #{it.tag}
+
+
   pre
     if it.mixinName
       code.language-jade +#{it.mixinName}(#{it.customArgs})

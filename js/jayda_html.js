@@ -15,15 +15,25 @@ J.getFile = function (file) {
 J.parseComponent = function (example, exampleData) {
   var markup;
 
+  var tag = '';
+
+  if (exampleData.tag) {
+    tag = '<' + exampleData.tag + ' creationDate="main.creationDate" />';
+  }
+
+
   var data = {
     title : exampleData.name,
     desc : exampleData.description,
-    example: example
+    example: example,
+    tag: tag,
+    data: exampleData.data
+
   };
 
   markup = J.Jayda.templatizer._patterns.pattern(data);
 
-  var captionTmpl = J.Jayda.templatizer._pattern_header({title: data.title, caption: data.desc});
+  // var captionTmpl = J.Jayda.templatizer._pattern_header({title: data.title, caption: data.desc});
 
-  J.renderPatternsTmpl(captionTmpl, markup);
+  J.renderPatternsTmpl(null, markup);
 };

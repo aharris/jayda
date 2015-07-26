@@ -86,6 +86,7 @@ gulp.task('jayda-js', function () {
     './js/router.js',
     './js/jayda_jade.js',
     './js/jayda_html.js',
+    './js/jayda_angular.js',
     './js/jayda_icons.js',
     './js/jayda_search.js'
   ], function(err, entries) {

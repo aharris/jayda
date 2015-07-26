@@ -78,7 +78,6 @@
     "worker"        : false,    // Web Workers
     "wsh"           : false,    // Windows Scripting Host
     "yui"           : false,    // Yahoo User Interface
-    "angular"       : true
 
     // Custom Globals
     "globals"       : {
@@ -90,6 +89,7 @@
       "_"         : false,
       "expect"    : false,
       "J"         : false,
-      "Prism"     : false
+      "Prism"     : false,
+      "angular"   : false
     }
 }

@@ -24,17 +24,26 @@ $ cd jayda && npm install && bower install && cd -
 
 ## Config options
 
-* appSrc: The source of your application
+In your package.json add a ``` config ``` object with the following porperties
+
+* appSrc: The source of your application (required)
   * EX: ``` "appSrc": "./app" ```
 
-* target: The target directory of your application
+* target: The target directory of your application (required)
   * EX: ``` "target": "../dest" ```
+
+* markup: Markup type (options: jade, html) (required)
+  * EX: ``` "markup": "jade" ```
 
 * iconFontFile: JSON file that lists icon class names
   *  EX: ``` "iconFontFile": "data/icons.json" ```
 
-* markup: Markup type (options: jade, html)
-  * EX: ``` "markup": "jade" ```
+* framework: The framework you are using (currently only supports angular). Do not fill this out if you are using straight html or jade.
+  * EX: ``` "framework": "angular" ```
+
+* angularModuleName: if using angular you must define the module name for bootstrapping the app
+
+  * EX: ``` "angularModuleName": "jaydaAngularDemo" ```
 
 ## Jade Usage
 
@@ -65,12 +74,20 @@ $ cd jayda && npm install && bower install && cd -
 ## Angular App Usage
 
 1. Follow Install instructions above
-2. Follow instructions to set config options above
+2. Follow instructions to set config options above (be sure to add ``` framework ``` and ``` angularModuleName ``` )
 3. cd into jayda directory
 4. build jayda
   * ``` gulp watch ```
-5. Add you controller to ``` jayda/templates/index.jade ```
-  * ``` html.jayda(lang="en" ng-app="jaydaAngularDemo") ```
+5. Add a JSON file to any directive you wish to include
+  * EX:
+    ```{
+          "name" : "Navbar",
+          "description" : "My apps Navbar",
+          "tag" : "acme-navbar",
+          "data": {
+            "creationDate": "main.creationDate"
+          }
+      }```
 
 
 
